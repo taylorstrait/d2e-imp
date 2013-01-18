@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  num_tan2: 1
+  num_red2: 1
+  num_tan3: 1
+  num_red3: 1
+  num_tan4: 1
+  num_red4: 1
+  type1_id: MyString
+  type2_id: MyString
+  attack_type: MyString
+  set_id: 1
+
+two:
+  name: MyString
+  num_tan2: 1
+  num_red2: 1
+  num_tan3: 1
+  num_red3: 1
+  num_tan4: 1
+  num_red4: 1
+  type1_id: MyString
+  type2_id: MyString
+  attack_type: MyString
+  set_id: 1

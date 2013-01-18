@@ -1,0 +1,71 @@
+<%- model_class = Monster -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+  <dd><%= @monster.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:trait1_id) %>:</strong></dt>
+  <dd><%= @monster.trait1_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:trait2_id) %>:</strong></dt>
+  <dd><%= @monster.trait2_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_tan2) %>:</strong></dt>
+  <dd><%= @monster.num_tan2 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_red2) %>:</strong></dt>
+  <dd><%= @monster.num_red2 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_tan3) %>:</strong></dt>
+  <dd><%= @monster.num_tan3 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_red3) %>:</strong></dt>
+  <dd><%= @monster.num_red3 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_tan4) %>:</strong></dt>
+  <dd><%= @monster.num_tan4 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:num_red4) %>:</strong></dt>
+  <dd><%= @monster.num_red4 %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_tan_attack) %>:</strong></dt>
+  <dd><%= @monster.act1_tan_attack %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_red_attack) %>:</strong></dt>
+  <dd><%= @monster.act2_red_attack %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_tan_speed) %>:</strong></dt>
+  <dd><%= @monster.act1_tan_speed %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_red_speed) %>:</strong></dt>
+  <dd><%= @monster.act1_red_speed %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_tan_speed) %>:</strong></dt>
+  <dd><%= @monster.act2_tan_speed %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_red_speed) %>:</strong></dt>
+  <dd><%= @monster.act2_red_speed %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_tan_health) %>:</strong></dt>
+  <dd><%= @monster.act1_tan_health %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_red_health) %>:</strong></dt>
+  <dd><%= @monster.act1_red_health %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_tan_health) %>:</strong></dt>
+  <dd><%= @monster.act2_tan_health %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_red_health) %>:</strong></dt>
+  <dd><%= @monster.act2_red_health %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_tan_defense) %>:</strong></dt>
+  <dd><%= @monster.act1_tan_defense %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act1_red_defense) %>:</strong></dt>
+  <dd><%= @monster.act1_red_defense %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_tan_defense) %>:</strong></dt>
+  <dd><%= @monster.act2_tan_defense %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:act2_red_defense) %>:</strong></dt>
+  <dd><%= @monster.act2_red_defense %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:role) %>:</strong></dt>
+  <dd><%= @monster.role %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:attack_type) %>:</strong></dt>
+  <dd><%= @monster.attack_type %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:game_id) %>:</strong></dt>
+  <dd><%= @monster.game_id %></dd>
+</dl>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              monsters_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_monster_path(@monster), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              monster_path(@monster),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>

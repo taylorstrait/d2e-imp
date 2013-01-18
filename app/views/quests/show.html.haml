@@ -1,0 +1,9 @@
+%h2= @quest.name
+
+.well
+  %h3 Encounters
+
+  - for encounter in @quest.encounters
+    = link_to encounter.name, encounter
+
+= link_to "New Encounter", new_encounter_path(:quest_id => @quest.id)

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  game_id: 1
+  position: 1
+  encounter1_id: 1
+  encounter2_id: 1
+  act: 1
+  campaign_id: 1
+
+two:
+  name: MyString
+  game_id: 1
+  position: 1
+  encounter1_id: 1
+  encounter2_id: 1
+  act: 1
+  campaign_id: 1

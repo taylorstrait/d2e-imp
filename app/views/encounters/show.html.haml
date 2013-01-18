@@ -1,0 +1,53 @@
+%h2= link_to @encounter.quest.name, @encounter.quest
+
+%h3= link_to @encounter.name, @encounter
+
+%h4 Traits
+- for trait in @encounter.traits
+  %p= trait.name
+
+= form_tag(generate_monster_list_path) do
+
+  = hidden_field_tag 'encounter_id', @encounter.id
+
+  %ul
+    - for game in Game.all do
+      %li
+        = check_box_tag("game_ids[]", game.id, if params[:game_ids] then params[:game_ids].include?(game.id.to_s) end)
+        = label_tag game.short_name
+
+  %p
+    = label_tag :pool_size
+    = select_tag("pool_size", options_for_select(1..6, params[:pool_size] || "3"))
+  
+  = submit_tag "Generate Monster Options"
+
+
+= link_to 'Edit', edit_encounter_path(@encounter)
+= link_to 'Back', encounters_path
+
+.row-fluid
+  - if @encounter.monsters.size > 0
+    .well.span3
+      %h4= "Monsters"
+      - for monster in @encounter.monsters do
+        %p= link_to monster.name, monster
+
+  - if @open_group
+    
+    - counter = 1
+    - @encounter.num_open_groups.times do
+      .well.span3
+        %h4= "Open Group #{counter}"
+        - for monster in @open_group[counter] do
+          - if monster # there may not be enough
+            %p= link_to monster.name, monster
+    
+      - counter += 1
+
+- if @monster_options && !@monster_options.empty?
+  .row-fluid
+    .well.span3
+      %h4 Unused Monsters
+      - for monster in @monster_options
+        %p= link_to monster.name, monster

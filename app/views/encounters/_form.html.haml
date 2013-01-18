@@ -1,0 +1,44 @@
+= form_for(@encounter) do |f|
+
+  .field
+    = f.hidden_field :quest_id
+    = f.hidden_field :position
+
+  .field
+    = f.label :name 
+    %br
+    = f.text_field :name
+
+  .field
+    = f.label :num_open_groups, "# of Open Groups"
+    %br
+    = f.select :num_open_groups, 0..4
+
+  .row-fluid
+    .well.span3
+      %h4 Traits
+      - for trait in Trait.all
+        .field
+          %label.checkbox
+            = check_box_tag "encounter[trait_ids][]", trait.id, @encounter.traits.include?(trait)
+            = label_tag trait.name
+  
+    .well.span4
+      %h4 Lieutenants
+      - for monster in Monster.where(:role => "Lieutenant")
+        .field
+          %label.checkbox
+            = check_box_tag "encounter[monster_ids][]", monster.id, @encounter.monsters.include?(monster)
+            = label_tag monster.name
+    
+  
+    .well.span4
+      %h4 Monsters
+      - for monster in Monster.where(:role => "Monster")
+        .field
+          %label.checkbox
+            = check_box_tag "encounter[monster_ids][]", monster.id, @encounter.monsters.include?(monster)
+            = label_tag monster.name
+
+  .actions
+    = f.submit

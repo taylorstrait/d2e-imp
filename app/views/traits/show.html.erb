@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @trait.name %>
+</p>
+
+<p>
+  <b>Image url:</b>
+  <%= @trait.image_url %>
+</p>
+
+
+<%= link_to 'Edit', edit_trait_path(@trait) %> |
+<%= link_to 'Back', traits_path %>
