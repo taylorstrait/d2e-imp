@@ -5,3 +5,16 @@
   To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
   =require twitter-bootstrap-static/fontawesome
   */
+
+
+.column2 {
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+}
+
+.column3 {
+  -moz-column-count: 3;
+  -webkit-column-count: 3;
+  column-count: 3;
+}

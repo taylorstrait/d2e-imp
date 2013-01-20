@@ -1,0 +1,63 @@
+.container
+    
+  %h2 Sign up
+  
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+    
+    .row-fluid
+      .span12
+        = devise_error_messages!
+        %h4 Account Info
+        %div
+          = f.label :email
+          %br/
+          = f.email_field :email, :autofocus => true
+        %div
+          = f.label :password
+          %br/
+          = f.password_field :password
+        %div
+          = f.label :password_confirmation
+          %br/
+          = f.password_field :password_confirmation
+    
+    .row-fluid
+      .span12
+        %h4 Profile Info
+        = f.label :username
+        %br/
+        = f.text_field :username    
+        = f.label :username, "BoardGameGeek Name"
+        %br/
+        = f.text_field :bgg_profile_name
+        = f.label :birthdate
+        %br/
+        = f.date_select :birthdate
+
+    .row-fluid
+
+      .span4
+        %h4 My Games
+        - for game in Game.all do
+          .field
+          %label.checkbox
+            = check_box_tag("user[game_ids][]", game.id, if params[:game_ids] then params[:game_ids].include?(game.id.to_s) end, :class => "game_checkbox")
+            = label_tag "game_ids[#{game.id}]", game.short_name
+
+      .span7
+        %h4 My Monsters
+        .column3
+          - for monster in Monster.order('name ASC').all do
+            .field
+            %label.checkbox
+              = check_box_tag("user[monster_ids][]", monster.id, if params[:game_ids] then params[:game_ids].include?(game.id.to_s) end,  :class => "monster_checkbox", :game_id => monster.game_id)
+              = label_tag "monster_ids[#{monster.id}]", monster.name
+  
+    = f.submit "Sign up"
+
+  = render "devise/shared/links"
+
+  // Javascripts
+  // ==================================================
+  // Placed at the end of the document so the pages load faster
+  = javascript_include_tag "game_monster_picker"

@@ -6,7 +6,9 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :page
       t.integer :position
       t.integer :act
+      t.boolean :official_release, :default => false, :null => false
       t.integer :campaign_id
+      t.integer :user_id, :null => false
       t.timestamps
     end
 

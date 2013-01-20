@@ -1,0 +1,10 @@
+%p#notice= notice
+%p
+  %b Name:
+  = @trait.name
+%p
+  %b Image url:
+  = @trait.image_url
+= link_to 'Edit', edit_trait_path(@trait)
+|
+\#{link_to 'Back', traits_path}
