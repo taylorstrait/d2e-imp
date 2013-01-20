@@ -2,7 +2,7 @@ class QuestsController < ApplicationController
   # GET /quests
   # GET /quests.json
   def index
-    @quests = Quest.all
+    @quests = Quest.includes([:encounters => :monsters], :user).all
 
     respond_to do |format|
       format.html # index.html.erb

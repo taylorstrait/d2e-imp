@@ -46,9 +46,3 @@
         %td= link_to monster.game.name, monster.game
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_monster_path(monster), :class => 'btn btn-mini'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")),
-            monster_path(monster),
-            :method => :delete,                                           
-            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-            :class => 'btn btn-mini btn-danger'
-= link_to t('.new', :default => t("helpers.links.new")), new_monster_path, :class => 'btn btn-primary'

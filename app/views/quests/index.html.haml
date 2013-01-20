@@ -6,11 +6,10 @@
     %tr
       %th= model_class.human_attribute_name(:name)
       %th Encounters
-      %th= model_class.human_attribute_name(:page)
-      %th= model_class.human_attribute_name(:act)
-      %th= model_class.human_attribute_name(:campaign_id)
-      %th= model_class.human_attribute_name(:created_at)
-      %th= t '.actions', :default => t("helpers.actions")
+      %th Monsters
+      %th Rating
+      %th Author
+
   %tbody
     - @quests.each do |quest|
       %tr
@@ -19,15 +18,15 @@
           %ul
             - for encounter in quest.encounters
               %li= link_to encounter.name, encounter
-        %td= quest.page
-        %td= quest.act
-        %td= link_to quest.campaign.name, quest.campaign
-        %td= l quest.created_at
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_quest_path(quest), :class => 'btn btn-mini'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")),
-            quest_path(quest),
-            :method => :delete,
-            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-            :class => 'btn btn-mini btn-danger'                                                                         
-= link_to t('.new', :default => t("helpers.links.new")), new_quest_path, :class => 'btn btn-primary'
+          %ul
+            - for monster in quest.monsters
+              %li= link_to monster.name, encounter
+        %td PLACEHOLDER
+        %td= quest.user ? (link_to quest.user.username, quest.user) : nil
+                                                                       
+- if user_signed_in?
+  = link_to t('.new', :default => t("helpers.links.new")), new_quest_path, :class => 'btn btn-primary'
+- else
+  .option_if_logged
+    #{link_to "Sign in", new_user_session_url} to create a new quest.

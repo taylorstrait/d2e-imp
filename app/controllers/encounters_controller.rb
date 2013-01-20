@@ -13,7 +13,7 @@ class EncountersController < ApplicationController
   # GET /encounters/1
   # GET /encounters/1.json
   def show
-    @encounter = Encounter.find(params[:id])
+    @encounter = Encounter.includes(:monsters, :traits, :quest).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -94,57 +94,55 @@ class EncountersController < ApplicationController
     
     @encounter = Encounter.find(params[:encounter_id])
 
-    if params[:game_ids].present?
+    if current_user
+      monster_list = current_user.monster_ids
+    else
+      monster_list = Monster.pluck(:id)
+    end
 
-      # main query
-      if @encounter.monsters.size > 0
-        @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND game_id IN (?)", params[:game_ids]).where("monsters.id NOT IN (?)", @encounter.monster_ids).order("monsters.name ASC").uniq
-      else
-        @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND game_id IN (?)", params[:game_ids]).order("monsters.name ASC").uniq
-      end
+    # main query
+    if @encounter.monsters.size > 0
+      @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND monster_id IN (?)", monster_list).where("monsters.id NOT IN (?)", @encounter.monster_ids).order("monsters.name ASC").uniq
+    else
+      @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND monster_id IN (?)", monster_list).order("monsters.name ASC").uniq
+    end
+    
+    # if we found any matching monsters...
+    if @game_monsters.size > 0
+      # generate limited pool
+      @monster_options = @game_monsters.clone.shuffle
 
-      # if we found any matching monsters...
-      if @game_monsters.size > 0
+      # break out the open groups
+      # init counter
+      counter = 1
+      @open_group = {}
 
-        # generate limited pool
-        @monster_options = @game_monsters.clone.shuffle
-  
-        # break out the open groups
-        # init counter
-        counter = 1
-        @open_group = {}
-  
-        # for each open group...
-        @encounter.num_open_groups.times do
-  
-          # create a new nested variable
-          @open_group[counter] = []
+      # for each open group...
+      @encounter.num_open_groups.times do
+
+        # create a new nested variable
+        @open_group[counter] = []
+        
+        # for each card to draw...
+        params[:pool_size].to_i.times do
           
-          # for each card to draw...
-          params[:pool_size].to_i.times do
-            
-            # pop one card off the shuffled pool
-            @open_group[counter] << @monster_options.pop
-  
-          end
+          # pop one card off the shuffled pool
+          @open_group[counter] << @monster_options.pop
 
-          # alphabetize the list
-          if @open_group[counter].size > 1
-            @open_group[counter].sort_by! &:name
-          end
-
-          counter += 1
         end
-  
-        # alphabetize the remaining options
-        @monster_options.sort_by! &:name
-      
-      else
-        flash.now[:notice] = "No eligible monsters found."
+
+        # alphabetize the list
+        if @open_group[counter].size > 1
+          @open_group[counter].sort_by! &:name
+        end
+        counter += 1
       end
+
+      # alphabetize the remaining options
+      @monster_options.sort_by! &:name
 
     else
-      flash.now[:notice] = "You must select a game first."
+      flash.now[:notice] = "No monsters available. Does the encounter have the correct traits?"
     end
 
     render :show

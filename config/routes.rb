@@ -1,21 +1,21 @@
 Monsters::Application.routes.draw do
+
+
+
   get "static_pages/index"
 
   devise_for :users
+  resources :users, :only => [:index, :show]
 
   resources :encounters
 
   resources :campaigns
 
-
   resources :quests
-
 
   resources :traits
 
-
   resources :games
-
 
   resources :monsters
 

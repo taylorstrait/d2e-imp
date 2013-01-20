@@ -32,7 +32,7 @@ puts 'seeding Games...'
 # CAMPAIGNS
 puts 'seeding Campaigns...'
 [
-  {id: 1, name: "The Shadow Rune", game_id: 2, user_id: 1},
+  {id: 1, name: "The Shadow Rune", game_id: 1, user_id: 1},
   {id: 2, name: "Lair of the Wyrm", game_id: 2, user_id: 1}
 ].each {|x| Campaign.find_or_create_by_name(x)}
 
