@@ -18,13 +18,9 @@
     %i (we need your current password to confirm your changes)
     %br/
     = f.password_field :current_password
-  %div= f.submit "Update"
 
-
-.container
-  
-  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-    
+  .container
+      
     .row-fluid
       .span12
         = devise_error_messages!
@@ -35,7 +31,6 @@
       = f.date_select :birthdate
 
     .row-fluid
-
       .span4
         %h4 My Games
         - for game in Game.all do
@@ -44,18 +39,30 @@
             = check_box_tag("user[game_ids][]", game.id, @user.games.include?(game), :class => "game_checkbox")
             = label_tag "game_ids[#{game.id}]", game.short_name
 
-      .span7
+    .row-fluid
+      .span12
+        %h4 My Heroes
+        .column4
+          - for hero in Hero.order('name ASC').all do
+            .field
+            %label.checkbox
+              = check_box_tag("user[hero_ids][]", hero.id, @user.heroes.include?(hero), :class => "hero_checkbox", :game_id => hero.game_id)
+              = label_tag "hero_ids[#{hero.id}]", hero.name
+  
+    .row-fluid
+      .span12
         %h4 My Monsters
-        .column3
-          - for monster in Monster.order('name ASC').all do
+        .column4
+          - for monster in Monster.where(:role => "Monster").order('name ASC').all do
             .field
             %label.checkbox
               = check_box_tag("user[monster_ids][]", monster.id, @user.monsters.include?(monster), :class => "monster_checkbox", :game_id => monster.game_id)
-              = label_tag "monster_ids[#{monster.id}]", monster.name
+              = label_tag "monster_ids[#{monster.id}]", monster.name      
   
+  .row-fluid
     = f.submit "Update"
 
   // Javascripts
   // ==================================================
   // Placed at the end of the document so the pages load faster
-  = javascript_include_tag "game_monster_picker"
+  = javascript_include_tag "game_figure_picker"

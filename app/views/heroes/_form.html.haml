@@ -1,0 +1,56 @@
+= form_for @hero, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :game_id, :class => 'control-label'
+    .controls
+      = f.number_field :game_id, :class => 'number_field'
+  .control-group
+    = f.label :archetype, :class => 'control-label'
+    .controls
+      = f.text_field :archetype, :class => 'text_field'
+  .control-group
+    = f.label :speed, :class => 'control-label'
+    .controls
+      = f.number_field :speed, :class => 'number_field'
+  .control-group
+    = f.label :health, :class => 'control-label'
+    .controls
+      = f.number_field :health, :class => 'number_field'
+  .control-group
+    = f.label :stamina, :class => 'control-label'
+    .controls
+      = f.number_field :stamina, :class => 'number_field'
+  .control-group
+    = f.label :defense, :class => 'control-label'
+    .controls
+      = f.text_field :defense, :class => 'text_field'
+  .control-group
+    = f.label :might, :class => 'control-label'
+    .controls
+      = f.number_field :might, :class => 'number_field'
+  .control-group
+    = f.label :knowledge, :class => 'control-label'
+    .controls
+      = f.number_field :knowledge, :class => 'number_field'
+  .control-group
+    = f.label :willpower, :class => 'control-label'
+    .controls
+      = f.number_field :willpower, :class => 'number_field'
+  .control-group
+    = f.label :awareness, :class => 'control-label'
+    .controls
+      = f.number_field :awareness, :class => 'number_field'
+  .control-group
+    = f.label :ability, :class => 'control-label'
+    .controls
+      = f.text_area :ability, :class => 'text_area'
+  .control-group
+    = f.label :feat, :class => 'control-label'
+    .controls
+      = f.text_area :feat, :class => 'text_area'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), heroes_path, :class => 'btn'

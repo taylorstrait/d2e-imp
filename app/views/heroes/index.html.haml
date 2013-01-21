@@ -1,0 +1,40 @@
+- model_class = Hero
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th Game
+      %th= model_class.human_attribute_name(:archetype)
+      %th= model_class.human_attribute_name(:speed)
+      %th= model_class.human_attribute_name(:health)
+      %th= model_class.human_attribute_name(:stamina)
+      %th= model_class.human_attribute_name(:defense)
+      %th <img src='/assets/icons/Might.png' alt='Might' title='Might' />
+      %th <img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />
+      %th <img src='/assets/icons/Willpower.png' alt='Willpower' title='Willpower' />
+      %th <img src='/assets/icons/Awareness.png' alt='Awareness' title='Awareness' />
+      %th= model_class.human_attribute_name(:ability)
+      %th= model_class.human_attribute_name(:feat)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @heroes.each do |hero|
+      %tr
+        %td= link_to hero.name, hero_path(hero)
+        %td= if hero.game then link_to(hero.game.short_name, hero.game) end
+        %td= hero.archetype
+        %td= hero.speed
+        %td= hero.health
+        %td= hero.stamina
+        %td= add_icons(hero.defense)
+        %td= hero.might
+        %td= hero.knowledge
+        %td= hero.willpower
+        %td= hero.awareness
+        %td= add_icons(hero.ability)
+        %td= add_icons(hero.feat)
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_hero_path(hero), :class => 'btn btn-mini'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_hero_path, :class => 'btn btn-primary'

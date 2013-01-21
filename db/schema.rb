@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119192350) do
+ActiveRecord::Schema.define(:version => 20130121183355) do
 
   create_table "campaigns", :force => true do |t|
     t.string   "name",                                :null => false
@@ -67,6 +67,14 @@ ActiveRecord::Schema.define(:version => 20130119192350) do
     t.integer "monsters_count", :default => 0, :null => false
   end
 
+  create_table "games_heroes", :force => true do |t|
+    t.integer "hero_id", :null => false
+    t.integer "user_id", :null => false
+  end
+
+  add_index "games_heroes", ["hero_id"], :name => "index_games_heroes_on_hero_id"
+  add_index "games_heroes", ["user_id"], :name => "index_games_heroes_on_user_id"
+
   create_table "games_users", :force => true do |t|
     t.integer "game_id", :null => false
     t.integer "user_id", :null => false
@@ -74,6 +82,30 @@ ActiveRecord::Schema.define(:version => 20130119192350) do
 
   add_index "games_users", ["game_id"], :name => "index_games_users_on_game_id"
   add_index "games_users", ["user_id"], :name => "index_games_users_on_user_id"
+
+  create_table "heroes", :force => true do |t|
+    t.string  "name",                          :null => false
+    t.integer "game_id"
+    t.string  "archetype",                     :null => false
+    t.integer "speed",                         :null => false
+    t.integer "health",                        :null => false
+    t.integer "stamina",                       :null => false
+    t.string  "defense",   :default => "grey", :null => false
+    t.integer "might",                         :null => false
+    t.integer "knowledge",                     :null => false
+    t.integer "willpower",                     :null => false
+    t.integer "awareness",                     :null => false
+    t.text    "ability"
+    t.text    "feat"
+  end
+
+  create_table "heroes_users", :force => true do |t|
+    t.integer "hero_id", :null => false
+    t.integer "user_id", :null => false
+  end
+
+  add_index "heroes_users", ["hero_id"], :name => "index_heroes_users_on_hero_id"
+  add_index "heroes_users", ["user_id"], :name => "index_heroes_users_on_user_id"
 
   create_table "monsters", :force => true do |t|
     t.string  "name",                                      :null => false
@@ -137,16 +169,21 @@ ActiveRecord::Schema.define(:version => 20130119192350) do
   add_index "monsters_users", ["user_id"], :name => "index_monsters_users_on_user_id"
 
   create_table "quests", :force => true do |t|
-    t.string   "name",                                :null => false
-    t.integer  "encounters_count", :default => 0,     :null => false
+    t.string   "name",                                       :null => false
+    t.integer  "encounters_count",        :default => 0,     :null => false
     t.integer  "page"
     t.integer  "position"
     t.integer  "act"
-    t.boolean  "official_release", :default => false, :null => false
+    t.boolean  "official_release",        :default => false, :null => false
     t.integer  "campaign_id"
-    t.integer  "user_id",                             :null => false
-    t.datetime "created_at",                          :null => false
-    t.datetime "updated_at",                          :null => false
+    t.integer  "user_id",                                    :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "reward_xp_base",          :default => 1,     :null => false
+    t.integer  "reward_xp_hero",          :default => 0,     :null => false
+    t.integer  "reward_xp_hero_overlord", :default => 0,     :null => false
+    t.integer  "reward_gold",             :default => 25,    :null => false
+    t.integer  "reward_item_id"
   end
 
   add_index "quests", ["campaign_id"], :name => "index_quests_on_campaign_id"

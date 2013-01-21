@@ -2,7 +2,7 @@ class MonstersController < ApplicationController
   # GET /monsters
   # GET /monsters.json
   def index
-    @monsters = Monster.all
+    @monsters = Monster.includes(:game).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class MonstersController < ApplicationController
   # GET /monsters/1
   # GET /monsters/1.json
   def show
-    @monster = Monster.find(params[:id])
+    @monster = Monster.includes(:game).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

@@ -35,24 +35,36 @@
         = f.date_select :birthdate
 
     .row-fluid
-
       .span4
         %h4 My Games
         - for game in Game.all do
           .field
           %label.checkbox
-            = check_box_tag("user[game_ids][]", game.id, if params[:game_ids] then params[:game_ids].include?(game.id.to_s) end, :class => "game_checkbox")
+            = check_box_tag("user[game_ids][]", game.id, nil, :class => "game_checkbox")
             = label_tag "game_ids[#{game.id}]", game.short_name
 
-      .span7
-        %h4 My Monsters
-        .column3
-          - for monster in Monster.order('name ASC').all do
+    .row-fluid
+      .span12
+        %h4 My Heroes
+        .column4
+          - for hero in Hero.order('name ASC').all do
             .field
             %label.checkbox
-              = check_box_tag("user[monster_ids][]", monster.id, if params[:game_ids] then params[:game_ids].include?(game.id.to_s) end,  :class => "monster_checkbox", :game_id => monster.game_id)
-              = label_tag "monster_ids[#{monster.id}]", monster.name
+              = check_box_tag("user[hero_ids][]", hero.id, nil, :class => "hero_checkbox", :game_id => hero.game_id)
+              = label_tag "hero_ids[#{hero.id}]", hero.name
   
+    .row-fluid
+      .span12
+        %h4 My Monsters
+        .column4
+          - for monster in Monster.where(:role => "Monster").order('name ASC').all do
+            .field
+            %label.checkbox
+              = check_box_tag("user[monster_ids][]", monster.id, nil, :class => "monster_checkbox", :game_id => monster.game_id)
+              = label_tag "monster_ids[#{monster.id}]", monster.name      
+
+    .row-fluid
+
     = f.submit "Sign up"
 
   = render "devise/shared/links"
@@ -60,4 +72,4 @@
   // Javascripts
   // ==================================================
   // Placed at the end of the document so the pages load faster
-  = javascript_include_tag "game_monster_picker"
+  = javascript_include_tag "game_figure_picker"

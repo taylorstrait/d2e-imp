@@ -53,6 +53,6 @@
         - for monster in @monster_options
           %p= link_to monster.name, monster
 
--if user_signed_in? && current_user == @encounter.user
+-if user_signed_in? && current_user == @encounter.quest.user
   = link_to 'Edit', edit_encounter_path(@encounter)
   = link_to 'Back', encounters_path
