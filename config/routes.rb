@@ -1,5 +1,8 @@
 Monsters::Application.routes.draw do
 
+  resources :items
+
+
   resources :heroes
 
   get "static_pages/index"

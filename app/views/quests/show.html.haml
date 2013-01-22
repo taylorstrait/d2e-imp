@@ -11,7 +11,7 @@
 
 %h4 Discussion
 
-- if user_signed_in? && current_user == quest.user
+- if user_signed_in? && current_user == @quest.user
   = link_to "New Encounter", new_encounter_path(:quest_id => @quest.id)
   = link_to t('.edit', :default => t("helpers.links.edit")), |
     edit_quest_path(@quest), :class => 'btn'           |

@@ -46,3 +46,5 @@
         %td= link_to monster.game.name, monster.game
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_monster_path(monster), :class => 'btn btn-mini'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_monster_path, :class => 'btn btn-primary'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121183355) do
+ActiveRecord::Schema.define(:version => 20130121212726) do
 
   create_table "campaigns", :force => true do |t|
     t.string   "name",                                :null => false
@@ -106,6 +106,27 @@ ActiveRecord::Schema.define(:version => 20130121183355) do
 
   add_index "heroes_users", ["hero_id"], :name => "index_heroes_users_on_hero_id"
   add_index "heroes_users", ["user_id"], :name => "index_heroes_users_on_user_id"
+
+  create_table "items", :force => true do |t|
+    t.string  "name",                                    :null => false
+    t.string  "attack_type"
+    t.string  "subclass1",                               :null => false
+    t.string  "subclass2"
+    t.string  "equip_type",                              :null => false
+    t.string  "dice"
+    t.integer "buy_cost",    :default => 0,              :null => false
+    t.integer "sell_cost",   :default => 0,              :null => false
+    t.string  "trait1"
+    t.string  "trait2"
+    t.string  "trait3"
+    t.string  "trait4"
+    t.string  "rules"
+    t.integer "act"
+    t.string  "category",    :default => "shop_item_a1", :null => false
+    t.integer "game_id",                                 :null => false
+  end
+
+  add_index "items", ["game_id"], :name => "index_items_on_game_id"
 
   create_table "monsters", :force => true do |t|
     t.string  "name",                                      :null => false

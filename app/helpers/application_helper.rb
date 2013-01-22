@@ -14,8 +14,14 @@ module ApplicationHelper
     
     text.gsub!("{BROWN}", "<img src='/assets/icons/dice-brown.png' alt='Brown Dice' title='Brown Dice' />")
     text.gsub!("{GREY}", "<img src='/assets/icons/dice-grey.png' alt='Grey Dice' title='Grey Dice' />")
-    text.gsub!("{BLACK}", "<img src='/assets/icons/dice-black.png' alt='Black Dice' title='Black Dice' />")
+    text.gsub!("{BLACK}", "<img src='/assets/icons/dice-black.png' alt='Black Dice' title='Black Dice' />")    
+    text.gsub!("{BLUE}", "<img src='/assets/icons/dice-blue.png' alt='Blue Dice' title='Blue Dice' />")
+    text.gsub!("{YELLOW}", "<img src='/assets/icons/dice-yellow.png' alt='Yellow Dice' title='Yellow Dice' />")
+    text.gsub!("{RED}", "<img src='/assets/icons/dice-red.png' alt='Red Dice' title='Red Dice' />")
 
     return text.html_safe
+
+  rescue NoMethodError
+    return nil
   end
 end

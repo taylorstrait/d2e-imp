@@ -1,0 +1,73 @@
+- model_class = Item
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human
+
+%p
+  %strong= model_class.human_attribute_name(:name) + ':'
+  %br
+  = @item.name
+%p
+  %strong= model_class.human_attribute_name(:attack_type) + ':'
+  %br
+  = @item.attack_type
+%p
+  %strong= model_class.human_attribute_name(:subclass1) + ':'
+  %br
+  = @item.subclass1
+%p
+  %strong= model_class.human_attribute_name(:subclass2) + ':'
+  %br
+  = @item.subclass2
+%p
+  %strong= model_class.human_attribute_name(:equip_type) + ':'
+  %br
+  = @item.equip_type
+%p
+  %strong= model_class.human_attribute_name(:dice) + ':'
+  %br
+  = @item.dice
+%p
+  %strong= model_class.human_attribute_name(:buy_cost) + ':'
+  %br
+  = @item.buy_cost
+%p
+  %strong= model_class.human_attribute_name(:sell_cost) + ':'
+  %br
+  = @item.sell_cost
+%p
+  %strong= model_class.human_attribute_name(:trait1) + ':'
+  %br
+  = @item.trait1
+%p
+  %strong= model_class.human_attribute_name(:trait2) + ':'
+  %br
+  = @item.trait2
+%p
+  %strong= model_class.human_attribute_name(:trait3) + ':'
+  %br
+  = @item.trait3
+%p
+  %strong= model_class.human_attribute_name(:trait4) + ':'
+  %br
+  = @item.trait4
+%p
+  %strong= model_class.human_attribute_name(:rules) + ':'
+  %br
+  = @item.rules
+%p
+  %strong= model_class.human_attribute_name(:act) + ':'
+  %br
+  = @item.act
+%p
+  %strong= model_class.human_attribute_name(:category) + ':'
+  %br
+  = @item.category
+%p
+  %strong= model_class.human_attribute_name(:game_id) + ':'
+  %br
+  = @item.game_id
+
+.form-actions
+  = link_to t('.back', :default => t("helpers.links.back")), items_path, :class => 'btn'
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(@item), :class => 'btn'
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), item_path(@item), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

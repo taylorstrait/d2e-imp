@@ -1,0 +1,130 @@
+- model_class = Item
+%h2 Act I Items
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:attack_type)
+      %th Traits
+      %th= model_class.human_attribute_name(:equip_type)
+      %th= model_class.human_attribute_name(:dice)
+      %th Price
+      %th Info
+      %th= model_class.human_attribute_name(:game_id)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @act1_items.each do |item|
+      %tr
+        %td= link_to item.name, item_path(item)
+        %td= item.attack_type
+        %td
+          - if item.subclass2.present?
+            = "#{item.subclass1}, #{item.subclass2}"
+          - else
+            = item.subclass1
+        %td= item.equip_type
+        %td= add_icons(item.dice)
+        %td= item.buy_cost
+        %td
+          %p= add_icons(item.trait1)
+          %p= add_icons(item.trait2)
+          %p= add_icons(item.trait3)
+          %p= add_icons(item.trait4)
+          %p= add_icons(item.rules)
+        %td= item.game.short_name
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(item), :class => 'btn btn-mini'  
+
+%h2 Act II Items
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:attack_type)
+      %th Traits
+      %th= model_class.human_attribute_name(:equip_type)
+      %th= model_class.human_attribute_name(:dice)
+      %th Price
+      %th Info
+      %th= model_class.human_attribute_name(:game_id)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @act2_items.each do |item|
+      %tr
+        %td= link_to item.name, item_path(item)
+        %td= item.attack_type
+        %td
+          - if item.subclass2.present?
+            = "#{item.subclass1}, #{item.subclass2}"
+          - else
+            = item.subclass1
+        %td= item.equip_type
+        %td= add_icons(item.dice)
+        %td= item.buy_cost
+        %td
+          %p= add_icons(item.trait1)
+          %p= add_icons(item.trait2)
+          %p= add_icons(item.trait3)
+          %p= add_icons(item.trait4)
+          %p= add_icons(item.rules)
+        %td= item.game.short_name
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(item), :class => 'btn btn-mini'
+
+%h2 Hero Relics
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:attack_type)
+      %th Traits
+      %th= model_class.human_attribute_name(:equip_type)
+      %th= model_class.human_attribute_name(:dice)
+      %th Info
+      %th= model_class.human_attribute_name(:game_id)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @hero_relics.each do |item|
+      %tr
+        %td= link_to item.name, item_path(item)
+        %td= item.attack_type
+        %td
+          - if item.subclass2.present?
+            = "#{item.subclass1}, #{item.subclass2}"
+          - else
+            = item.subclass1
+        %td= item.equip_type
+        %td= add_icons(item.dice)
+        %td
+          %p= add_icons(item.trait1)
+          %p= add_icons(item.trait2)
+          %p= add_icons(item.trait3)
+          %p= add_icons(item.trait4)
+          %p= add_icons(item.rules)
+        %td= item.game.short_name
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(item), :class => 'btn btn-mini'
+
+%h2 Overlord Relics
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th Info
+      %th= model_class.human_attribute_name(:game_id)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @ol_relics.each do |item|
+      %tr
+        %td= link_to item.name, item_path(item)
+        %td
+          %p= add_icons(item.trait1)
+          %p= add_icons(item.trait2)
+          %p= add_icons(item.trait3)
+          %p= add_icons(item.trait4)
+          %p= add_icons(item.rules)
+        %td= item.game.short_name
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(item), :class => 'btn btn-mini'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_item_path, :class => 'btn btn-primary'
