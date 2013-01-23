@@ -23,7 +23,7 @@
       %tr
         %td= link_to hero.name, hero_path(hero)
         %td= if hero.game then link_to(hero.game.short_name, hero.game) end
-        %td= hero.archetype
+        %td= hero.archetype.name
         %td= hero.speed
         %td= hero.health
         %td= hero.stamina

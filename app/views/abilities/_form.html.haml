@@ -1,0 +1,36 @@
+= form_for @ability, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :profession_id, :class => 'control-label'
+    .controls
+      = f.number_field :profession_id, :class => 'number_field'
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :xp_cost, :class => 'control-label'
+    .controls
+      = f.number_field :xp_cost, :class => 'number_field'
+  .control-group
+    = f.label :rule1, :class => 'control-label'
+    .controls
+      = f.text_field :rule1, :class => 'text_field'
+  .control-group
+    = f.label :rule2, :class => 'control-label'
+    .controls
+      = f.text_field :rule2, :class => 'text_field'
+  .control-group
+    = f.label :rule3, :class => 'control-label'
+    .controls
+      = f.text_field :rule3, :class => 'text_field'
+  .control-group
+    = f.label :rule4, :class => 'control-label'
+    .controls
+      = f.text_field :rule4, :class => 'text_field'
+  .control-group
+    = f.label :fatigue_cost, :class => 'control-label'
+    .controls
+      = f.number_field :fatigue_cost, :class => 'number_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), abilities_path, :class => 'btn'

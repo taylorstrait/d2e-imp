@@ -3,7 +3,7 @@ class CreateHeroes < ActiveRecord::Migration
     create_table :heroes do |t|
       t.string :name, :null => false
       t.integer :game_id
-      t.string :archetype, :null => false
+      t.integer :archetype_id, :null => false
       t.integer :speed, :null => false
       t.integer :health, :null => false
       t.integer :stamina, :null => false

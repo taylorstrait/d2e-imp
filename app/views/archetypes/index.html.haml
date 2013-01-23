@@ -1,0 +1,31 @@
+%h1 Archetypes
+
+- for archetype in @archetypes
+
+  %h2= archetype.name
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Class
+        %th Equipment
+        %th Skills
+        %th
+    %tbody
+      - archetype.professions.each do |profession|
+        %tr
+          %td= link_to profession.name, profession_path(profession)
+          %td
+            - for item in profession.items
+              %p= link_to item.name, item 
+
+            - if profession.familiar
+              %p= link_to profession.familiar.name, profession.familiar
+
+          %td.column2
+            - for ability in profession.abilities
+              %p= link_to ability.name, ability
+          %td
+            = link_to t('.edit', :default => t("helpers.links.edit")), edit_archetype_path(profession), :class => 'btn btn-mini'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_archetype_path, :class => 'btn btn-primary'

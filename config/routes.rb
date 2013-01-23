@@ -1,5 +1,17 @@
 Monsters::Application.routes.draw do
 
+  resources :familiars
+
+
+  resources :archetypes
+
+
+  resources :abilities
+
+
+  resources :professions
+
+
   resources :items
 
 

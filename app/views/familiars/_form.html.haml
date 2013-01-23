@@ -1,0 +1,56 @@
+= form_for @familiar, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :speed, :class => 'control-label'
+    .controls
+      = f.number_field :speed, :class => 'number_field'
+  .control-group
+    = f.label :health, :class => 'control-label'
+    .controls
+      = f.number_field :health, :class => 'number_field'
+  .control-group
+    = f.label :defense, :class => 'control-label'
+    .controls
+      = f.text_field :defense, :class => 'text_field'
+  .control-group
+    = f.label :rule1, :class => 'control-label'
+    .controls
+      = f.text_field :rule1, :class => 'text_field'
+  .control-group
+    = f.label :rule2, :class => 'control-label'
+    .controls
+      = f.text_field :rule2, :class => 'text_field'
+  .control-group
+    = f.label :rule3, :class => 'control-label'
+    .controls
+      = f.text_field :rule3, :class => 'text_field'
+  .control-group
+    = f.label :rule4, :class => 'control-label'
+    .controls
+      = f.text_field :rule4, :class => 'text_field'
+  .control-group
+    = f.label :attack_type, :class => 'control-label'
+    .controls
+      = f.text_field :attack_type, :class => 'text_field'
+  .control-group
+    = f.label :dice, :class => 'control-label'
+    .controls
+      = f.text_field :dice, :class => 'text_field'
+  .control-group
+    = f.label :game_id, :class => 'control-label'
+    .controls
+      = f.number_field :game_id, :class => 'number_field'
+  .control-group
+    = f.label :hero_id, :class => 'control-label'
+    .controls
+      = f.number_field :hero_id, :class => 'number_field'
+  .control-group
+    = f.label :profession_id, :class => 'control-label'
+    .controls
+      = f.number_field :profession_id, :class => 'number_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), familiars_path, :class => 'btn'

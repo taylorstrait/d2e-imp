@@ -15,6 +15,7 @@ class CreateItems < ActiveRecord::Migration
       t.string :trait4
       t.string :rules
       t.string :category, :default => "shop_item_a1", :null => false
+      t.integer :profession_id
       t.integer :game_id, :null => false
     end
 

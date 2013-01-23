@@ -11,7 +11,30 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121212726) do
+ActiveRecord::Schema.define(:version => 20130123024009) do
+
+  create_table "abilities", :force => true do |t|
+    t.integer "profession_id",                :null => false
+    t.string  "name",                         :null => false
+    t.integer "xp_cost",       :default => 0, :null => false
+    t.string  "rule1",                        :null => false
+    t.string  "rule2"
+    t.string  "rule3"
+    t.string  "rule4"
+    t.integer "fatigue_cost",  :default => 0, :null => false
+  end
+
+  add_index "abilities", ["profession_id"], :name => "index_abilities_on_profession_id"
+
+  create_table "archetypes", :force => true do |t|
+    t.string   "name",       :null => false
+    t.string   "logo_url"
+    t.integer  "game_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "archetypes", ["game_id"], :name => "index_archetypes_on_game_id"
 
   create_table "campaigns", :force => true do |t|
     t.string   "name",                                :null => false
@@ -59,6 +82,26 @@ ActiveRecord::Schema.define(:version => 20130121212726) do
   add_index "encounters_traits", ["encounter_id"], :name => "index_encounters_traits_on_encounter_id"
   add_index "encounters_traits", ["trait_id"], :name => "index_encounters_traits_on_trait_id"
 
+  create_table "familiars", :force => true do |t|
+    t.string  "name",          :null => false
+    t.integer "speed"
+    t.integer "health"
+    t.string  "defense"
+    t.string  "rule1",         :null => false
+    t.string  "rule2"
+    t.string  "rule3"
+    t.string  "rule4"
+    t.string  "attack_type"
+    t.string  "dice"
+    t.integer "game_id"
+    t.integer "hero_id"
+    t.integer "profession_id"
+  end
+
+  add_index "familiars", ["game_id"], :name => "index_familiars_on_game_id"
+  add_index "familiars", ["hero_id"], :name => "index_familiars_on_hero_id"
+  add_index "familiars", ["profession_id"], :name => "index_familiars_on_profession_id"
+
   create_table "games", :force => true do |t|
     t.string  "name",                          :null => false
     t.string  "short_name",                    :null => false
@@ -84,17 +127,17 @@ ActiveRecord::Schema.define(:version => 20130121212726) do
   add_index "games_users", ["user_id"], :name => "index_games_users_on_user_id"
 
   create_table "heroes", :force => true do |t|
-    t.string  "name",                          :null => false
+    t.string  "name",                             :null => false
     t.integer "game_id"
-    t.string  "archetype",                     :null => false
-    t.integer "speed",                         :null => false
-    t.integer "health",                        :null => false
-    t.integer "stamina",                       :null => false
-    t.string  "defense",   :default => "grey", :null => false
-    t.integer "might",                         :null => false
-    t.integer "knowledge",                     :null => false
-    t.integer "willpower",                     :null => false
-    t.integer "awareness",                     :null => false
+    t.integer "archetype_id",                     :null => false
+    t.integer "speed",                            :null => false
+    t.integer "health",                           :null => false
+    t.integer "stamina",                          :null => false
+    t.string  "defense",      :default => "grey", :null => false
+    t.integer "might",                            :null => false
+    t.integer "knowledge",                        :null => false
+    t.integer "willpower",                        :null => false
+    t.integer "awareness",                        :null => false
     t.text    "ability"
     t.text    "feat"
   end
@@ -108,22 +151,22 @@ ActiveRecord::Schema.define(:version => 20130121212726) do
   add_index "heroes_users", ["user_id"], :name => "index_heroes_users_on_user_id"
 
   create_table "items", :force => true do |t|
-    t.string  "name",                                    :null => false
+    t.string  "name",                                      :null => false
     t.string  "attack_type"
-    t.string  "subclass1",                               :null => false
+    t.string  "subclass1",                                 :null => false
     t.string  "subclass2"
-    t.string  "equip_type",                              :null => false
+    t.string  "equip_type",                                :null => false
     t.string  "dice"
-    t.integer "buy_cost",    :default => 0,              :null => false
-    t.integer "sell_cost",   :default => 0,              :null => false
+    t.integer "buy_cost",      :default => 0,              :null => false
+    t.integer "sell_cost",     :default => 0,              :null => false
     t.string  "trait1"
     t.string  "trait2"
     t.string  "trait3"
     t.string  "trait4"
     t.string  "rules"
-    t.integer "act"
-    t.string  "category",    :default => "shop_item_a1", :null => false
-    t.integer "game_id",                                 :null => false
+    t.string  "category",      :default => "shop_item_a1", :null => false
+    t.integer "profession_id"
+    t.integer "game_id",                                   :null => false
   end
 
   add_index "items", ["game_id"], :name => "index_items_on_game_id"
@@ -188,6 +231,15 @@ ActiveRecord::Schema.define(:version => 20130121212726) do
 
   add_index "monsters_users", ["monster_id"], :name => "index_monsters_users_on_monster_id"
   add_index "monsters_users", ["user_id"], :name => "index_monsters_users_on_user_id"
+
+  create_table "professions", :force => true do |t|
+    t.string  "name",         :null => false
+    t.integer "archetype_id", :null => false
+    t.integer "game_id"
+  end
+
+  add_index "professions", ["archetype_id"], :name => "index_professions_on_archetype_id"
+  add_index "professions", ["game_id"], :name => "index_professions_on_game_id"
 
   create_table "quests", :force => true do |t|
     t.string   "name",                                       :null => false

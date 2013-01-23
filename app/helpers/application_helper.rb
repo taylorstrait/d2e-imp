@@ -2,10 +2,10 @@ module ApplicationHelper
 
   def add_icons(text)
     text.gsub!("{ACTION}", "<img src='/assets/icons/Action.png' alt='Action' title='Action'/>")
-    text.gsub!("{HEALTH}", "<img src='/assets/icons/Heart.png' alt='Health' title='Health'/>")
+    text.gsub!("{HEART}", "<img src='/assets/icons/Heart.png' alt='Heart' title='Heart'/>")
     text.gsub!("{FATIGUE}", "<img src='/assets/icons/Fatigue.png' alt='Fatigue' title='Fatigue'/>")
     text.gsub!("{SURGE}", "<img src='/assets/icons/Surge.png' alt='Surge' title='Surge'/>")
-    text.gsub!("{DEFENSE}", "<img src='/assets/icons/Shield.png' alt='Defense' title='Defense'/>")
+    text.gsub!("{SHIELD}", "<img src='/assets/icons/Shield.png' alt='Shield' title='Shield'/>")
 
     text.gsub!("{MIGHT}", "<img src='/assets/icons/Might.png' alt='Might' title='Might' />")
     text.gsub!("{KNOWLEDGE}", "<img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />")

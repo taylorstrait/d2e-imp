@@ -2,7 +2,7 @@ class HeroesController < ApplicationController
   # GET /heroes
   # GET /heroes.json
   def index
-    @heroes = Hero.includes(:game).order(:name).all
+    @heroes = Hero.includes(:game, :archetype, :familiar).order(:name).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class HeroesController < ApplicationController
   # GET /heroes/1
   # GET /heroes/1.json
   def show
-    @hero = Hero.includes(:game).find(params[:id])
+    @hero = Hero.includes(:game, :archetype, :familiar).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +34,7 @@ class HeroesController < ApplicationController
 
   # GET /heroes/1/edit
   def edit
-    @hero = Hero.find(params[:id])
+    @hero = Hero.includes(:game, :archetype, :familiar).find(params[:id])
   end
 
   # POST /heroes

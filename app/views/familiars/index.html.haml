@@ -1,0 +1,45 @@
+- model_class = Familiar
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:speed)
+      %th= model_class.human_attribute_name(:health)
+      %th= model_class.human_attribute_name(:defense)
+      %th= model_class.human_attribute_name(:rule1)
+      %th= model_class.human_attribute_name(:rule2)
+      %th= model_class.human_attribute_name(:rule3)
+      %th= model_class.human_attribute_name(:rule4)
+      %th= model_class.human_attribute_name(:attack_type)
+      %th= model_class.human_attribute_name(:dice)
+      %th= model_class.human_attribute_name(:game_id)
+      %th= model_class.human_attribute_name(:hero_id)
+      %th= model_class.human_attribute_name(:profession_id)
+      %th= model_class.human_attribute_name(:created_at)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @familiars.each do |familiar|
+      %tr
+        %td= link_to familiar.id, familiar_path(familiar)
+        %td= familiar.name
+        %td= familiar.speed
+        %td= familiar.health
+        %td= familiar.defense
+        %td= familiar.rule1
+        %td= familiar.rule2
+        %td= familiar.rule3
+        %td= familiar.rule4
+        %td= familiar.attack_type
+        %td= familiar.dice
+        %td= familiar.game_id
+        %td= familiar.hero_id
+        %td= familiar.profession_id
+        %td=l familiar.created_at
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_familiar_path(familiar), :class => 'btn btn-mini'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), familiar_path(familiar), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_familiar_path, :class => 'btn btn-primary'
