@@ -1,17 +1,25 @@
-%h1 Listing games
-%table
-  %tr
-    %th Name
-    %th Bgg url
-    %th
-    %th
-    %th
-  - @games.each do |game|
+
+%h1 Games
+
+%table.table.table-striped
+  %thead
     %tr
-      %td= game.name
-      %td= game.bgg_url
-      %td= link_to 'Show', game
-      %td= link_to 'Edit', edit_game_path(game)
-      %td= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' }
-%br/
-= link_to 'New Game', new_game_path
+      %th Game
+      %th Heroes
+      %th Monsters
+      
+  %tbody
+    - @games.each do |game|
+      %tr
+        %td= link_to game.name, game_path(game)
+        %td
+          .column2
+            - for hero in game.heroes
+              %p= link_to hero.name, hero
+
+        %td
+          .column2
+            - for monster in game.regular_monsters
+              %p= link_to monster.name, monster
+
+= link_to t('.new', :default => t("helpers.links.new")), new_game_path, :class => 'btn btn-primary'

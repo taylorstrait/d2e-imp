@@ -17,11 +17,11 @@
         %td
           %ul
             - for encounter in quest.encounters
-              %li= link_to encounter.name, encounter
+              %li= link_to encounter.name, quest_encounter_url(quest, encounter)
         %td
           %ul
             - for monster in quest.monsters
-              %li= link_to monster.name, encounter
+              %li= link_to monster.name, monster
         %td PLACEHOLDER
         %td= quest.user ? (link_to quest.user.username, quest.user) : nil
                                                                        

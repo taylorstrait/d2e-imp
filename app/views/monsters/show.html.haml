@@ -1,146 +1,169 @@
 - model_class = Monster
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human
-%dl.dl-horizontal
-  %dt
-    %strong
-      = model_class.human_attribute_name(:name)
-      \:
-  %dd= @monster.name
-  %dt
-    %strong
-      = model_class.human_attribute_name(:trait1_id)
-      \:
-  %dd= @monster.trait1_id
-  %dt
-    %strong
-      = model_class.human_attribute_name(:trait2_id)
-      \:
-  %dd= @monster.trait2_id
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_tan2)
-      \:
-  %dd= @monster.num_tan2
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_red2)
-      \:
-  %dd= @monster.num_red2
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_tan3)
-      \:
-  %dd= @monster.num_tan3
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_red3)
-      \:
-  %dd= @monster.num_red3
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_tan4)
-      \:
-  %dd= @monster.num_tan4
-  %dt
-    %strong
-      = model_class.human_attribute_name(:num_red4)
-      \:
-  %dd= @monster.num_red4
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_tan_attack)
-      \:
-  %dd= @monster.act1_tan_attack
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_red_attack)
-      \:
-  %dd= @monster.act2_red_attack
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_tan_speed)
-      \:
-  %dd= @monster.act1_tan_speed
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_red_speed)
-      \:
-  %dd= @monster.act1_red_speed
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_tan_speed)
-      \:
-  %dd= @monster.act2_tan_speed
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_red_speed)
-      \:
-  %dd= @monster.act2_red_speed
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_tan_health)
-      \:
-  %dd= @monster.act1_tan_health
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_red_health)
-      \:
-  %dd= @monster.act1_red_health
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_tan_health)
-      \:
-  %dd= @monster.act2_tan_health
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_red_health)
-      \:
-  %dd= @monster.act2_red_health
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_tan_defense)
-      \:
-  %dd= @monster.act1_tan_defense
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act1_red_defense)
-      \:
-  %dd= @monster.act1_red_defense
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_tan_defense)
-      \:
-  %dd= @monster.act2_tan_defense
-  %dt
-    %strong
-      = model_class.human_attribute_name(:act2_red_defense)
-      \:
-  %dd= @monster.act2_red_defense
-  %dt
-    %strong
-      = model_class.human_attribute_name(:role)
-      \:
-  %dd= @monster.role
-  %dt
-    %strong
-      = model_class.human_attribute_name(:attack_type)
-      \:
-  %dd= @monster.attack_type
-  %dt
-    %strong
-      = model_class.human_attribute_name(:game_id)
-      \:
-  %dd= @monster.game_id
+  %h1=t '.title', :default => model_class.model_name.human
+
+%p
+  %strong= model_class.human_attribute_name(:name) + ':'
+  %br
+  = @monster.name
+%p
+  %strong= model_class.human_attribute_name(:role) + ':'
+  %br
+  = @monster.role
+%p
+  %strong= model_class.human_attribute_name(:attack_type) + ':'
+  %br
+  = @monster.attack_type
+%p
+  %strong= model_class.human_attribute_name(:game_id) + ':'
+  %br
+  = @monster.game_id
+%p
+  %strong= model_class.human_attribute_name(:num_tan2) + ':'
+  %br
+  = @monster.num_tan2
+%p
+  %strong= model_class.human_attribute_name(:num_red2) + ':'
+  %br
+  = @monster.num_red2
+%p
+  %strong= model_class.human_attribute_name(:num_tan3) + ':'
+  %br
+  = @monster.num_tan3
+%p
+  %strong= model_class.human_attribute_name(:num_red3) + ':'
+  %br
+  = @monster.num_red3
+%p
+  %strong= model_class.human_attribute_name(:num_tan4) + ':'
+  %br
+  = @monster.num_tan4
+%p
+  %strong= model_class.human_attribute_name(:num_red4) + ':'
+  %br
+  = @monster.num_red4
+%p
+  %strong= model_class.human_attribute_name(:act1_tan_attack) + ':'
+  %br
+  = @monster.act1_tan_attack
+%p
+  %strong= model_class.human_attribute_name(:act2_tan_attack) + ':'
+  %br
+  = @monster.act2_tan_attack
+%p
+  %strong= model_class.human_attribute_name(:act1_red_attack) + ':'
+  %br
+  = @monster.act1_red_attack
+%p
+  %strong= model_class.human_attribute_name(:act2_red_attack) + ':'
+  %br
+  = @monster.act2_red_attack
+%p
+  %strong= model_class.human_attribute_name(:act1_tan_speed) + ':'
+  %br
+  = @monster.act1_tan_speed
+%p
+  %strong= model_class.human_attribute_name(:act1_red_speed) + ':'
+  %br
+  = @monster.act1_red_speed
+%p
+  %strong= model_class.human_attribute_name(:act2_tan_speed) + ':'
+  %br
+  = @monster.act2_tan_speed
+%p
+  %strong= model_class.human_attribute_name(:act2_red_speed) + ':'
+  %br
+  = @monster.act2_red_speed
+%p
+  %strong= model_class.human_attribute_name(:act1_tan_health) + ':'
+  %br
+  = @monster.act1_tan_health
+%p
+  %strong= model_class.human_attribute_name(:act1_red_health) + ':'
+  %br
+  = @monster.act1_red_health
+%p
+  %strong= model_class.human_attribute_name(:act2_tan_health) + ':'
+  %br
+  = @monster.act2_tan_health
+%p
+  %strong= model_class.human_attribute_name(:act2_red_health) + ':'
+  %br
+  = @monster.act2_red_health
+%p
+  %strong= model_class.human_attribute_name(:act1_tan_defense) + ':'
+  %br
+  = @monster.act1_tan_defense
+%p
+  %strong= model_class.human_attribute_name(:act1_red_defense) + ':'
+  %br
+  = @monster.act1_red_defense
+%p
+  %strong= model_class.human_attribute_name(:act2_tan_defense) + ':'
+  %br
+  = @monster.act2_tan_defense
+%p
+  %strong= model_class.human_attribute_name(:act2_red_defense) + ':'
+  %br
+  = @monster.act2_red_defense
+%p
+  %strong= model_class.human_attribute_name(:act1_2p_lt_speed) + ':'
+  %br
+  = @monster.act1_2p_lt_speed
+%p
+  %strong= model_class.human_attribute_name(:act1_3p_lt_speed) + ':'
+  %br
+  = @monster.act1_3p_lt_speed
+%p
+  %strong= model_class.human_attribute_name(:act1_4p_lt_speed) + ':'
+  %br
+  = @monster.act1_4p_lt_speed
+%p
+  %strong= model_class.human_attribute_name(:act1_2p_lt_health) + ':'
+  %br
+  = @monster.act1_2p_lt_health
+%p
+  %strong= model_class.human_attribute_name(:act1_4p_lt_health) + ':'
+  %br
+  = @monster.act1_4p_lt_health
+%p
+  %strong= model_class.human_attribute_name(:act1_2p_lt_defense) + ':'
+  %br
+  = @monster.act1_2p_lt_defense
+%p
+  %strong= model_class.human_attribute_name(:act1_3p_lt_defense) + ':'
+  %br
+  = @monster.act1_3p_lt_defense
+%p
+  %strong= model_class.human_attribute_name(:act1_4p_lt_defense) + ':'
+  %br
+  = @monster.act1_4p_lt_defense
+%p
+  %strong= model_class.human_attribute_name(:act1_lt_attack) + ':'
+  %br
+  = @monster.act1_lt_attack
+%p
+  %strong= model_class.human_attribute_name(:act2_lt_attack) + ':'
+  %br
+  = @monster.act2_lt_attack
+%p
+  %strong= model_class.human_attribute_name(:might) + ':'
+  %br
+  = @monster.might
+%p
+  %strong= model_class.human_attribute_name(:knowledge) + ':'
+  %br
+  = @monster.knowledge
+%p
+  %strong= model_class.human_attribute_name(:willpower) + ':'
+  %br
+  = @monster.willpower
+%p
+  %strong= model_class.human_attribute_name(:awareness) + ':'
+  %br
+  = @monster.awareness
+
 .form-actions
-  = link_to t('.back', :default => t("helpers.links.back")), |
-    monsters_path, :class => 'btn'                           |
-  -#
-  = link_to t('.edit', :default => t("helpers.links.edit")), |
-    edit_monster_path(@monster), :class => 'btn'             |
-  -#
-  = link_to t('.destroy', :default => t("helpers.links.destroy")),                                               |
-    monster_path(@monster),                                                                                      |
-    :method => 'delete',                                                                                         |
-    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, |
-    :class => 'btn btn-danger'                                                                                   |
+  = link_to t('.back', :default => t("helpers.links.back")), monsters_path, :class => 'btn'
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_monster_path(@monster), :class => 'btn'
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), monster_path(@monster), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

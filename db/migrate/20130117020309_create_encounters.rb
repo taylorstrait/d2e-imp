@@ -15,6 +15,7 @@ class CreateEncounters < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_index :encounters, :position
     add_index :encounters, :quest_id
   end
 end

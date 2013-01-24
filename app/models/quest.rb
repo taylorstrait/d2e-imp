@@ -1,4 +1,8 @@
 class Quest < ActiveRecord::Base
+  
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+
   belongs_to :campaign, :counter_cache => true
   has_many :encounters, :order => "position ASC"
   belongs_to :user

@@ -2,6 +2,7 @@ class CreateItems < ActiveRecord::Migration
   def change
     create_table :items do |t|
       t.string :name, :null => false
+      t.string :slug, :null => false
       t.string :attack_type
       t.string :subclass1, :null => false
       t.string :subclass2
@@ -16,9 +17,12 @@ class CreateItems < ActiveRecord::Migration
       t.string :rules
       t.string :category, :default => "shop_item_a1", :null => false
       t.integer :profession_id
-      t.integer :game_id, :null => false
+      t.integer :game_id
+      t.integer :user_id, :default => 1, :null => false
+      t.boolean :is_official, :default => false, :null => false
     end
 
+  add_index :items, :slug, :unique => true
   add_index :items, :game_id
 
   end

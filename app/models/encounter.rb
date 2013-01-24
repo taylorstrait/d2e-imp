@@ -1,4 +1,8 @@
 class Encounter < ActiveRecord::Base
+  
+  extend FriendlyId
+  friendly_id :position
+
   has_and_belongs_to_many :traits
   has_and_belongs_to_many :monsters
   belongs_to :quest, :counter_cache => true

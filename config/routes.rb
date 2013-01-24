@@ -22,11 +22,13 @@ Monsters::Application.routes.draw do
   devise_for :users
   resources :users, :only => [:index, :show]
 
-  resources :encounters
+  
 
   resources :campaigns
 
-  resources :quests
+  resources :quests do
+    resources :encounters
+  end
 
   resources :traits
 

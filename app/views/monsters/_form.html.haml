@@ -4,13 +4,17 @@
     .controls
       = f.text_field :name, :class => 'text_field'
   .control-group
-    = f.label :trait1_id, :class => 'control-label'
+    = f.label :role, :class => 'control-label'
     .controls
-      = f.text_field :trait1_id, :class => 'text_field'
+      = f.text_field :role, :class => 'text_field'
   .control-group
-    = f.label :trait2_id, :class => 'control-label'
+    = f.label :attack_type, :class => 'control-label'
     .controls
-      = f.text_field :trait2_id, :class => 'text_field'
+      = f.text_field :attack_type, :class => 'text_field'
+  .control-group
+    = f.label :game_id, :class => 'control-label'
+    .controls
+      = f.number_field :game_id, :class => 'number_field'
   .control-group
     = f.label :num_tan2, :class => 'control-label'
     .controls
@@ -40,41 +44,49 @@
     .controls
       = f.text_field :act1_tan_attack, :class => 'text_field'
   .control-group
+    = f.label :act2_tan_attack, :class => 'control-label'
+    .controls
+      = f.text_field :act2_tan_attack, :class => 'text_field'
+  .control-group
+    = f.label :act1_red_attack, :class => 'control-label'
+    .controls
+      = f.text_field :act1_red_attack, :class => 'text_field'
+  .control-group
     = f.label :act2_red_attack, :class => 'control-label'
     .controls
       = f.text_field :act2_red_attack, :class => 'text_field'
   .control-group
     = f.label :act1_tan_speed, :class => 'control-label'
     .controls
-      = f.text_field :act1_tan_speed, :class => 'text_field'
+      = f.number_field :act1_tan_speed, :class => 'number_field'
   .control-group
     = f.label :act1_red_speed, :class => 'control-label'
     .controls
-      = f.text_field :act1_red_speed, :class => 'text_field'
+      = f.number_field :act1_red_speed, :class => 'number_field'
   .control-group
     = f.label :act2_tan_speed, :class => 'control-label'
     .controls
-      = f.text_field :act2_tan_speed, :class => 'text_field'
+      = f.number_field :act2_tan_speed, :class => 'number_field'
   .control-group
     = f.label :act2_red_speed, :class => 'control-label'
     .controls
-      = f.text_field :act2_red_speed, :class => 'text_field'
+      = f.number_field :act2_red_speed, :class => 'number_field'
   .control-group
     = f.label :act1_tan_health, :class => 'control-label'
     .controls
-      = f.text_field :act1_tan_health, :class => 'text_field'
+      = f.number_field :act1_tan_health, :class => 'number_field'
   .control-group
     = f.label :act1_red_health, :class => 'control-label'
     .controls
-      = f.text_field :act1_red_health, :class => 'text_field'
+      = f.number_field :act1_red_health, :class => 'number_field'
   .control-group
     = f.label :act2_tan_health, :class => 'control-label'
     .controls
-      = f.text_field :act2_tan_health, :class => 'text_field'
+      = f.number_field :act2_tan_health, :class => 'number_field'
   .control-group
     = f.label :act2_red_health, :class => 'control-label'
     .controls
-      = f.text_field :act2_red_health, :class => 'text_field'
+      = f.number_field :act2_red_health, :class => 'number_field'
   .control-group
     = f.label :act1_tan_defense, :class => 'control-label'
     .controls
@@ -92,18 +104,61 @@
     .controls
       = f.text_field :act2_red_defense, :class => 'text_field'
   .control-group
-    = f.label :role, :class => 'control-label'
+    = f.label :act1_2p_lt_speed, :class => 'control-label'
     .controls
-      = f.text_field :role, :class => 'text_field'
+      = f.number_field :act1_2p_lt_speed, :class => 'number_field'
   .control-group
-    = f.label :attack_type, :class => 'control-label'
+    = f.label :act1_3p_lt_speed, :class => 'control-label'
     .controls
-      = f.text_field :attack_type, :class => 'text_field'
+      = f.number_field :act1_3p_lt_speed, :class => 'number_field'
   .control-group
-    = f.label :game_id, :class => 'control-label'
+    = f.label :act1_4p_lt_speed, :class => 'control-label'
     .controls
-      = f.number_field :game_id, :class => 'number_field'
+      = f.number_field :act1_4p_lt_speed, :class => 'number_field'
+  .control-group
+    = f.label :act1_2p_lt_health, :class => 'control-label'
+    .controls
+      = f.number_field :act1_2p_lt_health, :class => 'number_field'
+  .control-group
+    = f.label :act1_4p_lt_health, :class => 'control-label'
+    .controls
+      = f.number_field :act1_4p_lt_health, :class => 'number_field'
+  .control-group
+    = f.label :act1_2p_lt_defense, :class => 'control-label'
+    .controls
+      = f.text_field :act1_2p_lt_defense, :class => 'text_field'
+  .control-group
+    = f.label :act1_3p_lt_defense, :class => 'control-label'
+    .controls
+      = f.text_field :act1_3p_lt_defense, :class => 'text_field'
+  .control-group
+    = f.label :act1_4p_lt_defense, :class => 'control-label'
+    .controls
+      = f.text_field :act1_4p_lt_defense, :class => 'text_field'
+  .control-group
+    = f.label :act1_lt_attack, :class => 'control-label'
+    .controls
+      = f.text_field :act1_lt_attack, :class => 'text_field'
+  .control-group
+    = f.label :act2_lt_attack, :class => 'control-label'
+    .controls
+      = f.text_field :act2_lt_attack, :class => 'text_field'
+  .control-group
+    = f.label :might, :class => 'control-label'
+    .controls
+      = f.number_field :might, :class => 'number_field'
+  .control-group
+    = f.label :knowledge, :class => 'control-label'
+    .controls
+      = f.number_field :knowledge, :class => 'number_field'
+  .control-group
+    = f.label :willpower, :class => 'control-label'
+    .controls
+      = f.number_field :willpower, :class => 'number_field'
+  .control-group
+    = f.label :awareness, :class => 'control-label'
+    .controls
+      = f.number_field :awareness, :class => 'number_field'
   .form-actions
     = f.submit nil, :class => 'btn btn-primary'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), |
-      monsters_path, :class => 'btn'                               |
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), monsters_path, :class => 'btn'

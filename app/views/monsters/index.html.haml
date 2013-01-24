@@ -1,49 +1,95 @@
 - model_class = Monster
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
 %table.table.table-striped
   %thead
     %tr
+      %th= model_class.human_attribute_name(:id)
       %th= model_class.human_attribute_name(:name)
-      %th Number
-      %th Attack
-      %th Speed
-      %th Health
-      %th Defense
+      %th= model_class.human_attribute_name(:role)
       %th= model_class.human_attribute_name(:attack_type)
-      %th= Game
-      %th= t '.actions', :default => t("helpers.actions")
+      %th= model_class.human_attribute_name(:game_id)
+      %th= model_class.human_attribute_name(:num_tan2)
+      %th= model_class.human_attribute_name(:num_red2)
+      %th= model_class.human_attribute_name(:num_tan3)
+      %th= model_class.human_attribute_name(:num_red3)
+      %th= model_class.human_attribute_name(:num_tan4)
+      %th= model_class.human_attribute_name(:num_red4)
+      %th= model_class.human_attribute_name(:act1_tan_attack)
+      %th= model_class.human_attribute_name(:act2_tan_attack)
+      %th= model_class.human_attribute_name(:act1_red_attack)
+      %th= model_class.human_attribute_name(:act2_red_attack)
+      %th= model_class.human_attribute_name(:act1_tan_speed)
+      %th= model_class.human_attribute_name(:act1_red_speed)
+      %th= model_class.human_attribute_name(:act2_tan_speed)
+      %th= model_class.human_attribute_name(:act2_red_speed)
+      %th= model_class.human_attribute_name(:act1_tan_health)
+      %th= model_class.human_attribute_name(:act1_red_health)
+      %th= model_class.human_attribute_name(:act2_tan_health)
+      %th= model_class.human_attribute_name(:act2_red_health)
+      %th= model_class.human_attribute_name(:act1_tan_defense)
+      %th= model_class.human_attribute_name(:act1_red_defense)
+      %th= model_class.human_attribute_name(:act2_tan_defense)
+      %th= model_class.human_attribute_name(:act2_red_defense)
+      %th= model_class.human_attribute_name(:act1_2p_lt_speed)
+      %th= model_class.human_attribute_name(:act1_3p_lt_speed)
+      %th= model_class.human_attribute_name(:act1_4p_lt_speed)
+      %th= model_class.human_attribute_name(:act1_2p_lt_health)
+      %th= model_class.human_attribute_name(:act1_4p_lt_health)
+      %th= model_class.human_attribute_name(:act1_2p_lt_defense)
+      %th= model_class.human_attribute_name(:act1_3p_lt_defense)
+      %th= model_class.human_attribute_name(:act1_4p_lt_defense)
+      %th= model_class.human_attribute_name(:act1_lt_attack)
+      %th= model_class.human_attribute_name(:act2_lt_attack)
+      %th= model_class.human_attribute_name(:might)
+      %th= model_class.human_attribute_name(:knowledge)
+      %th= model_class.human_attribute_name(:willpower)
+      %th= model_class.human_attribute_name(:awareness)
+      %th=t '.actions', :default => t("helpers.actions")
   %tbody
     - @monsters.each do |monster|
       %tr
-        %td= link_to monster.name, monster_path(monster)
-        %td
-          .tan
-            = monster.num_tan2
-          .red
-            = monster.num_red2
-        %td
-          .tan
-            = monster.act1_tan_attack
-          .red
-            = monster.act2_red_attack
-        %td
-          .tan
-            = monster.act1_tan_speed
-          .red
-            = monster.act1_red_speed
-        %td
-          .tan
-            = monster.act1_tan_health
-          .red
-            = monster.act1_red_health
-        %td
-          .tan
-            = monster.act1_tan_defense
-          .red
-            = monster.act1_red_defense
+        %td= link_to monster.id, monster_path(monster)
+        %td= monster.name
+        %td= monster.role
         %td= monster.attack_type
-        %td= link_to monster.game.name, monster.game
+        %td= monster.game_id
+        %td= monster.num_tan2
+        %td= monster.num_red2
+        %td= monster.num_tan3
+        %td= monster.num_red3
+        %td= monster.num_tan4
+        %td= monster.num_red4
+        %td= monster.act1_tan_attack
+        %td= monster.act2_tan_attack
+        %td= monster.act1_red_attack
+        %td= monster.act2_red_attack
+        %td= monster.act1_tan_speed
+        %td= monster.act1_red_speed
+        %td= monster.act2_tan_speed
+        %td= monster.act2_red_speed
+        %td= monster.act1_tan_health
+        %td= monster.act1_red_health
+        %td= monster.act2_tan_health
+        %td= monster.act2_red_health
+        %td= monster.act1_tan_defense
+        %td= monster.act1_red_defense
+        %td= monster.act2_tan_defense
+        %td= monster.act2_red_defense
+        %td= monster.act1_2p_lt_speed
+        %td= monster.act1_3p_lt_speed
+        %td= monster.act1_4p_lt_speed
+        %td= monster.act1_2p_lt_health
+        %td= monster.act1_4p_lt_health
+        %td= monster.act1_2p_lt_defense
+        %td= monster.act1_3p_lt_defense
+        %td= monster.act1_4p_lt_defense
+        %td= monster.act1_lt_attack
+        %td= monster.act2_lt_attack
+        %td= monster.might
+        %td= monster.knowledge
+        %td= monster.willpower
+        %td= monster.awareness
         %td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_monster_path(monster), :class => 'btn btn-mini'
 

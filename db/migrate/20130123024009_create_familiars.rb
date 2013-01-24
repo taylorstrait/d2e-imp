@@ -2,6 +2,7 @@ class CreateFamiliars < ActiveRecord::Migration
   def change
     create_table :familiars do |t|
       t.string :name, :null => false
+      t.string :slug, :null => false
       t.integer :speed
       t.integer :health
       t.string :defense
@@ -14,8 +15,12 @@ class CreateFamiliars < ActiveRecord::Migration
       t.integer :game_id
       t.integer :hero_id
       t.integer :profession_id
+      t.integer :user_id, :null => false
+      t.boolean :is_official, :default => false, :null => false
     end
 
+    add_index :familiars, :name, :unique => true
+    add_index :familiars, :slug, :unique => true
     add_index :familiars, :game_id
     add_index :familiars, :hero_id
     add_index :familiars, :profession_id

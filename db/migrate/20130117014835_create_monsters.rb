@@ -4,10 +4,12 @@ class CreateMonsters < ActiveRecord::Migration
       
       # SHARED PROPERTIES
       t.string :name, :null => false
+      t.string :slug, :null => false
       t.string :role, :null => false, :default => "Monster"
       t.string :attack_type, :null => false, :default => "Melee"
       t.integer :game_id, :null => false
-
+      t.integer :user_id, :null => false
+      t.boolean :is_official, :default => false, :null => false
 
       # MONSTER PROPERTIES
       t.integer :num_tan2
@@ -62,6 +64,9 @@ class CreateMonsters < ActiveRecord::Migration
     end
 
   add_index :monsters, :game_id
+  add_index :monsters, :name, :unique => true
+  add_index :monsters, :slug, :unique => true
+
   
   end
 end
