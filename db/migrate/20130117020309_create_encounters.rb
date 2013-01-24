@@ -17,5 +17,6 @@ class CreateEncounters < ActiveRecord::Migration
 
     add_index :encounters, :position
     add_index :encounters, :quest_id
+    add_index :encounters, [:quest_id, :position], :unique => true
   end
 end

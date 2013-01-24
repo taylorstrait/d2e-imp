@@ -4,8 +4,6 @@ class CreateTraits < ActiveRecord::Migration
       t.string :name, :null => false
       t.string :slug, :null => false
       t.string :image
-
-      t.timestamps
     end
 
     add_index :traits, :name, :unique => true

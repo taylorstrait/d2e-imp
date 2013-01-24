@@ -60,7 +60,6 @@ ActiveRecord::Schema.define(:version => 20130123024009) do
 
   create_table "encounters", :force => true do |t|
     t.string   "name",                           :null => false
-    t.string   "slug",                           :null => false
     t.integer  "quest_id",                       :null => false
     t.integer  "position",        :default => 1, :null => false
     t.text     "description"
@@ -75,8 +74,9 @@ ActiveRecord::Schema.define(:version => 20130123024009) do
     t.datetime "updated_at",                     :null => false
   end
 
+  add_index "encounters", ["position"], :name => "index_encounters_on_position"
+  add_index "encounters", ["quest_id", "position"], :name => "index_encounters_on_quest_id_and_position", :unique => true
   add_index "encounters", ["quest_id"], :name => "index_encounters_on_quest_id"
-  add_index "encounters", ["slug"], :name => "index_encounters_on_slug"
 
   create_table "encounters_monsters", :force => true do |t|
     t.integer "encounter_id", :null => false

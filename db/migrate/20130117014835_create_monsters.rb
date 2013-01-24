@@ -10,6 +10,7 @@ class CreateMonsters < ActiveRecord::Migration
       t.integer :game_id, :null => false
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.text :description
 
       # MONSTER PROPERTIES
       t.integer :num_tan2
@@ -61,6 +62,7 @@ class CreateMonsters < ActiveRecord::Migration
       t.integer :willpower
       t.integer :awareness
 
+      t.timestamps
     end
 
   add_index :monsters, :game_id

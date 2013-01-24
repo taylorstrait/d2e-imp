@@ -20,6 +20,7 @@ class CreateItems < ActiveRecord::Migration
       t.integer :game_id
       t.integer :user_id, :default => 1, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.timestamps
     end
 
   add_index :items, :slug, :unique => true

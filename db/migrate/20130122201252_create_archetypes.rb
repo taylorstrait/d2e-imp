@@ -5,7 +5,7 @@ class CreateArchetypes < ActiveRecord::Migration
       t.string :slug, :null => false
       t.string :logo_url
       t.integer :game_id
-      t.timestamps
+      t.text :description
     end
 
   add_index :archetypes, :name, :unique => true

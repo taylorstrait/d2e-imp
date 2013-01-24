@@ -2,7 +2,8 @@ class EncountersController < ApplicationController
   # GET /encounters
   # GET /encounters.json
   def index
-    @encounters = Encounter.all
+    @quest = Quest.find(params[:quest_id])
+    @encounters = @quest.encounters
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +14,8 @@ class EncountersController < ApplicationController
   # GET /encounters/1
   # GET /encounters/1.json
   def show
-    @encounter = Encounter.includes(:monsters, :traits, :quest).find(params[:id])
+    @quest = Quest.find(params[:quest_id])
+    @encounter = @quest.encounters.includes(:monsters, :traits, :quest).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,9 +27,8 @@ class EncountersController < ApplicationController
   # GET /encounters/new.json
   def new
     @quest = Quest.find(params[:quest_id])
-    @encounter = Encounter.new(:quest_id => params[:quest_id],
-                               :position => (@quest.encounters.last.try(:position) || 0) + 1)
-    @encounter.name = (params[:name] || "Encounter #{@encounter.position}")
+    @encounter = @quest.encounters.new(:position => (@quest.encounters.last.try(:position) || 0) + 1,
+                                        :name => "Encounter #{(@quest.encounters.last.try(:position) || 0) + 1}")
 
     respond_to do |format|
       format.html # new.html.erb

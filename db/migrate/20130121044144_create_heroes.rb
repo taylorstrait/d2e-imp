@@ -17,6 +17,8 @@ class CreateHeroes < ActiveRecord::Migration
       t.text :feat
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.text :description
+      t.timestamps
     end
 
     add_index :heroes, :name, :unique => true

@@ -17,6 +17,7 @@ class CreateFamiliars < ActiveRecord::Migration
       t.integer :profession_id
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.timestamps
     end
 
     add_index :familiars, :name, :unique => true

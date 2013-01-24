@@ -5,7 +5,7 @@
 
 %h4 Encounters
 - for encounter in @quest.encounters
-  = link_to encounter.name, encounter
+  = link_to encounter.name, quest_encounter_url(@quest,encounter)
 
 %h4 Reviews
 
