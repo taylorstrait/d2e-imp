@@ -2,7 +2,7 @@ class ProfessionsController < ApplicationController
   # GET /professions
   # GET /professions.json
   def index
-    @professions = Profession.includes(:archetype, :items, :abilities, :familiar).order(:name).all
+    @professions = Profession.includes(:archetype, :items, :skills, :familiar).order(:name).all
 
     respond_to do |format|
       format.html # index.html.erb

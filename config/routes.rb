@@ -9,7 +9,7 @@ Monsters::Application.routes.draw do
   resources :archetypes
 
 
-  resources :abilities
+  resources :skills
 
 
   resources :classes, :controller => :professions

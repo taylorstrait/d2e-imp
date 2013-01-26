@@ -22,8 +22,8 @@
             %p= link_to profession.familiar.name, profession.familiar
 
         %td.column3
-          - for ability in profession.abilities
-            %p= link_to ability.name, ability
+          - for skill in profession.skills
+            %p= link_to skill.name, skill
 
         //%td= link_to profession.game.short_name, profession.game
 

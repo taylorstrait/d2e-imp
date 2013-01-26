@@ -13,22 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20130124232659) do
 
-  create_table "abilities", :force => true do |t|
-    t.integer "profession_id",                :null => false
-    t.string  "name",                         :null => false
-    t.string  "slug",                         :null => false
-    t.integer "xp_cost",       :default => 0, :null => false
-    t.string  "rule1",                        :null => false
-    t.string  "rule2"
-    t.string  "rule3"
-    t.string  "rule4"
-    t.integer "fatigue_cost",  :default => 0, :null => false
-  end
-
-  add_index "abilities", ["name"], :name => "index_abilities_on_name", :unique => true
-  add_index "abilities", ["profession_id"], :name => "index_abilities_on_profession_id"
-  add_index "abilities", ["slug"], :name => "index_abilities_on_slug", :unique => true
-
   create_table "adventures", :force => true do |t|
     t.integer  "user_id",                                :null => false
     t.string   "name",                                   :null => false
@@ -355,6 +339,22 @@ ActiveRecord::Schema.define(:version => 20130124232659) do
   add_index "quests", ["campaign_id"], :name => "index_quests_on_campaign_id"
   add_index "quests", ["name"], :name => "index_quests_on_name", :unique => true
   add_index "quests", ["slug"], :name => "index_quests_on_slug", :unique => true
+
+  create_table "skills", :force => true do |t|
+    t.integer "profession_id",                :null => false
+    t.string  "name",                         :null => false
+    t.string  "slug",                         :null => false
+    t.integer "xp_cost",       :default => 0, :null => false
+    t.string  "rule1",                        :null => false
+    t.string  "rule2"
+    t.string  "rule3"
+    t.string  "rule4"
+    t.integer "fatigue_cost",  :default => 0, :null => false
+  end
+
+  add_index "skills", ["name"], :name => "index_skills_on_name", :unique => true
+  add_index "skills", ["profession_id"], :name => "index_skills_on_profession_id"
+  add_index "skills", ["slug"], :name => "index_skills_on_slug", :unique => true
 
   create_table "traits", :force => true do |t|
     t.string "name",  :null => false
