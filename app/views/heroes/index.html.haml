@@ -11,16 +11,16 @@
   %thead
     %tr
       %th Name
-      %th Archetype
-      %th.speed Speed
-      %th.health Health
-      %th.stamina Stamina
-      %th.defense Defense
+      %th.hidden-phone Archetype
+      %th.speed.centered   <img src='/assets/icons/speed-icon.png' height='43' width='43' alt='Might' title='Might' />
+      %th.health.centered  <img src='/assets/icons/health-icon.png'  height='43' width='43' alt='Knowledge' title='Knowledge' />
+      %th.stamina.centered <img src='/assets/icons/stamina-icon.png' height='43' width='43' alt='Willpower' title='Willpower' />
+      %th.defense.centered.hidden-phone-portrait <img src='/assets/icons/defense-icon.png' height='43' width='43' alt='Awareness' title='Awareness' />
       %th <img src='/assets/icons/Might.png' alt='Might' title='Might' />
       %th <img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />
       %th <img src='/assets/icons/Willpower.png' alt='Willpower' title='Willpower' />
       %th <img src='/assets/icons/Awareness.png' alt='Awareness' title='Awareness' />
-      %th Game
+      %th.hidden-phone Game
       //%th= model_class.human_attribute_name(:ability)
       //%th= model_class.human_attribute_name(:feat)
 
@@ -28,16 +28,16 @@
     - @heroes.each do |hero|
       %tr
         %td= link_to hero.name, hero_path(hero)
-        %td.centered= hero.archetype.name
+        %td.hidden-phone.centered= hero.archetype.name
         %td.centered.speed= hero.speed
         %td.centered.health= hero.health
         %td.centered.stamina= hero.stamina
-        %td.centered.defense= add_icons(hero.defense)
+        %td.centered.defense.hidden-phone-portrait= add_icons(hero.defense)
         %td.centered= hero.might
         %td.centered= hero.knowledge
         %td.centered= hero.willpower
         %td.centered= hero.awareness
-        %td= if hero.game then link_to(hero.game.very_short_name, hero.game) end
+        %td.hidden-phone= if hero.game then link_to(hero.game.very_short_name, hero.game) end
         //%td= add_icons(hero.ability)
         //%td= add_icons(hero.feat)
 

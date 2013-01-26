@@ -5,10 +5,10 @@
     .row-fluid
       %table.table.hero
         %tr
-          %th.centered.speed Speed
-          %th.centered.health Health
-          %th.centered.stamina Stamina
-          %th.centered.defense Defense
+          %th.centered.speed <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
+          %th.centered.health <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
+          %th.centered.stamina <img src='/assets/icons/stamina-icon.png' alt='Willpower' title='Willpower' />
+          %th.centered.defense <img src='/assets/icons/defense-icon.png' alt='Awareness' title='Awareness' />
         %tr
           %td.centered.speed= @hero.speed
           %td.centered.health= @hero.health
@@ -18,10 +18,10 @@
     .row-fluid
       %table.table.hero
         %tr
-          %th.centered= add_icons("{MIGHT}")
-          %th.centered= add_icons("{KNOWLEDGE}")
-          %th.centered= add_icons("{WILLPOWER}")
-          %th.centered= add_icons("{AWARENESS}")
+          %th.centered <img src='/assets/icons/Might.png' alt='Might' title='Might' />
+          %th.centered <img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />
+          %th.centered <img src='/assets/icons/Willpower.png' alt='Willpower' title='Willpower' />
+          %th.centered <img src='/assets/icons/Awareness.png' alt='Awareness' title='Awareness' />
         %tr
           %td.centered= @hero.might
           %td.centered= @hero.knowledge
