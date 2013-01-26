@@ -16,10 +16,13 @@
 //= require twitter/bootstrap
 //= require_tree .
 
+// dropdown menus from bootstrap
 $('.dropdown-toggle').dropdown();
 
+
+// table sorting -- needs to interate because when calling whole class table sorting loses some config options?
 $(document).ready(function() 
     { 
-        $("#sortable-table").tablesorter(); 
+        $(".sortable-table").tablesorter(); 
     } 
 ); 

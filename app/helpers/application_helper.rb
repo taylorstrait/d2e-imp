@@ -1,5 +1,6 @@
 module ApplicationHelper
 
+  # substitutes images for codes
   def add_icons(text)
     text.gsub!("{ACTION}", "<img src='/assets/icons/Action.png' alt='Action' title='Action'/>")
     text.gsub!("{HEART}", "<img src='/assets/icons/Heart.png' alt='Heart' title='Heart'/>")
@@ -18,13 +19,20 @@ module ApplicationHelper
     text.gsub!("{BLUE}", "<img src='/assets/icons/dice-blue.png' height='32' width='32' alt='Blue Dice' title='Blue Dice' />")
     text.gsub!("{YELLOW}", "<img src='/assets/icons/dice-yellow.png' height='32' width='32' alt='Yellow Dice' title='Yellow Dice' />")
     text.gsub!("{RED}", "<img src='/assets/icons/dice-red.png' height='32' width='32' alt='Red Dice' title='Red Dice' />")
+    
+    text.gsub!("{1HAND}", "<img src='/assets/icons/item-1hand.png' height='52' width='48' alt='1 Hand' title='1 Hand' />")
+    text.gsub!("{2HAND}", "<img src='/assets/icons/item-2hand.png' height='52' width='48' alt='2 Hand' title='2 Hand' />")
+    text.gsub!("{ARMOR}", "<img src='/assets/icons/item-armor.png' height='52' width='48' alt='Armor' title='Armor' />")
+    text.gsub!("{OTHER}", "<img src='/assets/icons/item-other.png' height='52' width='48' alt='Other' title='Other' />")
 
     return text.html_safe
 
-  rescue NoMethodError
+  rescue NoMethodError # if text is nil, fail gracefully
     return nil
   end
 
+  # wraps add_icons in simple_format to preserve newlines in output
+  # USE THIS instead of add_icons
   def fancy_output(text)
       simple_format(add_icons(text))
   end

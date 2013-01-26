@@ -114,7 +114,7 @@
                 cssAsc: "headerSortUp",
                 cssDesc: "headerSortDown",
                 cssChildRow: "expand-child",
-                sortInitialOrder: "asc",
+                sortInitialOrder: "desc",
                 sortMultiSortKey: "shiftKey",
                 sortForce: null,
                 sortAppend: null,

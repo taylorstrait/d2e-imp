@@ -5,8 +5,8 @@
     .row-fluid
       %table.table.hero
         %tr
-          %th.centered.speed <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
-          %th.centered.health <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
+          %th.centered.speed   <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
+          %th.centered.health  <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
           %th.centered.stamina <img src='/assets/icons/stamina-icon.png' alt='Willpower' title='Willpower' />
           %th.centered.defense <img src='/assets/icons/defense-icon.png' alt='Awareness' title='Awareness' />
         %tr
@@ -30,14 +30,18 @@
   
   / COLUMN 2
   .span5
-    %h4 Ability
+    %h4 Hero Ability
     = fancy_output(@hero.ability)
     
     %br
 
     %h4 Heroic Feat
-    = add_icons(@hero.feat)
-  
+    = fancy_output(@hero.feat)
+    
+.row-fluid
+  %h3 Card
+  = image_tag "cards/#{@hero.slug}.jpg"
+
 .row-fluid
   %h3 Ratings
 

@@ -2,14 +2,25 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @act1_items = Item.includes(:game).where(:category => 'shop_item_act_1').order(:name).all
-    @act2_items = Item.includes(:game).where(:category => 'shop_item_act_2').order(:name).all
-    @hero_relics = Item.includes(:game).where(:category => 'relic_heroes').order(:name).all
-    @ol_relics = Item.includes(:game).where(:category => 'relic_overlord').order(:name).all
+    if params[:name].present?
+      item = Item.find_by_name(params[:name])
+      if item
+        redirect_to item and return
+      else
+        flash[:notice] = "Item by the name of '#{params[:name]}' not found."
+        redirect_to items_url
+      end
+    else
+      @act1_items = Item.includes(:game).where(:category => 'shop_item_act_1').order(:name).all
+      @act2_items = Item.includes(:game).where(:category => 'shop_item_act_2').order(:name).all
+      @hero_relics = Item.includes(:game).where(:category => 'relic_heroes').order(:name).all
+      @ol_relics = Item.includes(:game).where(:category => 'relic_overlord').order(:name).all
+      @item_names = Item.pluck(:name)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @items }
+      format.json { render json: @heroes }
     end
   end
 
