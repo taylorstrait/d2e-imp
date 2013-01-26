@@ -8,6 +8,15 @@ class CreateCampaigns < ActiveRecord::Migration
       t.integer :game_id
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+
+      # for campaign tracking
+      t.integer :intro_quest_id
+      t.integer :act1_quests, :null => false, :default => 1
+      t.integer :interlude_heroes_id
+      t.integer :interlude_ol_id
+      t.integer :act2_quests, :null => false, :default => 1
+      t.integer :finale_heroes_id
+      t.integer :finale_ol_id
       t.timestamps
     end
 

@@ -16,6 +16,6 @@
   = @profession.game_id
 
 .form-actions
-  = link_to t('.back', :default => t("helpers.links.back")), professions_path, :class => 'btn'
-  = link_to t('.edit', :default => t("helpers.links.edit")), edit_profession_path(@profession), :class => 'btn'
-  = link_to t('.destroy', :default => t("helpers.links.destroy")), profession_path(@profession), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+  = link_to t('.back', :default => t("helpers.links.back")), classes_path, :class => 'btn'
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_class_path(@profession), :class => 'btn'
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), class_path(@profession), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

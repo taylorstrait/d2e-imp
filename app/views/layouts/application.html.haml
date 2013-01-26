@@ -35,16 +35,22 @@
               =#  %span.icon-bar
               =#  %span.icon-bar
               =#  %span.icon-bar
-              %a.brand{:href => root_url} The D2E Imp
+              %a.brand{:href => root_url} The Overlord's Apprentice
               .container-fluid
                 %ul.nav
-                  %li= link_to "Campaigns", campaigns_url
-                  %li= link_to "Quests", quests_url
-                  %li= link_to "Heroes", heroes_url
-                  %li= link_to "Classes", archetypes_url
-                  %li= link_to "Monsters", monsters_url
-                  %li= link_to "Items", items_url
-    
+
+                  %li= link_to "Home", root_url
+                  %li.dropdown
+                    = link_to 'Descentopaedia', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                    %ul.dropdown-menu
+                      %li= link_to "Campaigns", campaigns_url
+                      %li= link_to "Quests", quests_url
+                      %li= link_to "Heroes", heroes_url
+                      %li= link_to "Classes", classes_url
+                      %li= link_to "Monsters", monsters_url
+                      %li= link_to "Items", items_url
+                  %li= link_to "Forum", "#"
+
                 %ul.nav.pull-right
                   - if user_signed_in?
                     %li

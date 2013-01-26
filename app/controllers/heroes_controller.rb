@@ -2,7 +2,18 @@ class HeroesController < ApplicationController
   # GET /heroes
   # GET /heroes.json
   def index
-    @heroes = Hero.includes(:game, :archetype, :familiar).order(:name).all
+    if params[:name].present?
+      hero = Hero.find_by_name(params[:name])
+      if hero
+        redirect_to hero and return
+      else
+        flash[:notice] = "Hero by the name of '#{params[:name]}' not found."
+        redirect_to heroes_url
+      end
+    else
+      @heroes = Hero.includes(:game, :archetype, :familiar).order(:name).all
+      @hero_names = Hero.pluck(:name)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -78,6 +89,15 @@ class HeroesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to heros_url }
       format.json { head :no_content }
+    end
+  end
+
+  def professions
+    unless params[:id] == "professions"
+      hero = Hero.includes(:archetype => :professions).find(params[:id])
+      render json: hero.archetype.professions, status: :created
+    else
+      render json: [], status: :created
     end
   end
 end

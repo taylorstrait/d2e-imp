@@ -24,4 +24,8 @@ module ApplicationHelper
   rescue NoMethodError
     return nil
   end
+
+  def fancy_output(text)
+      simple_format(add_icons(text))
+  end
 end

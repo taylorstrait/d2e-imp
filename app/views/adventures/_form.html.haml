@@ -1,0 +1,66 @@
+
+= form_for @adventure do |f|
+  .roow-fluid
+    .control-group
+      = f.label :user_id, :class => 'control-label'
+      .controls
+        = f.number_field :user_id, :class => 'number_field'
+    .control-group
+      = f.label :name, :class => 'control-label'
+      .controls
+        = f.text_field :name, :class => 'text_field'
+    .control-group
+      = f.label :description, :class => 'control-label'
+      .controls
+        = f.text_area :description, :class => 'text_area'
+    .control-group
+      = f.label :campaign_id, :class => 'control-label'
+      .controls
+        = f.collection_select :campaign_id, @campaigns, :id, :name, :class => 'number_field'
+
+  .row-fluid
+    %h2 Heroes
+
+    .hero
+      = f.grouped_collection_select(:hero1_hero_id, @games, :heroes, :name, :id, :name, {:prompt => "Choose a hero"}, {:class => 'hero-select input-medium'})
+      %p.centered as
+      = f.select(:hero1_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      
+    .hero-box
+      = f.grouped_collection_select(:hero2_hero_id, @games, :heroes, :name, :id, :name, {:prompt => "Choose a hero"}, {:class => 'hero-select input-medium'})
+      %p.centered as
+      = f.select(:hero2_profession_id, {}, {}, {:class => 'class-select input-medium'})
+
+    .hero-box
+      = f.grouped_collection_select(:hero3_hero_id, @games, :heroes, :name, :id, :name, {:include_blank => true}, {:class => 'hero-select input-medium'})
+      %p.centered as
+      = f.select(:hero3_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      
+    .hero-box
+      = f.grouped_collection_select(:hero4_hero_id, @games, :heroes, :name, :id, :name, {:include_blank => true}, {:class => 'hero-select input-medium'})
+      %p.centered as
+      = f.select(:hero4_profession_id, {}, {}, {:class => 'class-select input-medium'})
+
+  .row-fluid
+    %h2 Campaign Options
+
+    .control-group
+      = f.label :hero_starting_xp, :class => 'control-label'
+      .controls
+        = f.number_field :hero_starting_xp, :class => 'number_field'
+    .control-group
+      = f.label :hero_starting_gold, :class => 'control-label'
+      .controls
+        = f.number_field :hero_starting_gold, :class => 'number_field'
+    .control-group
+      = f.label :ol_starting_xp, :class => 'control-label'
+      .controls
+        = f.number_field :ol_starting_xp, :class => 'number_field'
+    .control-group
+      = f.label :skip_intro, :class => 'control-label'
+      .controls
+        = f.check_box :skip_intro, :class => 'check_box'
+
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), adventures_path, :class => 'btn'

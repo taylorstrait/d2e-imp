@@ -14,3 +14,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :birthdate, :bgg_profile_name, :game_ids, :monster_ids, :hero_ids
   # attr_accessible :title, :body
 end
+
+def is_admin?
+  role == "admin"
+end

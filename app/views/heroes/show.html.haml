@@ -1,61 +1,52 @@
-- model_class = Hero
-.page-header
-  %h1=t '.title', :default => model_class.model_name.human
+%h2= @hero.name
 
-%p
-  %strong= model_class.human_attribute_name(:name) + ':'
-  %br
-  = @hero.name
-%p
-  %strong= model_class.human_attribute_name(:game_id) + ':'
-  %br
-  = @hero.game_id
-%p
-  %strong= model_class.human_attribute_name(:archetype) + ':'
-  %br
-  = @hero.archetype
-%p
-  %strong= model_class.human_attribute_name(:speed) + ':'
-  %br
-  = @hero.speed
-%p
-  %strong= model_class.human_attribute_name(:health) + ':'
-  %br
-  = @hero.health
-%p
-  %strong= model_class.human_attribute_name(:stamina) + ':'
-  %br
-  = @hero.stamina
-%p
-  %strong= model_class.human_attribute_name(:defense) + ':'
-  %br
-  = @hero.defense
-%p
-  %strong= model_class.human_attribute_name(:might) + ':'
-  %br
-  = @hero.might
-%p
-  %strong= model_class.human_attribute_name(:knowledge) + ':'
-  %br
-  = @hero.knowledge
-%p
-  %strong= model_class.human_attribute_name(:willpower) + ':'
-  %br
-  = @hero.willpower
-%p
-  %strong= model_class.human_attribute_name(:awareness) + ':'
-  %br
-  = @hero.awareness
-%p
-  %strong= model_class.human_attribute_name(:ability) + ':'
-  %br
-  = @hero.ability
-%p
-  %strong= model_class.human_attribute_name(:feat) + ':'
-  %br
-  = @hero.feat
+.row-fluid
+  .span7
+    .row-fluid
+      %table.table.hero
+        %tr
+          %th.centered.speed Speed
+          %th.centered.health Health
+          %th.centered.stamina Stamina
+          %th.centered.defense Defense
+        %tr
+          %td.centered.speed= @hero.speed
+          %td.centered.health= @hero.health
+          %td.centered.stamina= @hero.stamina
+          %td.centered.defense= add_icons(@hero.defense)  
 
-.form-actions
-  = link_to t('.back', :default => t("helpers.links.back")), heroes_path, :class => 'btn'
-  = link_to t('.edit', :default => t("helpers.links.edit")), edit_hero_path(@hero), :class => 'btn'
-  = link_to t('.destroy', :default => t("helpers.links.destroy")), hero_path(@hero), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+    .row-fluid
+      %table.table.hero
+        %tr
+          %th.centered= add_icons("{MIGHT}")
+          %th.centered= add_icons("{KNOWLEDGE}")
+          %th.centered= add_icons("{WILLPOWER}")
+          %th.centered= add_icons("{AWARENESS}")
+        %tr
+          %td.centered= @hero.might
+          %td.centered= @hero.knowledge
+          %td.centered= @hero.willpower
+          %td.centered= @hero.awareness
+  
+  / COLUMN 2
+  .span5
+    %h4 Ability
+    = fancy_output(@hero.ability)
+    
+    %br
+
+    %h4 Heroic Feat
+    = add_icons(@hero.feat)
+  
+.row-fluid
+  %h3 Ratings
+
+.row-fluid
+  %h3 Discussion
+
+
+-if user_signed_in? && ((current_user == @hero.user) || (current_user.is_admin?))
+  .form-actions
+    = link_to t('.back', :default => t("helpers.links.back")), heroes_path, :class => 'btn'
+    = link_to t('.edit', :default => t("helpers.links.edit")), edit_hero_path(@hero), :class => 'btn'
+    = link_to t('.destroy', :default => t("helpers.links.destroy")), hero_path(@hero), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

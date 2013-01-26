@@ -4,7 +4,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       
       # Profile data
       t.string :username, :null => false
-
+      t.string :role, :null => false, :default => 'user'
       t.string :country
       t.string :city
       t.string :postal_code

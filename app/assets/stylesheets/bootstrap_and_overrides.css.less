@@ -58,16 +58,20 @@ th {
   font-family: @headingsFontFamily;
 }
 
+.centered {
+  text-align: center !important;
+}
 
 // Structure
 // -------------------------
+
+h2 {
+  margin-bottom: 1em;
+}
+
 .navbar-inner {
   padding: 0 !important;
 }
-
-
-// Structure
-// -------------------------
 
 .column2 {
   -moz-column-count: 2;
@@ -91,4 +95,48 @@ th {
   -moz-column-count: 5;
   -webkit-column-count: 5;
   column-count: 5;
+}
+
+// SPECIAL STYLES
+// heros/show
+
+table.hero th {
+  padding: 1em;
+  width: 25%;
+  text-align: centered !important;
+}
+
+table.hero td {
+  text-align: centered !important;
+  font-family: @headingsFontFamily;
+  font-size: 200%;
+  width: 25%;
+  padding: .5em;
+}
+
+.speed {
+  color: green;
+}
+
+.health {
+  color: red;
+}
+
+.stamina {
+  color: orange;
+}
+
+.defense {
+  color: purple;
+}
+
+// adventures/form
+
+.hero-box {
+  width: 15%;
+  padding: 2em;
+  margin: 1em;
+  background-color: grey;
+  text-align: centered;
+  float: left;
 }

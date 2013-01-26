@@ -1,5 +1,8 @@
 Monsters::Application.routes.draw do
 
+  resources :adventures
+
+
   resources :familiars
 
 
@@ -9,13 +12,18 @@ Monsters::Application.routes.draw do
   resources :abilities
 
 
-  resources :professions
+  resources :classes, :controller => :professions
 
 
   resources :items
 
 
-  resources :heroes
+  resources :heroes do
+    member do
+      get 'professions'
+    end
+  end
+
 
   get "static_pages/index"
 

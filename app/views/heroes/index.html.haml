@@ -1,40 +1,45 @@
-- model_class = Hero
-.page-header
-  %h1=t '.title', :default => model_class.model_name.human.pluralize
-%table.table.table-striped
+%h2 Heroes
+
+%form.form-search
+  .input-append
+    %input.span8.search-query{name: 'name', 'data-provide' => "typeahead", "data-items" => 6, "data-source" => @hero_names, autocomplete: "off"}
+    %button.btn
+      Go To...
+
+
+%table.table.table-striped#sortable-table
   %thead
     %tr
-      %th= model_class.human_attribute_name(:name)
-      %th Game
-      %th= model_class.human_attribute_name(:archetype)
-      %th= model_class.human_attribute_name(:speed)
-      %th= model_class.human_attribute_name(:health)
-      %th= model_class.human_attribute_name(:stamina)
-      %th= model_class.human_attribute_name(:defense)
+      %th Name
+      %th Archetype
+      %th.speed Speed
+      %th.health Health
+      %th.stamina Stamina
+      %th.defense Defense
       %th <img src='/assets/icons/Might.png' alt='Might' title='Might' />
       %th <img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />
       %th <img src='/assets/icons/Willpower.png' alt='Willpower' title='Willpower' />
       %th <img src='/assets/icons/Awareness.png' alt='Awareness' title='Awareness' />
-      %th= model_class.human_attribute_name(:ability)
-      %th= model_class.human_attribute_name(:feat)
-      %th=t '.actions', :default => t("helpers.actions")
+      %th Game
+      //%th= model_class.human_attribute_name(:ability)
+      //%th= model_class.human_attribute_name(:feat)
+
   %tbody
     - @heroes.each do |hero|
       %tr
         %td= link_to hero.name, hero_path(hero)
-        %td= if hero.game then link_to(hero.game.short_name, hero.game) end
-        %td= hero.archetype.name
-        %td= hero.speed
-        %td= hero.health
-        %td= hero.stamina
-        %td= add_icons(hero.defense)
-        %td= hero.might
-        %td= hero.knowledge
-        %td= hero.willpower
-        %td= hero.awareness
-        %td= add_icons(hero.ability)
-        %td= add_icons(hero.feat)
-        %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_hero_path(hero), :class => 'btn btn-mini'
+        %td.centered= hero.archetype.name
+        %td.centered.speed= hero.speed
+        %td.centered.health= hero.health
+        %td.centered.stamina= hero.stamina
+        %td.centered.defense= add_icons(hero.defense)
+        %td.centered= hero.might
+        %td.centered= hero.knowledge
+        %td.centered= hero.willpower
+        %td.centered= hero.awareness
+        %td= if hero.game then link_to(hero.game.very_short_name, hero.game) end
+        //%td= add_icons(hero.ability)
+        //%td= add_icons(hero.feat)
 
-= link_to t('.new', :default => t("helpers.links.new")), new_hero_path, :class => 'btn btn-primary'
+- if user_signed_in? && current_user.is_admin?
+  = link_to t('.new', :default => t("helpers.links.new")), new_hero_path, :class => 'btn btn-primary'

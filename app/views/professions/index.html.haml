@@ -1,25 +1,31 @@
-- model_class = Profession
-.page-header
-  %h1=t '.title', :default => model_class.model_name.human.pluralize
-%table.table.table-striped
+%h1 Classes
+
+%table.table.table-striped#sortable-table
   %thead
     %tr
-      %th= model_class.human_attribute_name(:id)
-      %th= model_class.human_attribute_name(:name)
-      %th= model_class.human_attribute_name(:archetype_id)
-      %th= model_class.human_attribute_name(:game_id)
-      %th= model_class.human_attribute_name(:created_at)
-      %th=t '.actions', :default => t("helpers.actions")
+      %th Name
+      %th Archetype
+      %th Items
+      %th Skills
+      //%th Game
+
   %tbody
     - @professions.each do |profession|
       %tr
-        %td= link_to profession.id, profession_path(profession)
-        %td= profession.name
-        %td= profession.archetype_id
-        %td= profession.game_id
-        %td=l profession.created_at
+        %td= link_to profession.name, class_path(profession)
+        %td= profession.archetype.name
         %td
-          = link_to t('.edit', :default => t("helpers.links.edit")), edit_profession_path(profession), :class => 'btn btn-mini'
-          = link_to t('.destroy', :default => t("helpers.links.destroy")), profession_path(profession), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger'
+          - for item in profession.items
+            %p= link_to item.name, item 
 
-= link_to t('.new', :default => t("helpers.links.new")), new_profession_path, :class => 'btn btn-primary'
+          - if profession.familiar
+            %p= link_to profession.familiar.name, profession.familiar
+
+        %td.column3
+          - for ability in profession.abilities
+            %p= link_to ability.name, ability
+
+        //%td= link_to profession.game.short_name, profession.game
+
+- if user_signed_in? && current_user.is_admin?
+  = link_to t('.new', :default => t("helpers.links.new")), new_class_path, :class => 'btn btn-primary'

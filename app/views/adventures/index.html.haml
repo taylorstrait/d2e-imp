@@ -1,0 +1,71 @@
+- model_class = Adventure
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:user_id)
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:description)
+      %th= model_class.human_attribute_name(:campaign_id)
+      %th= model_class.human_attribute_name(:overlord_name)
+      %th= model_class.human_attribute_name(:overlord_user_id)
+      %th= model_class.human_attribute_name(:hero1_name)
+      %th= model_class.human_attribute_name(:hero2_name)
+      %th= model_class.human_attribute_name(:hero3_name)
+      %th= model_class.human_attribute_name(:hero4_name)
+      %th= model_class.human_attribute_name(:hero1_hero_id)
+      %th= model_class.human_attribute_name(:hero2_hero_id)
+      %th= model_class.human_attribute_name(:hero3_hero_id)
+      %th= model_class.human_attribute_name(:hero4_hero_id)
+      %th= model_class.human_attribute_name(:hero1_hero_user_id)
+      %th= model_class.human_attribute_name(:hero2_hero_user_id)
+      %th= model_class.human_attribute_name(:hero3_hero_user_id)
+      %th= model_class.human_attribute_name(:hero4_hero_user_id)
+      %th= model_class.human_attribute_name(:hero1_profession_id)
+      %th= model_class.human_attribute_name(:hero2_profession_id)
+      %th= model_class.human_attribute_name(:hero3_profession_id)
+      %th= model_class.human_attribute_name(:hero4_profession_id)
+      %th= model_class.human_attribute_name(:hero_starting_xp)
+      %th= model_class.human_attribute_name(:hero_starting_gold)
+      %th= model_class.human_attribute_name(:ol_starting_xp)
+      %th= model_class.human_attribute_name(:skip_intro)
+      %th= model_class.human_attribute_name(:created_at)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @adventures.each do |adventure|
+      %tr
+        %td= link_to adventure.id, adventure_path(adventure)
+        %td= adventure.user_id
+        %td= adventure.name
+        %td= adventure.description
+        %td= adventure.campaign_id
+        %td= adventure.overlord_name
+        %td= adventure.overlord_user_id
+        %td= adventure.hero1_name
+        %td= adventure.hero2_name
+        %td= adventure.hero3_name
+        %td= adventure.hero4_name
+        %td= adventure.hero1_hero_id
+        %td= adventure.hero2_hero_id
+        %td= adventure.hero3_hero_id
+        %td= adventure.hero4_hero_id
+        %td= adventure.hero1_hero_user_id
+        %td= adventure.hero2_hero_user_id
+        %td= adventure.hero3_hero_user_id
+        %td= adventure.hero4_hero_user_id
+        %td= adventure.hero1_profession_id
+        %td= adventure.hero2_profession_id
+        %td= adventure.hero3_profession_id
+        %td= adventure.hero4_profession_id
+        %td= adventure.hero_starting_xp
+        %td= adventure.hero_starting_gold
+        %td= adventure.ol_starting_xp
+        %td= adventure.skip_intro
+        %td=l adventure.created_at
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(adventure), :class => 'btn btn-mini'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(adventure), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_adventure_path, :class => 'btn btn-primary'
