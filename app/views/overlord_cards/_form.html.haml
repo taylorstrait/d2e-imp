@@ -1,0 +1,40 @@
+= form_for @overlord_card, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :slug, :class => 'control-label'
+    .controls
+      = f.text_field :slug, :class => 'text_field'
+  .control-group
+    = f.label :subclass, :class => 'control-label'
+    .controls
+      = f.text_field :subclass, :class => 'text_field'
+  .control-group
+    = f.label :category, :class => 'control-label'
+    .controls
+      = f.text_field :category, :class => 'text_field'
+  .control-group
+    = f.label :xp_cost, :class => 'control-label'
+    .controls
+      = f.number_field :xp_cost, :class => 'number_field'
+  .control-group
+    = f.label :text, :class => 'control-label'
+    .controls
+      = f.text_area :text, :class => 'text_area'
+  .control-group
+    = f.label :user_id, :class => 'control-label'
+    .controls
+      = f.number_field :user_id, :class => 'number_field'
+  .control-group
+    = f.label :is_official, :class => 'control-label'
+    .controls
+      = f.check_box :is_official, :class => 'check_box'
+  .control-group
+    = f.label :game_id, :class => 'control-label'
+    .controls
+      = f.number_field :game_id, :class => 'number_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), overlord_cards_path, :class => 'btn'

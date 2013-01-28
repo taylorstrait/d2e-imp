@@ -2,7 +2,18 @@ class SkillsController < ApplicationController
   # GET /skills
   # GET /skills.json
   def index
-    @skills = skill.all
+    if params[:name].present?
+      item = Skill.find_by_name(params[:name])
+      if item
+        redirect_to item and return
+      else
+        flash[:notice] = "Skill by the name of '#{params[:name]}' not found."
+        redirect_to skills_url
+      end
+    else
+      @skills = Skill.includes(:profession).order(:name).all
+      @skill_names = Skill.pluck(:name)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,7 +35,7 @@ class SkillsController < ApplicationController
   # GET /skills/new
   # GET /skills/new.json
   def new
-    @skill = skill.new
+    @skill = Skill.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,15 +51,15 @@ class SkillsController < ApplicationController
   # POST /skills
   # POST /skills.json
   def create
-    @skill = skill.new(params[:skill])
+    @skill = Skill.new(params[:skill])
 
     respond_to do |format|
-      if @skill.save
+      if @Skill.save
         format.html { redirect_to @skill, notice: 'skill was successfully created.' }
         format.json { render json: @skill, status: :created, location: @skill }
       else
         format.html { render action: "new" }
-        format.json { render json: @skill.errors, status: :unprocessable_entity }
+        format.json { render json: @Skill.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -59,12 +70,12 @@ class SkillsController < ApplicationController
     @skill = Skill.find(params[:id])
 
     respond_to do |format|
-      if @skill.update_attributes(params[:skill])
+      if @Skill.update_attributes(params[:skill])
         format.html { redirect_to @skill, notice: 'skill was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @skill.errors, status: :unprocessable_entity }
+        format.json { render json: @Skill.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -73,7 +84,7 @@ class SkillsController < ApplicationController
   # DELETE /skills/1.json
   def destroy
     @skill = Skill.find(params[:id])
-    @skill.destroy
+    @Skill.destroy
 
     respond_to do |format|
       format.html { redirect_to abilities_url }

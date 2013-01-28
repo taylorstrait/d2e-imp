@@ -1,5 +1,8 @@
 Monsters::Application.routes.draw do
 
+  resources :overlord_cards
+
+
   resources :adventures
 
 

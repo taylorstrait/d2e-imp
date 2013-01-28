@@ -9,5 +9,6 @@ class Game < ActiveRecord::Base
   has_many :professions, :order => "name ASC"
   has_many :items, :order => "name ASC"
   has_many :familiars, :order => "name ASC"
+  has_many :overlord_cards, :order => "category ASC, xp_cost DESC, name ASC"
   has_and_belongs_to_many :users
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130124232659) do
+ActiveRecord::Schema.define(:version => 20130128033819) do
 
   create_table "adventures", :force => true do |t|
     t.integer  "user_id",                                :null => false
@@ -296,6 +296,25 @@ ActiveRecord::Schema.define(:version => 20130124232659) do
 
   add_index "monsters_users", ["monster_id"], :name => "index_monsters_users_on_monster_id"
   add_index "monsters_users", ["user_id"], :name => "index_monsters_users_on_user_id"
+
+  create_table "overlord_cards", :force => true do |t|
+    t.string   "name",                           :null => false
+    t.string   "slug",                           :null => false
+    t.string   "subclass",                       :null => false
+    t.string   "category",                       :null => false
+    t.integer  "xp_cost",     :default => 0,     :null => false
+    t.text     "text"
+    t.integer  "user_id",                        :null => false
+    t.boolean  "is_official", :default => false, :null => false
+    t.integer  "game_id"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "overlord_cards", ["game_id"], :name => "index_overlord_cards_on_game_id"
+  add_index "overlord_cards", ["name"], :name => "index_overlord_cards_on_name"
+  add_index "overlord_cards", ["slug"], :name => "index_overlord_cards_on_slug", :unique => true
+  add_index "overlord_cards", ["user_id"], :name => "index_overlord_cards_on_user_id"
 
   create_table "professions", :force => true do |t|
     t.string  "name",         :null => false

@@ -2,22 +2,33 @@ class MonstersController < ApplicationController
   # GET /monsters
   # GET /monsters.json
   def index
-    @monsters = Monster.includes(:game).all
+    if params[:name].present?
+      monster = Monster.find_by_name(params[:name])
+      if monster
+        redirect_to monster and return
+      else
+        flash[:notice] = "Monster by the name of '#{params[:name]}' not found."
+        redirect_to monsters_url
+      end
+    else
+      @monsters = Monster.includes(:game).order(:name).all
+      @monster_names = Monster.pluck(:name)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @monsters }
+      format.json { render json: @heroes }
     end
   end
 
-  # GET /monsters/1
-  # GET /monsters/1.json
+  # GET /heroes/1
+  # GET /heroes/1.json
   def show
     @monster = Monster.includes(:game).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @monster }
+      format.json { render json: @hero }
     end
   end
 

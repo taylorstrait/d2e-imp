@@ -1,0 +1,32 @@
+- model_class = OverlordCard
+%h2 Overlord Cards
+
+%form.form-search
+  .input-append
+    %input.span8.search-query{name: 'name', 'data-provide' => "typeahead", "data-items" => 6, "data-source" => @names, autocomplete: "off"}
+    %button.btn
+      Go To...
+
+%table.table.table-striped.sortable-table
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th Type
+      %th= model_class.human_attribute_name(:category)
+      %th= model_class.human_attribute_name(:xp_cost)
+      %th= model_class.human_attribute_name(:text)
+      %th Game
+
+  %tbody
+    - @overlord_cards.each do |overlord_card|
+      %tr
+        %td= link_to overlord_card.name, overlord_card_path(overlord_card)
+    
+        %td= overlord_card.subclass
+        %td= overlord_card.category
+        %td= overlord_card.xp_cost
+        %td= overlord_card.text
+        %td= link_to overlord_card.game.very_short_name, overlord_card.game
+
+- if user_signed_in? && current_user.is_admin?
+  = link_to t('.new', :default => t("helpers.links.new")), new_overlord_card_path, :class => 'btn btn-primary'
