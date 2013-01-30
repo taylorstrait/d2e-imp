@@ -1,0 +1,45 @@
+- model_class = Chapter
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human
+
+%p
+  %strong= model_class.human_attribute_name(:adventure_id) + ':'
+  %br
+  = @chapter.adventure_id
+%p
+  %strong= model_class.human_attribute_name(:quest_id) + ':'
+  %br
+  = @chapter.quest_id
+%p
+  %strong= model_class.human_attribute_name(:winner) + ':'
+  %br
+  = @chapter.winner
+%p
+  %strong= model_class.human_attribute_name(:gold_from_search_items) + ':'
+  %br
+  = @chapter.gold_from_search_items
+%p
+  %strong= model_class.human_attribute_name(:items_sold) + ':'
+  %br
+  = @chapter.items_sold
+%p
+  %strong= model_class.human_attribute_name(:items_bought) + ':'
+  %br
+  = @chapter.items_bought
+%p
+  %strong= model_class.human_attribute_name(:skills_bought) + ':'
+  %br
+  = @chapter.skills_bought
+%p
+  %strong= model_class.human_attribute_name(:report) + ':'
+  %br
+  = @chapter.report
+%p
+  %strong= model_class.human_attribute_name(:user_id) + ':'
+  %br
+  = @chapter.user_id
+
+.form-actions
+  = link_to t('.back', :default => t("helpers.links.back")), chapters_path, :class => 'btn'
+  = link_to t('.edit', :default => t("helpers.links.edit")), edit_chapter_path(@chapter), :class => 'btn'
+  = link_to t('.destroy', :default => t("helpers.links.destroy")), chapter_path(@chapter), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

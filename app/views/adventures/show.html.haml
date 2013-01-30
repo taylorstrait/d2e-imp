@@ -1,113 +1,57 @@
-- model_class = Adventure
-.page-header
-  %h1=t '.title', :default => model_class.model_name.human
+%h2= @adventure.name
 
-%p
-  %strong= model_class.human_attribute_name(:user_id) + ':'
-  %br
-  = @adventure.user_id
-%p
-  %strong= model_class.human_attribute_name(:name) + ':'
-  %br
-  = @adventure.name
-%p
-  %strong= model_class.human_attribute_name(:description) + ':'
-  %br
-  = @adventure.description
-%p
-  %strong= model_class.human_attribute_name(:campaign_id) + ':'
-  %br
-  = @adventure.campaign_id
-%p
-  %strong= model_class.human_attribute_name(:overlord_name) + ':'
-  %br
-  = @adventure.overlord_name
-%p
-  %strong= model_class.human_attribute_name(:overlord_user_id) + ':'
-  %br
-  = @adventure.overlord_user_id
-%p
-  %strong= model_class.human_attribute_name(:hero1_name) + ':'
-  %br
-  = @adventure.hero1_name
-%p
-  %strong= model_class.human_attribute_name(:hero2_name) + ':'
-  %br
-  = @adventure.hero2_name
-%p
-  %strong= model_class.human_attribute_name(:hero3_name) + ':'
-  %br
-  = @adventure.hero3_name
-%p
-  %strong= model_class.human_attribute_name(:hero4_name) + ':'
-  %br
-  = @adventure.hero4_name
-%p
-  %strong= model_class.human_attribute_name(:hero1_hero_id) + ':'
-  %br
-  = @adventure.hero1_hero_id
-%p
-  %strong= model_class.human_attribute_name(:hero2_hero_id) + ':'
-  %br
-  = @adventure.hero2_hero_id
-%p
-  %strong= model_class.human_attribute_name(:hero3_hero_id) + ':'
-  %br
-  = @adventure.hero3_hero_id
-%p
-  %strong= model_class.human_attribute_name(:hero4_hero_id) + ':'
-  %br
-  = @adventure.hero4_hero_id
-%p
-  %strong= model_class.human_attribute_name(:hero1_hero_user_id) + ':'
-  %br
-  = @adventure.hero1_hero_user_id
-%p
-  %strong= model_class.human_attribute_name(:hero2_hero_user_id) + ':'
-  %br
-  = @adventure.hero2_hero_user_id
-%p
-  %strong= model_class.human_attribute_name(:hero3_hero_user_id) + ':'
-  %br
-  = @adventure.hero3_hero_user_id
-%p
-  %strong= model_class.human_attribute_name(:hero4_hero_user_id) + ':'
-  %br
-  = @adventure.hero4_hero_user_id
-%p
-  %strong= model_class.human_attribute_name(:hero1_profession_id) + ':'
-  %br
-  = @adventure.hero1_profession_id
-%p
-  %strong= model_class.human_attribute_name(:hero2_profession_id) + ':'
-  %br
-  = @adventure.hero2_profession_id
-%p
-  %strong= model_class.human_attribute_name(:hero3_profession_id) + ':'
-  %br
-  = @adventure.hero3_profession_id
-%p
-  %strong= model_class.human_attribute_name(:hero4_profession_id) + ':'
-  %br
-  = @adventure.hero4_profession_id
-%p
-  %strong= model_class.human_attribute_name(:hero_starting_xp) + ':'
-  %br
-  = @adventure.hero_starting_xp
-%p
-  %strong= model_class.human_attribute_name(:hero_starting_gold) + ':'
-  %br
-  = @adventure.hero_starting_gold
-%p
-  %strong= model_class.human_attribute_name(:ol_starting_xp) + ':'
-  %br
-  = @adventure.ol_starting_xp
-%p
-  %strong= model_class.human_attribute_name(:skip_intro) + ':'
-  %br
-  = @adventure.skip_intro
+.row-fluid
+  %h4 Heroes
+  %table.table.table-striped
+    %thead
+      %th
+      - for adventurer in @adventure.adventurers
+        %th
+          = adventurer.hero.name
 
-.form-actions
-  = link_to t('.back', :default => t("helpers.links.back")), adventures_path, :class => 'btn'
-  = link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
-  = link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(@adventure), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+    %tbody
+      %tr
+        %td Class
+        - for adventurer in @adventure.adventurers
+          %td= adventurer.profession.name
+  
+      %tr
+        %td Items
+        - for adventurer in @adventure.adventurers
+          %td
+            - for item in adventurer.items
+              %p= link_to item.name, item
+
+      %tr
+        %td Skills
+        - for adventurer in @adventure.adventurers
+          %td
+            - for skill in adventurer.skills
+              %p= link_to skill.name, skill
+
+      %tr
+        %td XP
+        - for adventurer in @adventure.adventurers
+          %td= adventurer.available_xp
+      
+.row-fluid
+  %h5 Gold
+  = @adventure.hero_gold
+
+%hr 
+
+.row-fluid
+  %h5 Overlord Items
+  - for item in @adventure.items
+    %p= link_to item.name, item
+
+  %h5 Overlord Cards
+  /- for card in @adventure.overlord_cards
+  /  %p= link_to card.name, card
+
+- if current_user.try(:is_admin?) || (current_user == @adventure.user)
+
+  .form-actions
+    = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
+    = link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
+    = link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(@adventure), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

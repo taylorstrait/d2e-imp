@@ -13,7 +13,7 @@ class AdventuresController < ApplicationController
   # GET /adventures/1
   # GET /adventures/1.json
   def show
-    @adventure = Adventure.find(params[:id])
+    @adventure = Adventure.includes(:adventurers => [:profession, :hero, :items, :skills]).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -24,14 +24,14 @@ class AdventuresController < ApplicationController
   # GET /adventures/new
   # GET /adventures/new.json
   def new
-    @campaigns = Campaign.all
-    @games = Game.all
-    @games_with_professions = Game.includes(:professions).where("id IN (?)", Profession.pluck(:game_id).uniq).all
-    @adventure = Adventure.new
+    if user_signed_in?
+      @campaigns = Campaign.where(:is_official => true).all
+      @heroes = Hero.order(:name).all
+      @adventure = Adventure.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @adventure }
+    else
+      flash[:notice] = "You must be signed in to start a new adventure."
+      redirect_to :new_user_session
     end
   end
 
@@ -43,10 +43,36 @@ class AdventuresController < ApplicationController
   # POST /adventures
   # POST /adventures.json
   def create
+    
+    # just in case we redirect back
+      @campaigns = Campaign.where(:is_official => true).all
+      @heroes = Hero.order(:name).all
+
     @adventure = Adventure.new(params[:adventure])
+    @adventure.user = current_user
+    
+    if (@adventure.skip_intro == true) || (@adventure.campaign.quests.where(:act => "Intro").size == 0)
+      @adventure.current_act = "1"
+    end
 
     respond_to do |format|
       if @adventure.save
+        
+        # create the heroes
+        params[:heroes].each do |k,v|
+
+          adventurer = Adventurer.new(v)
+            if adventurer.valid?
+              adventurer.save
+              @adventure.adventurers << adventurer
+              adventurer.items = adventurer.profession.items
+              adventurer.skills = adventurer.profession.skills.where(:xp_cost => 0)
+            end       
+          end
+
+        # assign overlord cards
+        @adventure.overlord_cards = OverlordCard.where(:category => "Basic").all
+
         format.html { redirect_to @adventure, notice: 'Adventure was successfully created.' }
         format.json { render json: @adventure, status: :created, location: @adventure }
       else

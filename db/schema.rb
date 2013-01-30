@@ -11,33 +11,77 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128033819) do
+ActiveRecord::Schema.define(:version => 20130130062734) do
+
+  create_table "adventurers", :force => true do |t|
+    t.integer "hero_id",                      :null => false
+    t.integer "profession_id",                :null => false
+    t.integer "available_xp",  :default => 0, :null => false
+    t.integer "user_id"
+  end
+
+  add_index "adventurers", ["hero_id"], :name => "index_adventurers_on_hero_id"
+  add_index "adventurers", ["profession_id"], :name => "index_adventurers_on_profession_id"
+  add_index "adventurers", ["user_id"], :name => "index_adventurers_on_user_id"
+
+  create_table "adventurers_adventures", :force => true do |t|
+    t.integer "adventure_id",  :null => false
+    t.integer "adventurer_id", :null => false
+  end
+
+  add_index "adventurers_adventures", ["adventure_id"], :name => "index_adventurers_adventures_on_adventure_id"
+  add_index "adventurers_adventures", ["adventurer_id"], :name => "index_adventurers_adventures_on_adventurer_id"
+
+  create_table "adventurers_items", :force => true do |t|
+    t.integer "item_id",       :null => false
+    t.integer "adventurer_id", :null => false
+  end
+
+  add_index "adventurers_items", ["adventurer_id"], :name => "index_adventurers_items_on_adventurer_id"
+  add_index "adventurers_items", ["item_id"], :name => "index_adventurers_items_on_item_id"
+
+  create_table "adventurers_skills", :force => true do |t|
+    t.integer "skill_id",      :null => false
+    t.integer "adventurer_id", :null => false
+  end
+
+  add_index "adventurers_skills", ["adventurer_id"], :name => "index_adventurers_skills_on_adventurer_id"
+  add_index "adventurers_skills", ["skill_id"], :name => "index_adventurers_skills_on_skill_id"
 
   create_table "adventures", :force => true do |t|
-    t.integer  "user_id",                                :null => false
-    t.string   "name",                                   :null => false
+    t.integer  "user_id",                                    :null => false
+    t.string   "name",                                       :null => false
     t.text     "description"
-    t.integer  "campaign_id",                            :null => false
+    t.integer  "campaign_id",                                :null => false
+    t.string   "current_act",             :default => "1",   :null => false
     t.integer  "ol_user_id"
-    t.integer  "hero1_hero_id",                          :null => false
-    t.integer  "hero2_hero_id",                          :null => false
-    t.integer  "hero3_hero_id"
-    t.integer  "hero4_hero_id"
-    t.integer  "hero1_hero_user_id"
-    t.integer  "hero2_hero_user_id"
-    t.integer  "hero3_hero_user_id"
-    t.integer  "hero4_hero_user_id"
-    t.integer  "hero1_profession_id",                    :null => false
-    t.integer  "hero2_profession_id",                    :null => false
-    t.integer  "hero3_profession_id"
-    t.integer  "hero4_profession_id"
-    t.integer  "hero_starting_xp",    :default => 0
-    t.integer  "hero_starting_gold",  :default => 0
-    t.integer  "ol_starting_xp",      :default => 0
-    t.boolean  "skip_intro",          :default => false
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.integer  "ol_available_xp",         :default => 0,     :null => false
+    t.integer  "hero_gold",               :default => 0,     :null => false
+    t.integer  "hero_starting_xp",        :default => 0,     :null => false
+    t.integer  "hero_starting_gold",      :default => 0,     :null => false
+    t.integer  "ol_starting_xp",          :default => 0,     :null => false
+    t.integer  "ol_open_group_pool_size", :default => 0,     :null => false
+    t.boolean  "skip_intro",              :default => false
+    t.boolean  "is_private",              :default => false, :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
   end
+
+  create_table "adventures_items", :force => true do |t|
+    t.integer "item_id",      :null => false
+    t.integer "adventure_id", :null => false
+  end
+
+  add_index "adventures_items", ["adventure_id"], :name => "index_adventures_items_on_adventure_id"
+  add_index "adventures_items", ["item_id"], :name => "index_adventures_items_on_item_id"
+
+  create_table "adventures_overlord_cards", :force => true do |t|
+    t.integer "overlord_card_id", :null => false
+    t.integer "adventure_id",     :null => false
+  end
+
+  add_index "adventures_overlord_cards", ["adventure_id"], :name => "index_adventures_overlord_cards_on_adventure_id"
+  add_index "adventures_overlord_cards", ["overlord_card_id"], :name => "index_adventures_overlord_cards_on_overlord_card_id"
 
   create_table "archetypes", :force => true do |t|
     t.string  "name",        :null => false
@@ -73,6 +117,25 @@ ActiveRecord::Schema.define(:version => 20130128033819) do
   add_index "campaigns", ["game_id"], :name => "index_campaigns_on_game_id"
   add_index "campaigns", ["name"], :name => "index_campaigns_on_name", :unique => true
   add_index "campaigns", ["slug"], :name => "index_campaigns_on_slug", :unique => true
+
+  create_table "chapters", :force => true do |t|
+    t.integer  "adventure_id",                          :null => false
+    t.integer  "quest_id",                              :null => false
+    t.string   "winner"
+    t.integer  "gold_from_search_items", :default => 0, :null => false
+    t.string   "items_found"
+    t.string   "items_sold"
+    t.string   "items_bought"
+    t.string   "skills_bought"
+    t.text     "report"
+    t.integer  "user_id",                               :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "chapters", ["adventure_id"], :name => "index_chapters_on_adventure_id"
+  add_index "chapters", ["quest_id"], :name => "index_chapters_on_quest_id"
+  add_index "chapters", ["user_id"], :name => "index_chapters_on_user_id"
 
   create_table "encounters", :force => true do |t|
     t.string   "name",                           :null => false

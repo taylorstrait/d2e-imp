@@ -69,6 +69,6 @@
 //  %br
 //  = @item.game_id
 
--if user_signed_in? && (user.is_admin? || (@item.user = current_user))
+-if current_user.try(:is_admin?) || (@item.user = current_user)
   .form-actions
     = link_to t('.edit', :default => t("helpers.links.edit")), edit_item_path(@item), :class => 'btn'

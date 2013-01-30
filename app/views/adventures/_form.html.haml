@@ -2,10 +2,6 @@
 = form_for @adventure do |f|
   .roow-fluid
     .control-group
-      = f.label :user_id, :class => 'control-label'
-      .controls
-        = f.number_field :user_id, :class => 'number_field'
-    .control-group
       = f.label :name, :class => 'control-label'
       .controls
         = f.text_field :name, :class => 'text_field'
@@ -22,24 +18,24 @@
     %h2 Heroes
 
     .hero
-      = f.grouped_collection_select(:hero1_hero_id, @games, :heroes, :name, :id, :name, {:prompt => "Choose a hero"}, {:class => 'hero-select input-medium'})
+      = select_tag("heroes[1][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
       %p.centered as
-      = f.select(:hero1_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      = select_tag("heroes[1][profession_id]", {}, {:class => 'class-select input-medium'})
       
     .hero-box
-      = f.grouped_collection_select(:hero2_hero_id, @games, :heroes, :name, :id, :name, {:prompt => "Choose a hero"}, {:class => 'hero-select input-medium'})
+      = select_tag("heroes[2][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
       %p.centered as
-      = f.select(:hero2_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      = select_tag("heroes[2][profession_id]", {}, {:class => 'class-select input-medium'})
 
     .hero-box
-      = f.grouped_collection_select(:hero3_hero_id, @games, :heroes, :name, :id, :name, {:include_blank => true}, {:class => 'hero-select input-medium'})
+      = select_tag("heroes[3][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
       %p.centered as
-      = f.select(:hero3_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      = select_tag("heroes[3][profession_id]", {}, {:class => 'class-select input-medium'})
       
     .hero-box
-      = f.grouped_collection_select(:hero4_hero_id, @games, :heroes, :name, :id, :name, {:include_blank => true}, {:class => 'hero-select input-medium'})
+      = select_tag("heroes[4][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
       %p.centered as
-      = f.select(:hero4_profession_id, {}, {}, {:class => 'class-select input-medium'})
+      = select_tag("heroes[4][profession_id]", {}, {:class => 'class-select input-medium'})
 
   .row-fluid
     %h2 Campaign Options
@@ -56,10 +52,20 @@
       = f.label :ol_starting_xp, :class => 'control-label'
       .controls
         = f.number_field :ol_starting_xp, :class => 'number_field'
+
+    .control-group
+      = f.label :ol_open_group_pool_size, :class => 'control-label'
+      .controls
+        = f.select :ol_open_group_pool_size, 0..4, :class => 'number_field'
+
     .control-group
       = f.label :skip_intro, :class => 'control-label'
       .controls
-        = f.check_box :skip_intro, :class => 'check_box'
+        = f.check_box :skip_intro, :class => 'check_box'    
+    .control-group
+      = f.label :is_private, "Private", :class => 'control-label'
+      .controls
+        = f.check_box :is_private, :class => 'check_box'
 
   .form-actions
     = f.submit nil, :class => 'btn btn-primary'

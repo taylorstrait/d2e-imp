@@ -1,0 +1,76 @@
+= form_for @chapter, :html => { :class => 'form-horizontal' } do |f|
+
+  = f.hidden_field :adventure_id, :value => params[:adventure_id]
+  = f.hidden_field :user_id, :value => current_user.id
+
+  .control-group
+    = f.label :quest_id, "Quest", :class => 'control-label'
+    .controls
+      - if @available_quests.class == Array
+        = f.collection_select :quest_id, @available_quests, :id, :name, :prompt => "Choose a quest..."
+      - elsif @available_quests.class
+        = f.select :quest_id, "<option value=#{@available_quests.id}>#{@available_quests.name}</option>".html_safe
+    /debug(@available_quests)
+  .control-group
+    = f.label :winner, :class => 'control-label'
+    .controls
+      = f.select :winner, options_for_select(%w[Heroes Overlord]), :class => 'text_field', :prompt => "Choose a winner..."
+  
+  - unless @finale
+    .control-group
+      = f.label :gold_from_search_items, :class => 'control-label'
+      .controls
+        = f.number_field :gold_from_search_items, :class => 'number_field'
+  
+    %table.table.table-striped
+      %thead
+        %th
+        - for adventurer in @adventure.adventurers
+          %th
+            = adventurer.hero.name
+    
+      %tbody
+        %tr
+          %td Items Found
+          - for adventurer in @adventure.adventurers
+            %td
+              = select_tag("adventurers[#{adventurer.id}][found_item]", options_from_collection_for_select(@available_items, :id, :name), :include_blank => true)
+        
+        %tr  
+          %td Items Sold
+          - for adventurer in @adventure.adventurers
+            %td
+              - for item in adventurer.items
+                %label.checkbox
+                  = check_box_tag("adventurers[#{adventurer.id}][sold_items][]", item.id, nil)
+                  = label_tag "adventurers[#{adventurer.id}][sold_items][#{item.id}]", "#{item.name} (#{item.sell_cost} gp)"
+          
+        %tr
+          %td Items Bought
+          - for adventurer in @adventure.adventurers
+            %td
+              = select_tag("adventurers[#{adventurer.id}][bought_items][]", options_from_collection_for_select(@available_items, :id, :name_with_price), :include_blank => true) 
+              = select_tag("adventurers[#{adventurer.id}][bought_items][]", options_from_collection_for_select(@available_items, :id, :name_with_price), :include_blank => true)
+    
+        %tr
+          %td New Skills
+          - for adventurer in @adventure.adventurers
+            %td
+              - for skill in adventurer.unlearned_skills
+                %label.checkbox
+                  = check_box_tag("adventurers[#{adventurer.id}][new_skills][]", skill.id, nil)
+                  = label_tag "adventurers[#{adventurer.id}][new_skills][#{skill.id}]", "#{skill.name} (#{skill.xp_cost})"
+    
+        %tr
+          %td XP
+          - for adventurer in @adventure.adventurers
+            %td.hero-xp= adventurer.available_xp
+
+  .control-group
+    = f.label :report, :class => 'control-label'
+    .controls
+      = f.text_area :report, :class => 'text_area'
+
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), chapters_path, :class => 'btn'

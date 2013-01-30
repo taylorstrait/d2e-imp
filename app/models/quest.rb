@@ -5,6 +5,7 @@ class Quest < ActiveRecord::Base
 
   belongs_to :campaign, :counter_cache => true
   has_many :encounters, :order => "position ASC"
+  has_many :chapters, :order => "created_at DESC"
   belongs_to :user
 
   # return a list of unique monsters in all of a quest's encounters

@@ -1,5 +1,11 @@
 Monsters::Application.routes.draw do
 
+  resources :chapters
+
+
+  resources :adventurers
+
+
   resources :overlord_cards
 
 
