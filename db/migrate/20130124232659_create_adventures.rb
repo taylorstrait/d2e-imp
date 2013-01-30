@@ -5,7 +5,7 @@ class CreateAdventures < ActiveRecord::Migration
       t.string :name, :null => false
       t.text :description
       t.integer :campaign_id, :null => false
-      t.string :current_act, :null => false, :default => "1"
+      t.string :current_act, :null => false, :default => "Intro"
       t.string :winner
       t.datetime :completed_at
 
@@ -26,5 +26,7 @@ class CreateAdventures < ActiveRecord::Migration
       
       t.timestamps
     end
+
+    add_index :adventures, :user_id
   end
 end

@@ -39,7 +39,6 @@
               .container-fluid
                 %ul.nav
 
-                  %li= link_to "Home", root_url
                   %li.dropdown
                     = link_to 'Descentopaedia', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
                     %ul.dropdown-menu
@@ -51,6 +50,15 @@
                       %li= link_to "Items", items_url
                       %li= link_to "Monsters", monsters_url
                       %li= link_to "Overlord Cards", overlord_cards_url
+                  %li.dropdown
+                    = link_to 'Adventures', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                    %ul.dropdown-menu
+                      %li= link_to "Recent Adventures", adventures_url
+                      - if user_signed_in?
+                        %li= link_to "My Adventures", adventures_url(:username => current_user.username)
+                      %li.divider
+                      %li= link_to "Start a New Adventure", new_adventure_url
+              
                   %li= link_to "Forum", "#"
 
                 %ul.nav.pull-right

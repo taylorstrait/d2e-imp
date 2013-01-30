@@ -2,7 +2,12 @@ class AdventuresController < ApplicationController
   # GET /adventures
   # GET /adventures.json
   def index
-    @adventures = Adventure.all
+    if params[:username]
+      @user = User.find_by_username(params[:username])
+      @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).where(:user_id => @user.id).order("adventures.updated_at DESC").limit(20).all
+    else
+      @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).order("updated_at DESC").limit(20).all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
