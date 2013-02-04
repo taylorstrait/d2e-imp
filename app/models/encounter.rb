@@ -14,7 +14,7 @@ class Encounter < ActiveRecord::Base
   
 
   # using the traits of an encounter, generate a pool of monsters to choose from
-  # user = user object to determine available monosters
+  # user_id =  integer to determine available monsters that user owns
   # pool_size = integer to set the number of monsters to draw per open group
   def generate_open_group_monsters(user_id = nil, pool_size = 3)
 

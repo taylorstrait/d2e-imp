@@ -54,6 +54,7 @@ Monsters::Application.routes.draw do
   resources :monsters
 
   match 'generate_monster_list' => "encounters#generate_monster_list", :as => :generate_monster_list, :via => :get
+  match 'search' => "search#index", :as => :search, :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

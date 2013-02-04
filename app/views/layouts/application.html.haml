@@ -60,6 +60,12 @@
                       %li= link_to "Start a New Adventure", new_adventure_url
               
                   %li= link_to "Forum", "#"
+                  %li 
+                    %form.form-search{action: '/search'}
+                      .input-append
+                        %input.span8.search-query{name: 'name', 'data-provide' => "typeahead", "data-items" => 6, "data-source" => ALL_OBJECT_NAMES, autocomplete: "off"}
+                        %button.btn
+                          %i.icon-search
 
                 %ul.nav.pull-right
                   - if user_signed_in?

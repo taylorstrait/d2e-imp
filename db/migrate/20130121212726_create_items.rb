@@ -24,6 +24,7 @@ class CreateItems < ActiveRecord::Migration
       t.timestamps
     end
 
+  add_index :items, :name
   add_index :items, :slug, :unique => true
   add_index :items, :game_id
 
