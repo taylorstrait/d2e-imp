@@ -1,0 +1,8 @@
+.row-fluid
+
+  - @open_groups.each do |group_num, monster_collection|
+    .span3
+      %h4= "Open Group #{group_num}"
+      - for monster in monster_collection do
+        - if monster # there may not be enough
+          %p= link_to monster.name, monster
