@@ -20,9 +20,10 @@
   
   %h4 Open Group Generator
 
-  = form_tag(generate_monster_list_path) do
+  = form_tag(generate_monster_list_path, :method => :get, :remote => true, :id => 'generate_open_groups_form') do
   
     = hidden_field_tag 'encounter_id', @encounter.id
+    = hidden_field_tag 'user_id', current_user.try(:id)
   
     %p
       = label_tag :pool_size
@@ -30,29 +31,8 @@
     
     = submit_tag "Generate Monster Options"
 
-      
-- if @open_group
+#open_groups_results
 
-  .row-fluid
-  
-    - counter = 1
-    - @encounter.num_open_groups.times do
-      .span3
-        %h4= "Open Group #{counter}"
-        - for monster in @open_group[counter] do
-          - if monster # there may not be enough
-            %p= link_to monster.name, monster
-    
-      - counter += 1
-  - if @monster_options && !@monster_options.empty?
-    .row-fluid
-      %h4 
-        Unused Monsters
-        
-      .column2
-        - for monster in @monster_options
-          %p= link_to monster.name, monster
 
 -if user_signed_in? && current_user == @encounter.quest.user
   = link_to 'Edit', edit_encounter_path(@encounter)
-  = link_to 'Back', encounters_path

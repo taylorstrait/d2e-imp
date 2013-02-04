@@ -94,58 +94,11 @@ class EncountersController < ApplicationController
   def generate_monster_list
     
     @encounter = Encounter.find(params[:encounter_id])
+    @open_groups = @encounter.generate_open_group_monsters(params[:user_id], params[:pool_size].to_i)
 
-    if current_user
-      monster_list = current_user.monster_ids
-    else
-      monster_list = Monster.pluck(:id)
+    respond_to do |format|
+      format.html { render :partial => "open_groups" }
+      format.json { render json: @open_groups }
     end
-
-    # main query
-    if @encounter.monsters.size > 0
-      @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND monster_id IN (?)", monster_list).where("monsters.id NOT IN (?)", @encounter.monster_ids).order("monsters.name ASC").uniq
-    else
-      @game_monsters = Monster.joins(:traits).where(:traits => {:id => @encounter.trait_ids}).where("role = 'Monster' AND monster_id IN (?)", monster_list).order("monsters.name ASC").uniq
-    end
-    
-    # if we found any matching monsters...
-    if @game_monsters.size > 0
-      # generate limited pool
-      @monster_options = @game_monsters.clone.shuffle
-
-      # break out the open groups
-      # init counter
-      counter = 1
-      @open_group = {}
-
-      # for each open group...
-      @encounter.num_open_groups.times do
-
-        # create a new nested variable
-        @open_group[counter] = []
-        
-        # for each card to draw...
-        params[:pool_size].to_i.times do
-          
-          # pop one card off the shuffled pool
-          @open_group[counter] << @monster_options.pop
-
-        end
-
-        # alphabetize the list
-        if @open_group[counter].size > 1
-          @open_group[counter].sort_by! &:name
-        end
-        counter += 1
-      end
-
-      # alphabetize the remaining options
-      @monster_options.sort_by! &:name
-
-    else
-      flash.now[:notice] = "No monsters available. Does the encounter have the correct traits?"
-    end
-
-    render :show
   end
 end

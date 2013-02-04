@@ -10,7 +10,10 @@
         = f.collection_select :quest_id, @available_quests, :id, :name, :prompt => "Choose a quest..."
       - elsif @available_quests.class
         = f.select :quest_id, "<option value=#{@available_quests.id}>#{@available_quests.name}</option>".html_safe
-    /debug(@available_quests)
+
+    #open_groups_partial
+      =render :partial => 'encounters/open_groups', :object => @open_groups
+
   .control-group
     = f.label :winner, :class => 'control-label'
     .controls

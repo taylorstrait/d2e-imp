@@ -18,6 +18,7 @@ class CreateHeroes < ActiveRecord::Migration
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
       t.text :description
+      t.integer :group_id
       t.timestamps
     end
 

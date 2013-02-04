@@ -10,6 +10,7 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :campaign_id
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_private, :default => false, :null => false
 
       # for campaign tracking
       t.integer :reward_xp_base, :default => 1, :null => false
@@ -20,6 +21,8 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :ol_win_item_id
       t.integer :hero_win_ol_lose_item_id
       t.integer :ol_win_heroes_lose_item_id
+      t.integer :hero_win_lose_overlord_card_id
+      t.integer :ol_win_gain_overlord_card_id
       t.integer :hero_win_unlock_quest_id
       t.integer :ol_win_unlock_quest_id
       t.string :hero_win_ongoing_effect

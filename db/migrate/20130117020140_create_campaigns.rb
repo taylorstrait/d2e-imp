@@ -8,6 +8,7 @@ class CreateCampaigns < ActiveRecord::Migration
       t.integer :game_id
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_private, :default => false, :null => false
 
       # for campaign tracking
       t.integer :intro_quest_id
