@@ -80,4 +80,14 @@ class ProfessionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def get_items
+    @profession = Profession.includes(:items).find(params[:id])
+    render :partial => "profession_items"
+  end 
+
+  def get_skills
+    @profession = Profession.includes(:skills).where("skills.xp_cost = 0").find(params[:id])
+    render :partial => "profession_skills"
+  end
 end

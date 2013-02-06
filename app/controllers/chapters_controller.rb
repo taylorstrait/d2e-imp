@@ -72,7 +72,7 @@ class ChaptersController < ApplicationController
     end
     owned_item_ids.flatten!
 
-    if @adventure.current_act == "1"
+    if (@adventure.current_act == "1") || (@adventure.current_act == "Interlude")
       @available_items = Item.where(:category => "shop_item_act_1").where("id NOT IN (?)", owned_item_ids).order(:name).all
     else
       @available_items = Item.where(:category => "shop_item_act_2").order(:name).all
@@ -146,77 +146,69 @@ class ChaptersController < ApplicationController
         adventure.save
 
 
-        ##### add found items #####
-        params[:adventurers].each do |k,v|
-          
-          # load each hero
-          hero = Adventurer.find(k.to_i)
+        #####add the reward items, if applicable #####
+        if @chapter.winner == "Heroes"
 
-          # add the reward items, if applicable
-          if @chapter.winner == "Heroes"
+          if quest.hero_win_item_id.present?
+            adventure.adventurers.first.items << Item.find(quest.hero_win_item_id)
+          end
 
-            if quest.hero_win_item_id.present?
-              adventure.adventurers.first.items << Item.find(quest.hero_win_item_id)
-            end
+          if quest.hero_win_ol_lose_item_id.present?
+            adventure.items.delete(Item.find(quest.hero_win_ol_lose_item_id))
+          end
 
-            if quest.hero_win_ol_lose_item_id.present?
-              adventure.items.delete(Item.find(quest.hero_win_ol_lose_item_id))
-            end
+        elsif @chapter.winner == "Overlord"
 
-          elsif @chapter.winner == "Overlord"
+          if quest.ol_win_item_id.present?
+            adventure.items << Item.find(quest.ol_win_item_id)
+          end
 
-            if quest.ol_win_item_id.present?
-              adventure.items << Item.find(quest.ol_win_item_id)
-            end
-
-            if quest.ol_win_heroes_lose_item_id.present?
-              lost_item = Item.find(quest.ol_win_heroes_lose_item_id)
+          if quest.ol_win_heroes_lose_item_id.present?
+            lost_item = Item.find(quest.ol_win_heroes_lose_item_id)
+            
+            adventure.adventurers.each do |hero|
               
-              adventure.adventurers.each do |hero|
-                
-                if hero.items.includes?(lost_item)
-                  hero.items.delete(lost_item)
-                end
+              if hero.items.includes?(lost_item)
+                hero.items.delete(lost_item)
               end
             end
           end
+        end
 
-          # add found item
-          unless v['found_item'].blank?
-            hero.items << Item.find(v['found_item'].to_i)
+        # add found item
+        unless v['found_item'].blank?
+          hero.items << Item.find(v['found_item'].to_i)
+        end
+
+        # sell items
+        unless v['sold_items'].blank?
+          v['sold_items'].each do |item_id|
+            sold_item = Item.find(item_id.to_i)
+            adventure.hero_gold += sold_item.sell_cost
+            adventure.save
+            hero.items.delete(sold_item)
           end
+        end
 
-          # sell items
-          unless v['sold_items'].blank?
-            v['sold_items'].each do |item_id|
-              sold_item = Item.find(item_id.to_i)
-              adventure.hero_gold += sold_item.sell_cost
-              adventure.save
-              hero.items.delete(sold_item)
-            end
+        # add  bought items
+        
+        v['bought_items'].each do |item_id|
+          unless item_id.blank?
+            bought_item = Item.find(item_id.to_i)
+            hero.items << bought_item
+            adventure.hero_gold -= bought_item.buy_cost
+            adventure.save
           end
+        end
 
-          # add  bought items
-          
-          v['bought_items'].each do |item_id|
-            unless item_id.blank?
-              bought_item = Item.find(item_id.to_i)
-              hero.items << bought_item
-              adventure.hero_gold -= bought_item.buy_cost
-              adventure.save
-            end
+        # add new skills
+        unless v['new_skills'].blank?
+          v['new_skills'].each do |skill_id|
+            new_skill = Skill.find(skill_id.to_i)
+            hero.skills << new_skill
+            hero.available_xp -= new_skill.xp_cost
+            hero.save
           end
-
-          # add new skills
-          unless v['new_skills'].blank?
-            v['new_skills'].each do |skill_id|
-              new_skill = Skill.find(skill_id.to_i)
-              hero.skills << new_skill
-              hero.available_xp -= new_skill.xp_cost
-              hero.save
-            end
-          end
-
         end
 
         format.html { redirect_to adventure, notice: 'Chapter was successfully created.' }

@@ -21,7 +21,12 @@ Monsters::Application.routes.draw do
   resources :skills
 
 
-  resources :classes, :controller => :professions
+  resources :classes, :controller => :professions do
+    member do
+      get 'get_items'
+      get 'get_skills'
+    end
+  end
 
 
   resources :items

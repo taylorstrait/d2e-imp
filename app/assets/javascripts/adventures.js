@@ -1,46 +1,59 @@
-$('#heroes_1_hero_id').change(function() {
+// function for handling hero changes
+function heroChangeFunction(i) {
+    // set up vars
+    var professionSelector = "#heroes_" + i + "_profession_id";
+    var itemsDiv = "#hero_" + i + "_items";
+    var skillsDiv = "#hero_" + i + "_skills";
 
-  var heroId = $(this).prop('value');
-
-  $.getJSON("/heroes/" + heroId + "/professions", function(data) {
-      populateDropdown($("#heroes_1_profession_id"), data);
+    // if hero is selected, update professions
+    $("#heroes_" + i + "_hero_id").change(function() {
+    
+        var heroId = $(this).prop('value');
+      
+        $.getJSON("/heroes/" + heroId + "/professions", function(data) {
+            populateDropdown($(professionSelector), data);
+            $(itemsDiv).empty();
+            $(skillsDiv).empty();
+        });
     });
-  });
+}
 
-$('#heroes_2_hero_id').change(function() {
+// function for handling class changes
+function classChangeFunction(i) {
+    
+    var itemsDiv = "#hero_" + i + "_items";
+    var skillsDiv = "#hero_" + i + "_skills";
 
-  var heroId = $(this).prop('value');
+        // if class is selected...
+    $("#heroes_" + i + "_profession_id").change(function () {
 
-  $.getJSON("/heroes/" + heroId + "/professions", function(data) {
-      populateDropdown($("#heroes_2_profession_id"), data);
+        var professionId = $(this).prop('value');
+  
+        // update starting items
+        $.get("/classes/" + professionId + "/get_items", function (data) {
+            $(itemsDiv).html(data);
+        });
+    
+        // update starting skills
+        $.get("/classes/" + professionId + "/get_skills", function (data) {
+             $(skillsDiv).html(data);
+        });
     });
-  });
+}
 
-$('#heroes_3_hero_id').change(function() {
+// loop through the array and map functions to all 4 hero / profession selectors
+var heroArray = [1, 2, 3, 4];
 
-  var heroId = $(this).prop('value');
+for (var i = 1; i < heroArray.length + 1; i++) {
+  $("#heroes_" + i + "_hero_id").change = heroChangeFunction(i)
+  $("#heroes_" + i + "_profession_id").change = classChangeFunction(i)
+}
 
-  $.getJSON("/heroes/" + heroId + "/professions", function(data) {
-      populateDropdown($("#heroes_3_profession_id"), data);
-    });
-  });
-
-$('#heroes_4_hero_id').change(function() {
-
-  var heroId = $(this).prop('value');
-
-  $.getJSON("/heroes/" + heroId + "/professions", function(data) {
-      populateDropdown($("#heroes_4_profession_id"), data);
-    });
-  });
-
-
-
-
+// function to properly format dropdown data into options
 function populateDropdown(select, data) {
   select.html('');
   select.append($('<option>Choose a class</option>'));
   $.each(data, function(id, option) {
-  select.append($('<option></option>').val(option.id).html(option.name));
+    select.append($('<option></option>').val(option.id).html(option.name));
   });       
 }

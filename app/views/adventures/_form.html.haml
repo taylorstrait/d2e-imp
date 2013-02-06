@@ -46,9 +46,14 @@
           - for i in 1..4
             %th
               = "Hero #{i}"
-              = select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+              
   
       %tbody
+        %tr
+          %td Hero
+          - for i in 1..4
+            %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+
         %tr
           %td Class
           - for i in 1..4
