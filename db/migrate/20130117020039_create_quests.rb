@@ -6,7 +6,6 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :encounters_count, :default => 0, :null => false
       t.integer :position
       t.string :act
-      t.boolean :official_release, :default => false, :null => false
       t.integer :campaign_id
       t.integer :user_id, :null => false
       t.integer :group_id

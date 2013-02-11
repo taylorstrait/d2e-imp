@@ -82,5 +82,6 @@
   .form-actions
     - unless @adventure.complete?
       = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
-    //= link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
-    //= link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(@adventure), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+      //= link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
+      .pull-right
+        = link_to "Delete Adventure", adventure_path(@adventure), :method => "delete", :data => { :confirm => "This will irrevocably delete the adventure. Are you sure?" }, :class => 'btn btn-danger'
