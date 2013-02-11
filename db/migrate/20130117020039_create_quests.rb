@@ -9,8 +9,9 @@ class CreateQuests < ActiveRecord::Migration
       t.boolean :official_release, :default => false, :null => false
       t.integer :campaign_id
       t.integer :user_id, :null => false
+      t.integer :group_id
       t.boolean :is_official, :default => false, :null => false
-      t.boolean :is_private, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
 
       # for campaign tracking
       t.integer :reward_xp_base, :default => 1, :null => false
@@ -33,5 +34,7 @@ class CreateQuests < ActiveRecord::Migration
     add_index :quests, :name, :unique => true
     add_index :quests, :slug, :unique => true
     add_index :quests, :campaign_id
+    add_index :quests, :user_id
+    add_index :quests, :group_id
   end
 end

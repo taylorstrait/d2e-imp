@@ -11,7 +11,7 @@ class HeroesController < ApplicationController
         redirect_to heroes_url
       end
     else
-      @heroes = Hero.includes(:game, :archetype, :familiar).order(:name).all
+      @heroes = Hero.includes(:game, :archetype, :familiar).where(:is_official => true).order(:name).all
       @hero_names = Hero.pluck(:name)
     end
 
@@ -95,7 +95,8 @@ class HeroesController < ApplicationController
   def professions
     unless params[:id] == "professions"
       hero = Hero.includes(:archetype => :professions).find(params[:id])
-      render json: hero.archetype.professions, status: :created
+      professions = hero.archetype.professions.where("professions.game_id IN (?)", current_user.game_ids).all
+      render json: professions, status: :created
     else
       render json: [], status: :created
     end

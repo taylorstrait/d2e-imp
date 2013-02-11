@@ -10,10 +10,17 @@ class CreateSkills < ActiveRecord::Migration
       t.string :rule3
       t.string :rule4
       t.integer :fatigue_cost, :null => false, :default => 0
+      t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
+      t.integer :group_id
+      t.integer :user_id, :null => false
+      t.timestamps
     end
 
     add_index :skills, :name, :unique => true
     add_index :skills, :slug, :unique => true
     add_index :skills, :profession_id
+    add_index :skills, :user_id
+    add_index :skills, :group_id
   end
 end

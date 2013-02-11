@@ -20,7 +20,7 @@
       %th Info
       %th.hidden-phone Game
   %tbody
-    - @act1_items.each do |item|
+    - @items["shop_item_act_1"].each do |item|
       %tr
         %td= link_to item.name, item_path(item)
         %td.hidden-phone= item.attack_type
@@ -53,7 +53,7 @@
       %th Info
       %th.hidden-phone Game
   %tbody
-    - @act2_items.each do |item|
+    - @items["shop_item_act_2"].each do |item|
       %tr
         %td= link_to item.name, item_path(item)
         %td.hidden-phone= item.attack_type
@@ -86,7 +86,7 @@
       %th Info
       %th.hidden-phone Game
   %tbody
-    - @hero_relics.each do |item|
+    - @items["relic_heroes"].each do |item|
       %tr
         %td= link_to item.name, item_path(item)
         %td.hidden-phone= item.attack_type
@@ -114,7 +114,7 @@
       %th Info
       %th.hidden-phone Game
   %tbody
-    - @ol_relics.each do |item|
+    - @items["relic_overlord"].each do |item|
       %tr
         %td= link_to item.name, item_path(item)
         %td
@@ -124,6 +124,3 @@
           %p= fancy_output(item.trait4)
           %p= fancy_output(item.rules)
         %td.hidden-phone= item.game.short_name
-
-= if user_signed_in? && current_user.is_admin?
-  = link_to t('.new', :default => t("helpers.links.new")), new_item_path, :class => 'btn btn-primary'

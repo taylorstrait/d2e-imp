@@ -36,4 +36,16 @@ module ApplicationHelper
   def fancy_output(text)
       simple_format(add_icons(text))
   end
+
+  def sample_rating
+    output = ""
+    rand(5).times do
+      output += "<i class='icon-star' />"
+    end
+
+    return output.html_safe
+  end
+
+
+  
 end

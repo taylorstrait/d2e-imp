@@ -1,32 +1,29 @@
-- model_class = Quest
-.page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize
-%table.table.table-striped
-  %thead
-    %tr
-      %th= model_class.human_attribute_name(:name)
-      %th Encounters
-      %th Monsters
-      %th Rating
-      %th Author
+%h2 Quests
 
-  %tbody
-    - @quests.each do |quest|
+- @quests.each do |campaign, quests|
+  %h3= campaign
+  
+  %table.table.table-striped
+    %thead
       %tr
-        %td= link_to quest.name, quest
-        %td
-          %ul
-            - for encounter in quest.encounters
-              %li= link_to encounter.name, quest_encounter_url(quest, encounter)
-        %td
-          %ul
-            - for monster in quest.monsters
-              %li= link_to monster.name, monster
-        %td PLACEHOLDER
-        %td= quest.user ? (link_to quest.user.username, quest.user) : nil
-                                                                       
-- if user_signed_in?
-  = link_to t('.new', :default => t("helpers.links.new")), new_quest_path, :class => 'btn btn-primary'
-- else
-  .option_if_logged
-    #{link_to "Sign in", new_user_session_url} to create a new quest.
+        %th Name
+        %th Encounters
+        /%th Monsters
+        %th Rating
+        %th Author
+  
+    %tbody
+      - quests.each do |quest|
+        %tr
+          %td= link_to quest.name, quest
+          %td
+            %ul
+              - for encounter in quest.encounters
+                %li= link_to encounter.name, quest_encounter_url(quest, encounter)
+          /%td
+          /  %ul
+          /    - for monster in quest.monsters
+          /      %li= link_to monster.name, monster
+          %td= sample_rating
+          %td= quest.user ? (link_to quest.user.username, quest.user) : nil
+  

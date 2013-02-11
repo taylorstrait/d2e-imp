@@ -4,4 +4,11 @@ class OverlordCard < ActiveRecord::Base
 
   belongs_to :game
   has_and_belongs_to_many :adventures
+
+    private
+
+    def before_destroy
+      traits.clear
+      adventures.clear
+    end
 end

@@ -9,7 +9,9 @@ class CreateMonsters < ActiveRecord::Migration
       t.string :attack_type, :null => false, :default => "Melee"
       t.integer :game_id, :null => false
       t.integer :user_id, :null => false
+      t.integer :group_id
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
       t.text :description
 
       # MONSTER PROPERTIES
@@ -66,6 +68,8 @@ class CreateMonsters < ActiveRecord::Migration
     end
 
   add_index :monsters, :game_id
+  add_index :monsters, :user_id
+  add_index :monsters, :group_id
   add_index :monsters, :name, :unique => true
   add_index :monsters, :slug, :unique => true
 

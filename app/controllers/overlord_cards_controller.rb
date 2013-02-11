@@ -11,8 +11,8 @@ class OverlordCardsController < ApplicationController
         redirect_to heroes_url
       end
     else
-      @overlord_cards = OverlordCard.includes(:game).order(:category, :xp_cost, :name).all
-      @names = OverlordCard.pluck(:name)
+      @overlord_cards = OverlordCard.includes(:game).order(:category, :xp_cost, :name).all.group_by {|card| card.name}
+      @names = OverlordCard.pluck(:name).uniq!
     end
 
     respond_to do |format|

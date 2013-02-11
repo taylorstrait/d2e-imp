@@ -49,23 +49,27 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "adventurers_skills", ["skill_id"], :name => "index_adventurers_skills_on_skill_id"
 
   create_table "adventures", :force => true do |t|
-    t.integer  "user_id",                                    :null => false
-    t.string   "name",                                       :null => false
+    t.integer  "user_id",                                      :null => false
+    t.string   "name",                                         :null => false
     t.text     "description"
-    t.integer  "campaign_id",                                :null => false
-    t.string   "current_act",             :default => "1",   :null => false
+    t.integer  "campaign_id",                                  :null => false
+    t.string   "current_act",             :default => "Intro", :null => false
+    t.string   "winner"
+    t.datetime "completed_at"
     t.integer  "ol_user_id"
-    t.integer  "ol_available_xp",         :default => 0,     :null => false
-    t.integer  "hero_gold",               :default => 0,     :null => false
-    t.integer  "hero_starting_xp",        :default => 0,     :null => false
-    t.integer  "hero_starting_gold",      :default => 0,     :null => false
-    t.integer  "ol_starting_xp",          :default => 0,     :null => false
-    t.integer  "ol_open_group_pool_size", :default => 0,     :null => false
+    t.integer  "ol_available_xp",         :default => 0,       :null => false
+    t.integer  "hero_gold",               :default => 0,       :null => false
+    t.integer  "hero_starting_xp",        :default => 0,       :null => false
+    t.integer  "hero_starting_gold",      :default => 0,       :null => false
+    t.integer  "ol_starting_xp",          :default => 0,       :null => false
+    t.integer  "ol_open_group_pool_size", :default => 0,       :null => false
     t.boolean  "skip_intro",              :default => false
-    t.boolean  "is_private",              :default => false, :null => false
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
+    t.boolean  "is_private",              :default => false,   :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
+
+  add_index "adventures", ["user_id"], :name => "index_adventures_on_user_id"
 
   create_table "adventures_items", :force => true do |t|
     t.integer "item_id",      :null => false
@@ -99,10 +103,10 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.string   "name",                                   :null => false
     t.string   "slug",                                   :null => false
     t.integer  "quests_count",        :default => 0,     :null => false
-    t.boolean  "official_release",    :default => false, :null => false
     t.integer  "game_id"
     t.integer  "user_id",                                :null => false
     t.boolean  "is_official",         :default => false, :null => false
+    t.boolean  "is_published",        :default => false, :null => false
     t.integer  "intro_quest_id"
     t.integer  "act1_quests",         :default => 1,     :null => false
     t.integer  "interlude_heroes_id"
@@ -117,11 +121,24 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "campaigns", ["game_id"], :name => "index_campaigns_on_game_id"
   add_index "campaigns", ["name"], :name => "index_campaigns_on_name", :unique => true
   add_index "campaigns", ["slug"], :name => "index_campaigns_on_slug", :unique => true
+  add_index "campaigns", ["user_id"], :name => "index_campaigns_on_user_id"
 
   create_table "chapters", :force => true do |t|
-    t.integer  "adventure_id",                          :null => false
+    t.integer  "adventure_id"
     t.integer  "quest_id",                              :null => false
-    t.string   "winner"
+    t.string   "e1_winner"
+    t.string   "e2_winner"
+    t.string   "final_winner"
+    t.string   "e1_open_monsters"
+    t.string   "e2_open_monsters"
+    t.integer  "hero1_id"
+    t.integer  "hero2_id"
+    t.integer  "hero3_id"
+    t.integer  "hero4_id"
+    t.integer  "hero1_profession_id"
+    t.integer  "hero2_profession_id"
+    t.integer  "hero3_profession_id"
+    t.integer  "hero4_profession_id"
     t.integer  "gold_from_search_items", :default => 0, :null => false
     t.string   "items_found"
     t.string   "items_sold"
@@ -188,26 +205,34 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer  "game_id"
     t.integer  "hero_id"
     t.integer  "profession_id"
-    t.integer  "user_id",                          :null => false
     t.boolean  "is_official",   :default => false, :null => false
+    t.boolean  "is_published",  :default => false, :null => false
+    t.integer  "group_id"
+    t.integer  "user_id",                          :null => false
     t.datetime "created_at",                       :null => false
     t.datetime "updated_at",                       :null => false
   end
 
   add_index "familiars", ["game_id"], :name => "index_familiars_on_game_id"
+  add_index "familiars", ["group_id"], :name => "index_familiars_on_group_id"
   add_index "familiars", ["hero_id"], :name => "index_familiars_on_hero_id"
   add_index "familiars", ["name"], :name => "index_familiars_on_name", :unique => true
   add_index "familiars", ["profession_id"], :name => "index_familiars_on_profession_id"
   add_index "familiars", ["slug"], :name => "index_familiars_on_slug", :unique => true
+  add_index "familiars", ["user_id"], :name => "index_familiars_on_user_id"
 
   create_table "games", :force => true do |t|
-    t.string  "name",                           :null => false
-    t.string  "slug",                           :null => false
-    t.string  "short_name",                     :null => false
-    t.string  "very_short_name",                :null => false
+    t.string  "name",                                :null => false
+    t.string  "slug",                                :null => false
+    t.string  "short_name",                          :null => false
+    t.string  "very_short_name",                     :null => false
     t.string  "bgg_url"
     t.integer "expands_game_id"
-    t.integer "monsters_count",  :default => 0, :null => false
+    t.integer "monsters_count",       :default => 0, :null => false
+    t.integer "heroes_count",         :default => 0, :null => false
+    t.integer "quests_count",         :default => 0, :null => false
+    t.integer "items_count",          :default => 0, :null => false
+    t.integer "overlord_cards_count", :default => 0, :null => false
   end
 
   add_index "games", ["name"], :name => "index_games_on_name", :unique => true
@@ -230,28 +255,32 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "games_users", ["user_id"], :name => "index_games_users_on_user_id"
 
   create_table "heroes", :force => true do |t|
-    t.string   "name",                             :null => false
-    t.string   "slug",                             :null => false
+    t.string   "name",                               :null => false
+    t.string   "slug",                               :null => false
     t.integer  "game_id"
-    t.integer  "archetype_id",                     :null => false
-    t.integer  "speed",                            :null => false
-    t.integer  "health",                           :null => false
-    t.integer  "stamina",                          :null => false
-    t.string   "defense",      :default => "grey", :null => false
-    t.integer  "might",                            :null => false
-    t.integer  "knowledge",                        :null => false
-    t.integer  "willpower",                        :null => false
-    t.integer  "awareness",                        :null => false
+    t.integer  "archetype_id",                       :null => false
+    t.integer  "speed",                              :null => false
+    t.integer  "health",                             :null => false
+    t.integer  "stamina",                            :null => false
+    t.string   "defense",      :default => "{GREY}", :null => false
+    t.integer  "might",                              :null => false
+    t.integer  "knowledge",                          :null => false
+    t.integer  "willpower",                          :null => false
+    t.integer  "awareness",                          :null => false
     t.text     "ability"
     t.text     "feat"
-    t.integer  "user_id",                          :null => false
-    t.boolean  "is_official",  :default => false,  :null => false
+    t.integer  "user_id",                            :null => false
+    t.boolean  "is_official",  :default => false,    :null => false
+    t.boolean  "is_published", :default => false,    :null => false
     t.text     "description"
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.integer  "group_id"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
+  add_index "heroes", ["archetype_id"], :name => "index_heroes_on_archetype_id"
   add_index "heroes", ["game_id"], :name => "index_heroes_on_game_id"
+  add_index "heroes", ["group_id"], :name => "index_heroes_on_group_id"
   add_index "heroes", ["name"], :name => "index_heroes_on_name", :unique => true
   add_index "heroes", ["slug"], :name => "index_heroes_on_slug", :unique => true
   add_index "heroes", ["user_id"], :name => "index_heroes_on_user_id"
@@ -282,14 +311,20 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.string   "category",      :default => "shop_item_a1", :null => false
     t.integer  "profession_id"
     t.integer  "game_id"
-    t.integer  "user_id",       :default => 1,              :null => false
+    t.integer  "user_id",                                   :null => false
     t.boolean  "is_official",   :default => false,          :null => false
+    t.boolean  "is_published",  :default => false,          :null => false
+    t.integer  "group_id"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
   end
 
   add_index "items", ["game_id"], :name => "index_items_on_game_id"
+  add_index "items", ["group_id"], :name => "index_items_on_group_id"
+  add_index "items", ["name"], :name => "index_items_on_name"
+  add_index "items", ["profession_id"], :name => "index_items_on_profession_id"
   add_index "items", ["slug"], :name => "index_items_on_slug", :unique => true
+  add_index "items", ["user_id"], :name => "index_items_on_user_id"
 
   create_table "monsters", :force => true do |t|
     t.string   "name",                                      :null => false
@@ -298,7 +333,9 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.string   "attack_type",        :default => "Melee",   :null => false
     t.integer  "game_id",                                   :null => false
     t.integer  "user_id",                                   :null => false
+    t.integer  "group_id"
     t.boolean  "is_official",        :default => false,     :null => false
+    t.boolean  "is_published",       :default => false,     :null => false
     t.text     "description"
     t.integer  "num_tan2"
     t.integer  "num_red2"
@@ -341,8 +378,10 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   end
 
   add_index "monsters", ["game_id"], :name => "index_monsters_on_game_id"
+  add_index "monsters", ["group_id"], :name => "index_monsters_on_group_id"
   add_index "monsters", ["name"], :name => "index_monsters_on_name", :unique => true
   add_index "monsters", ["slug"], :name => "index_monsters_on_slug", :unique => true
+  add_index "monsters", ["user_id"], :name => "index_monsters_on_user_id"
 
   create_table "monsters_traits", :force => true do |t|
     t.integer "monster_id", :null => false
@@ -361,82 +400,107 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "monsters_users", ["user_id"], :name => "index_monsters_users_on_user_id"
 
   create_table "overlord_cards", :force => true do |t|
-    t.string   "name",                           :null => false
-    t.string   "slug",                           :null => false
-    t.string   "subclass",                       :null => false
-    t.string   "category",                       :null => false
-    t.integer  "xp_cost",     :default => 0,     :null => false
+    t.string   "name",                            :null => false
+    t.string   "slug",                            :null => false
+    t.string   "subclass",                        :null => false
+    t.string   "category",                        :null => false
+    t.integer  "xp_cost",      :default => 0,     :null => false
     t.text     "text"
-    t.integer  "user_id",                        :null => false
-    t.boolean  "is_official", :default => false, :null => false
+    t.integer  "user_id",                         :null => false
+    t.boolean  "is_official",  :default => false, :null => false
+    t.boolean  "is_published", :default => false, :null => false
     t.integer  "game_id"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.integer  "group_id"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "overlord_cards", ["game_id"], :name => "index_overlord_cards_on_game_id"
+  add_index "overlord_cards", ["group_id"], :name => "index_overlord_cards_on_group_id"
   add_index "overlord_cards", ["name"], :name => "index_overlord_cards_on_name"
   add_index "overlord_cards", ["slug"], :name => "index_overlord_cards_on_slug", :unique => true
   add_index "overlord_cards", ["user_id"], :name => "index_overlord_cards_on_user_id"
 
   create_table "professions", :force => true do |t|
-    t.string  "name",         :null => false
-    t.string  "slug",         :null => false
-    t.integer "archetype_id", :null => false
-    t.integer "game_id"
-    t.text    "description"
+    t.string   "name",                            :null => false
+    t.string   "slug",                            :null => false
+    t.integer  "archetype_id",                    :null => false
+    t.integer  "game_id"
+    t.text     "description"
+    t.boolean  "is_official",  :default => false, :null => false
+    t.boolean  "is_published", :default => false, :null => false
+    t.integer  "group_id"
+    t.integer  "user_id",                         :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   add_index "professions", ["archetype_id"], :name => "index_professions_on_archetype_id"
   add_index "professions", ["game_id"], :name => "index_professions_on_game_id"
+  add_index "professions", ["group_id"], :name => "index_professions_on_group_id"
   add_index "professions", ["name"], :name => "index_professions_on_name", :unique => true
   add_index "professions", ["slug"], :name => "index_professions_on_slug", :unique => true
+  add_index "professions", ["user_id"], :name => "index_professions_on_user_id"
 
   create_table "quests", :force => true do |t|
-    t.string   "name",                                          :null => false
-    t.string   "slug",                                          :null => false
-    t.integer  "encounters_count",           :default => 0,     :null => false
+    t.string   "name",                                              :null => false
+    t.string   "slug",                                              :null => false
+    t.integer  "encounters_count",               :default => 0,     :null => false
     t.integer  "position"
     t.string   "act"
-    t.boolean  "official_release",           :default => false, :null => false
+    t.boolean  "official_release",               :default => false, :null => false
     t.integer  "campaign_id"
-    t.integer  "user_id",                                       :null => false
-    t.boolean  "is_official",                :default => false, :null => false
-    t.integer  "reward_xp_base",             :default => 1,     :null => false
-    t.integer  "reward_xp_hero",             :default => 0,     :null => false
-    t.integer  "reward_xp_ol",               :default => 0,     :null => false
-    t.integer  "hero_win_gold",              :default => 0,     :null => false
+    t.integer  "user_id",                                           :null => false
+    t.integer  "group_id"
+    t.boolean  "is_official",                    :default => false, :null => false
+    t.boolean  "is_published",                   :default => false, :null => false
+    t.integer  "reward_xp_base",                 :default => 1,     :null => false
+    t.integer  "reward_xp_hero",                 :default => 0,     :null => false
+    t.integer  "reward_xp_ol",                   :default => 0,     :null => false
+    t.integer  "hero_win_gold",                  :default => 0,     :null => false
     t.integer  "hero_win_item_id"
     t.integer  "ol_win_item_id"
     t.integer  "hero_win_ol_lose_item_id"
     t.integer  "ol_win_heroes_lose_item_id"
+    t.integer  "hero_win_lose_overlord_card_id"
+    t.integer  "ol_win_gain_overlord_card_id"
     t.integer  "hero_win_unlock_quest_id"
     t.integer  "ol_win_unlock_quest_id"
     t.string   "hero_win_ongoing_effect"
     t.string   "ol_win_ongoing_effect"
-    t.datetime "created_at",                                    :null => false
-    t.datetime "updated_at",                                    :null => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
   end
 
   add_index "quests", ["campaign_id"], :name => "index_quests_on_campaign_id"
+  add_index "quests", ["group_id"], :name => "index_quests_on_group_id"
   add_index "quests", ["name"], :name => "index_quests_on_name", :unique => true
   add_index "quests", ["slug"], :name => "index_quests_on_slug", :unique => true
+  add_index "quests", ["user_id"], :name => "index_quests_on_user_id"
 
   create_table "skills", :force => true do |t|
-    t.integer "profession_id",                :null => false
-    t.string  "name",                         :null => false
-    t.string  "slug",                         :null => false
-    t.integer "xp_cost",       :default => 0, :null => false
-    t.string  "rule1",                        :null => false
-    t.string  "rule2"
-    t.string  "rule3"
-    t.string  "rule4"
-    t.integer "fatigue_cost",  :default => 0, :null => false
+    t.integer  "profession_id",                    :null => false
+    t.string   "name",                             :null => false
+    t.string   "slug",                             :null => false
+    t.integer  "xp_cost",       :default => 0,     :null => false
+    t.string   "rule1",                            :null => false
+    t.string   "rule2"
+    t.string   "rule3"
+    t.string   "rule4"
+    t.integer  "fatigue_cost",  :default => 0,     :null => false
+    t.boolean  "is_official",   :default => false, :null => false
+    t.boolean  "is_published",  :default => false, :null => false
+    t.integer  "group_id"
+    t.integer  "user_id",                          :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
+  add_index "skills", ["group_id"], :name => "index_skills_on_group_id"
   add_index "skills", ["name"], :name => "index_skills_on_name", :unique => true
   add_index "skills", ["profession_id"], :name => "index_skills_on_profession_id"
   add_index "skills", ["slug"], :name => "index_skills_on_slug", :unique => true
+  add_index "skills", ["user_id"], :name => "index_skills_on_user_id"
 
   create_table "traits", :force => true do |t|
     t.string "name",  :null => false
@@ -449,6 +513,8 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
 
   create_table "users", :force => true do |t|
     t.string   "username",                                   :null => false
+    t.string   "first_name"
+    t.string   "last_name"
     t.string   "role",                   :default => "user", :null => false
     t.string   "country"
     t.string   "city"
@@ -465,9 +531,6 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
   end

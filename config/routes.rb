@@ -1,5 +1,6 @@
 Monsters::Application.routes.draw do
 
+  match 'chapters/new_standalone' => "chapters#new_standalone", :as => :new_standalone_chapter, :via => :get
   resources :chapters
 
 

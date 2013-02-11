@@ -4,25 +4,32 @@
   - else
     Recent Adventures
 
-%table.table.table-striped.sortable-table
-  %thead
-    %tr
-      %th Name
-      %th Campaign
-      %th Last Quest
-      %th Heroes
-      %th Owner
-      %th Last Update
-  %tbody
-    - @adventures.each do |adventure|
+- if @adventures
+  %table.table.table-striped.sortable-table
+    %thead
       %tr
-        %td= link_to adventure.name, adventure_path(adventure)
-        %td= adventure.campaign.name
-        %td= link_to adventure.chapters.last.quest.name, adventure.chapters.last
-        %td
-          - adventure.adventurers.each do |adventurer|
-            %p
-              = link_to(adventurer.hero.name, adventurer.hero)
-              =" (#{adventurer.profession.name})"
-        %td= link_to adventure.user.username, adventure.user
-        %td=l adventure.updated_at
+        %th Name
+        %th Campaign
+        %th Last Quest
+        %th Heroes
+        %th Owner
+        %th Last Update
+    %tbody
+      - @adventures.each do |adventure|
+        %tr
+          %td= link_to adventure.name, adventure_path(adventure)
+          %td= adventure.campaign.name
+          %td
+            - if adventure.chapters.size > 0
+              =link_to adventure.chapters.last.quest.name, adventure.chapters.last
+          %td
+            - adventure.adventurers.each do |adventurer|
+              %p
+                = link_to(adventurer.hero.name, adventurer.hero)
+                =" (#{adventurer.profession.name})"
+          %td= link_to adventure.user.username, adventure.user
+          %td=l adventure.updated_at  
+
+- else
+  %p== No adventures found. Would you like to #{link_to("start a new adventure", new_adventure_path)}?
+  

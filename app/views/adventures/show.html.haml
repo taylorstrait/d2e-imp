@@ -49,6 +49,28 @@
   /- for card in @adventure.overlord_cards
   /  %p= link_to card.name, card
 
+.row-fluid
+  %h2 Chapters
+  
+  %table.table.table-striped
+    %thead
+      %tr
+        %th Quest
+        %th Winner
+        %th Gold Earned
+        %th Heroes
+        %th Owner
+        %th Date
+    %tbody
+      - @adventure.chapters.each do |chapter|
+        %tr
+          %td= link_to chapter.quest.name, chapter.quest
+          %td= chapter.winner
+          %td= chapter.total_gold_earned
+          %td HEROES
+          %td= link_to chapter.user.username, chapter.user
+          %td=l chapter.created_at
+
 - if current_user.try(:is_admin?) || (current_user == @adventure.user)
 
   .form-actions

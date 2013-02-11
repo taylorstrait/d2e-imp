@@ -14,19 +14,18 @@
       %th Type
       %th= model_class.human_attribute_name(:category)
       %th= model_class.human_attribute_name(:xp_cost)
-      %th= model_class.human_attribute_name(:text)
+      %th Rating
       %th Game
 
   %tbody
-    - @overlord_cards.each do |overlord_card|
+    - @overlord_cards.each do |name, overlord_card|
       %tr
-        %td= link_to overlord_card.name, overlord_card_path(overlord_card)
-    
-        %td= overlord_card.subclass
-        %td= overlord_card.category
-        %td= overlord_card.xp_cost
-        %td= overlord_card.text
-        %td= link_to overlord_card.game.very_short_name, overlord_card.game
-
-- if user_signed_in? && current_user.is_admin?
-  = link_to t('.new', :default => t("helpers.links.new")), new_overlord_card_path, :class => 'btn btn-primary'
+        %td
+          = link_to name, overlord_card_path(overlord_card)
+          - if overlord_card.size > 1
+            = " x #{overlord_card.size}"
+        %td= overlord_card.first.subclass
+        %td= overlord_card.first.category
+        %td= overlord_card.first.xp_cost
+        %td= sample_rating
+        %td= link_to overlord_card.first.game.very_short_name, overlord_card.first.game

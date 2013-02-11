@@ -4,11 +4,10 @@ class CreateCampaigns < ActiveRecord::Migration
       t.string :name, :null => false
       t.string :slug, :null => false
       t.integer :quests_count, :default => 0, :null => false
-      t.boolean :official_release, :default => false, :null => false
       t.integer :game_id
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
-      t.boolean :is_private, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
 
       # for campaign tracking
       t.integer :intro_quest_id
@@ -24,5 +23,6 @@ class CreateCampaigns < ActiveRecord::Migration
     add_index :campaigns, :name, :unique => true
     add_index :campaigns, :slug, :unique => true
     add_index :campaigns, :game_id
+    add_index :campaigns, :user_id
   end
 end

@@ -11,11 +11,8 @@ class ItemsController < ApplicationController
         redirect_to items_url
       end
     else
-      @act1_items = Item.includes(:game).where(:category => 'shop_item_act_1').order(:name).all
-      @act2_items = Item.includes(:game).where(:category => 'shop_item_act_2').order(:name).all
-      @hero_relics = Item.includes(:game).where(:category => 'relic_heroes').order(:name).all
-      @ol_relics = Item.includes(:game).where(:category => 'relic_overlord').order(:name).all
-      @item_names = Item.pluck(:name)
+      @items = Item.includes(:game).where(:is_official => true).order(:name).all.group_by {|item| item.category}
+      @item_names = Item.pluck(:name).uniq!
     end
 
     respond_to do |format|

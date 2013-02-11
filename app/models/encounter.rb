@@ -80,4 +80,12 @@ class Encounter < ActiveRecord::Base
 
   end
 
+  private
+
+    def before_destroy
+      traits.clear
+      monsters.clear
+    end
+
+
 end

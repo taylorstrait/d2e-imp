@@ -9,7 +9,9 @@ class CreateOverlordCards < ActiveRecord::Migration
       t.text :text
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
       t.integer :game_id
+      t.integer :group_id
       t.timestamps
     end
 
@@ -17,5 +19,6 @@ class CreateOverlordCards < ActiveRecord::Migration
     add_index :overlord_cards, :slug, :unique => true
     add_index :overlord_cards, :user_id
     add_index :overlord_cards, :game_id
+    add_index :overlord_cards, :group_id
   end
 end

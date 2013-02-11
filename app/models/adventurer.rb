@@ -13,4 +13,13 @@ class Adventurer < ActiveRecord::Base
     profession.skills.where("id NOT IN (?)", self.skill_ids).order("xp_cost DESC", :name).all
   end
 
+    private
+
+    def before_destroy
+      adventures.clear
+      items.clear
+      skills.clear
+    end
+
+
 end

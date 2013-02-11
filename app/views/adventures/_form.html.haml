@@ -1,6 +1,6 @@
 
 = form_for @adventure do |f|
-  .roow-fluid
+  .row-fluid
     .control-group
       = f.label :name, :class => 'control-label'
       .controls
@@ -8,7 +8,7 @@
     .control-group
       = f.label :description, :class => 'control-label'
       .controls
-        = f.text_area :description, :class => 'text_area'
+        = f.text_area :description, :class => 'text_area span6', :rows => 6
     .control-group
       = f.label :campaign_id, :class => 'control-label'
       .controls
@@ -46,9 +46,11 @@
           - for i in 1..4
             %th
               = "Hero #{i}"
-              
-  
+              %div.label.label-button{:id => "randomize_hero_#{i}"}
+                random
+
       %tbody
+
         %tr
           %td Hero
           - for i in 1..4

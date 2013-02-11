@@ -31,13 +31,17 @@ class ChaptersController < ApplicationController
     completed_quests = @adventure.chapters.pluck(:quest_id)
 
     if @adventure.current_act == "Intro"
-      @available_quests = @adventure.campaign.quests.where(:act => "Intro").first
+      @available_quests = @adventure.campaign.quests.where(:act => "Intro").first #call first to force it to load
     
     elsif @adventure.current_act == "1"
-      @available_quests = @adventure.campaign.quests.where('id NOT IN (?)', completed_quests).where(:act => @adventure.current_act).order(:name).all
-    
+      if completed_quests.empty?
+        @available_quests = @adventure.campaign.quests.where(:act => @adventure.current_act).order(:name).all
+      else
+        @available_quests = @adventure.campaign.quests.where('id NOT IN (?)', completed_quests).where(:act => @adventure.current_act).order(:name).all
+      end
+
     elsif @adventure.current_act == "Interlude"
-      if @adventure.chapters.where(:winner => "Heroes").size >= (@adventure.campaign.act1_quests.to_f / 2).round
+      if @adventure.chapters.where(:final_winner => "Heroes").size >= (@adventure.campaign.act1_quests.to_f / 2).round
         @available_quests = Quest.find(@adventure.campaign.interlude_heroes_id)
       else
         @available_quests = Quest.find(@adventure.campaign.interlude_ol_id)
@@ -46,7 +50,7 @@ class ChaptersController < ApplicationController
     elsif @adventure.current_act == "2"
       act2_quests = []
       @adventure.chapters.each do |chapter|
-        if chapter.winner == "Heroes"
+        if chapter.final_winner == "Heroes"
           act2_quests << chapter.quest.hero_win_unlock_quest_id
         else
           act2_quests << chapter.quest.ol_win_unlock_quest_id
@@ -56,8 +60,10 @@ class ChaptersController < ApplicationController
       end
     
     elsif @adventure.current_act == "Finale"
-      @finale = true
-      if @adventure.chapters.joins(:quest).where(:winner => "Heroes").where(:quests => {:act => "2"}).size >= (@adventure.campaign.act2_quests.to_f / 2).round
+
+      @finale = true # set variable to shorten form view
+
+      if @adventure.chapters.joins(:quest).where(:final_winner => "Heroes").where(:quests => {:act => "2"}).size >= (@adventure.campaign.act2_quests.to_f / 2).round
         @available_quests = Quest.find(@adventure.campaign.finale_heroes_id)
       else
         @available_quests = Quest.find(@adventure.campaign.finale_ol_id)
@@ -66,6 +72,8 @@ class ChaptersController < ApplicationController
 
 
     # create list of available items for finding or purchase
+
+    # create the exclusion list
     owned_item_ids = []
     @adventure.adventurers.each do |hero|
       owned_item_ids << hero.item_ids
@@ -73,9 +81,9 @@ class ChaptersController < ApplicationController
     owned_item_ids.flatten!
 
     if (@adventure.current_act == "1") || (@adventure.current_act == "Interlude")
-      @available_items = Item.where(:category => "shop_item_act_1").where("id NOT IN (?)", owned_item_ids).order(:name).all
+      @available_items = Item.where(:category => "shop_item_act_1").where("id NOT IN (?)", owned_item_ids).where("game_id IN (?)", @adventure.user.game_ids).order(:name).all
     else
-      @available_items = Item.where(:category => "shop_item_act_2").order(:name).all
+      @available_items = Item.where(:category => "shop_item_act_2").where("game_id IN (?)", @adventure.user.game_ids).order(:name).all
     end
 
     # create list of sellable items
@@ -87,6 +95,18 @@ class ChaptersController < ApplicationController
       format.json { render json: @chapter }
     end
   end
+
+    def new_standalone
+    @chapter = Chapter.new
+    @quest = Quest.find(params[:quest_id])
+    @heroes = Hero.select([:name, :id, :slug]).order(:name).all
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @chapter }
+    end
+  end
+
 
   # GET /chapters/1/edit
   def edit
@@ -108,6 +128,9 @@ class ChaptersController < ApplicationController
         campaign = adventure.campaign
         completed_quests = adventure.quests
 
+        # set the winner based on number of encounters
+        winner = @chapter.final_winner
+
         # update campaign status
         if adventure.current_act == "Intro"
           adventure.current_act = "1"
@@ -122,7 +145,7 @@ class ChaptersController < ApplicationController
 
         ###### start with XP #####
 
-        if @chapter.winner == "Heroes"
+        if winner = "Heroes"
           total_hero_xp = (quest.reward_xp_base + quest.reward_xp_hero)
           total_ol_xp = quest.reward_xp_base
         else
@@ -141,13 +164,13 @@ class ChaptersController < ApplicationController
 
 
         ##### Search gold ####
-        if @chapter.winner == "Heroes" then adventure.hero_gold += (quest.hero_win_gold * adventure.adventurers.size) end
-        adventure.hero_gold += @chapter.gold_from_search_items
+        if winner == "Heroes" then adventure.hero_gold += (quest.hero_win_gold * adventure.adventurers.size) end
+        #adventure.hero_gold += @chapter.gold_from_search_items
         adventure.save
 
 
         #####add the reward items, if applicable #####
-        if @chapter.winner == "Heroes"
+        if winner == "Heroes"
 
           if quest.hero_win_item_id.present?
             adventure.adventurers.first.items << Item.find(quest.hero_win_item_id)
@@ -157,7 +180,7 @@ class ChaptersController < ApplicationController
             adventure.items.delete(Item.find(quest.hero_win_ol_lose_item_id))
           end
 
-        elsif @chapter.winner == "Overlord"
+        elsif winner == "Overlord"
 
           if quest.ol_win_item_id.present?
             adventure.items << Item.find(quest.ol_win_item_id)
@@ -175,39 +198,46 @@ class ChaptersController < ApplicationController
           end
         end
 
-        # add found item
-        unless v['found_item'].blank?
-          hero.items << Item.find(v['found_item'].to_i)
-        end
+        # iterate through heroes and adjust items based on found, bought, and sold
 
-        # sell items
-        unless v['sold_items'].blank?
-          v['sold_items'].each do |item_id|
-            sold_item = Item.find(item_id.to_i)
-            adventure.hero_gold += sold_item.sell_cost
-            adventure.save
-            hero.items.delete(sold_item)
+        params[:adventurers].each do |k,v|
+
+          hero = Adventurer.find(k.to_i)
+
+          # add found item
+          unless v['found_item'].blank?
+            hero.items << Item.find(v['found_item'].to_i)
           end
-        end
-
-        # add  bought items
-        
-        v['bought_items'].each do |item_id|
-          unless item_id.blank?
-            bought_item = Item.find(item_id.to_i)
-            hero.items << bought_item
-            adventure.hero_gold -= bought_item.buy_cost
-            adventure.save
+  
+          # sell items
+          unless v['sold_items'].blank?
+            v['sold_items'].each do |item_id|
+              sold_item = Item.find(item_id.to_i)
+              adventure.hero_gold += sold_item.sell_cost
+              adventure.save
+              hero.items.delete(sold_item)
+            end
           end
-        end
-
-        # add new skills
-        unless v['new_skills'].blank?
-          v['new_skills'].each do |skill_id|
-            new_skill = Skill.find(skill_id.to_i)
-            hero.skills << new_skill
-            hero.available_xp -= new_skill.xp_cost
-            hero.save
+  
+          # add  bought items
+          
+          v['bought_items'].each do |item_id|
+            unless item_id.blank?
+              bought_item = Item.find(item_id.to_i)
+              hero.items << bought_item
+              adventure.hero_gold -= bought_item.buy_cost
+              adventure.save
+            end
+          end
+  
+          # add new skills
+          unless v['new_skills'].blank?
+            v['new_skills'].each do |skill_id|
+              new_skill = Skill.find(skill_id.to_i)
+              hero.skills << new_skill
+              hero.available_xp -= new_skill.xp_cost
+              hero.save
+            end
           end
         end
 

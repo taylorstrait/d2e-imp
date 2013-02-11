@@ -4,6 +4,8 @@ class DeviseCreateUsers < ActiveRecord::Migration
       
       # Profile data
       t.string :username, :null => false
+      t.string :first_name
+      t.string :last_name
       t.string :role, :null => false, :default => 'user'
       t.string :country
       t.string :city
@@ -30,9 +32,9 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :last_sign_in_ip
 
       ## Confirmable
-      t.string   :confirmation_token
-      t.datetime :confirmed_at
-      t.datetime :confirmation_sent_at
+      # t.string   :confirmation_token
+      # t.datetime :confirmed_at
+      # t.datetime :confirmation_sent_at
       # t.string   :unconfirmed_email # Only if using reconfirmable
 
       ## Lockable

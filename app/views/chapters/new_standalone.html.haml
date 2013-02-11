@@ -1,0 +1,54 @@
+%h2 New Standalone Chapter
+
+= form_for @chapter, :html => { :class => 'form-horizontal' } do |f|
+
+  = f.hidden_field :user_id, :value => current_user.id
+
+  .control-group
+    = f.label :quest_id, "Quest", :class => 'control-label'
+    .controls
+      = f.select :quest_id, "<option value=#{@quest.id}>#{@quest.name}</option>".html_safe
+
+  .control-group
+    = f.label :e1_winner, "Encounter 1 Winner", :class => 'control-label'
+    .controls
+      = f.select :e1_winner, options_for_select(%w[Heroes Overlord Contested]), :class => 'text_field', :prompt => "Choose a winner..."  
+
+  .control-group
+    = f.label :e2_winner, "Encounter 2 Winner", :class => 'control-label'
+    .controls
+      = f.select :e2_winner, options_for_select(%w[Heroes Overlord]), :class => 'text_field', :prompt => "Choose a winner..."
+  
+  .control-group
+    = f.label :gold_from_search_items, :class => 'control-label'
+    .controls
+      = f.number_field :gold_from_search_items, :class => 'number_field'
+
+  .row-fluid
+    %table.table.table-striped
+      %thead
+        %tr
+          %th
+          - for i in 1..4
+            %th
+              = "Hero #{i}"          
+  
+      %tbody
+        %tr
+          %td Hero
+          - for i in 1..4
+            %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+
+        %tr
+          %td Class
+          - for i in 1..4
+            %td= select_tag("heroes[#{i}][profession_id]", {}, {:class => 'class-select input-medium'})
+  
+  .control-group
+    = f.label :report, :class => 'control-label'
+    .controls
+      = f.text_area :report, :class => 'text_area', :rows => 6
+
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), chapters_path, :class => 'btn'

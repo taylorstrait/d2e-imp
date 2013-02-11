@@ -1,27 +1,39 @@
-- model_class = Campaign
-.page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize
+%h2 Official Campaigns
 %table.table.table-striped
   %thead
     %tr
 
-      %th= model_class.human_attribute_name(:name)
+      %th Name
       %th Created By
       %th Rating
       %th Game
-      %th= model_class.human_attribute_name(:created_at)
+      %th Created
 
   %tbody
-    - @campaigns.each do |campaign|
+    - @campaigns[true].each do |campaign| # is_official = true
       %tr
         %td= link_to campaign.name, campaign_path(campaign)
         %td= link_to campaign.user.username, campaign.user
-        %td PLACEHOLDER
+        %td= sample_rating
         %td= if campaign.game then link_to(campaign.game.short_name, campaign.game) end
         %td= l campaign.created_at                                                                      
 
-- if user_signed_in?
-  = link_to t('.new', :default => t("helpers.links.new")), new_campaign_path, :class => 'btn btn-primary'
-- else
-  .option_if_logged
-    #{link_to "Sign in", new_user_session_url} to create a new campaign.
+
+- if @campaigns[false] # is_official = false
+  %h2 User Campaigns
+  %table.table.table-striped
+    %thead
+      %tr
+  
+        %th Name
+        %th Created By
+        %th Rating
+        %th Created
+  
+    %tbody
+      - @campaigns[false].each do |campaign|
+        %tr
+          %td= link_to campaign.name, campaign_path(campaign)
+          %td= link_to campaign.user.username, campaign.user
+          %td= sample_rating
+          %td= l campaign.created_at                                                                      

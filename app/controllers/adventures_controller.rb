@@ -18,7 +18,7 @@ class AdventuresController < ApplicationController
   # GET /adventures/1
   # GET /adventures/1.json
   def show
-    @adventure = Adventure.includes(:adventurers => [:profession, :hero, :items, :skills]).find(params[:id])
+    @adventure = Adventure.includes(:chapters, :adventurers => [:profession, :hero, :items, :skills]).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -30,11 +30,18 @@ class AdventuresController < ApplicationController
   # GET /adventures/new.json
   def new
     if user_signed_in?
-      @campaigns = Campaign.where(:is_official => true).all
-      @heroes = Hero.order(:name).all
-      @adventure = Adventure.new
+      
+      if current_user.game_ids.empty? # no games or figures?
+        flash[:notice] = "You must set up your owned games and figures to start a new adventure."
+        redirect_to :edit_user_registration
 
-    else
+      else # start a new adventure
+        @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
+        @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).all
+        @adventure = Adventure.new
+      end
+
+    else # not signed in
       flash[:notice] = "You must be signed in to start a new adventure."
       redirect_to :new_user_session
     end

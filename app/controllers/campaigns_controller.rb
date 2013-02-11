@@ -2,7 +2,7 @@ class CampaignsController < ApplicationController
   # GET /campaigns
   # GET /campaigns.json
   def index
-    @campaigns = Campaign.includes(:game, :user).all
+    @campaigns = Campaign.includes(:game, :user).all.group_by {|campaign| campaign.is_official}
 
     respond_to do |format|
       format.html # index.html.erb

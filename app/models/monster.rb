@@ -8,4 +8,12 @@ class Monster < ActiveRecord::Base
   has_and_belongs_to_many :encounters
   has_and_belongs_to_many :users
 
+    private
+
+    def before_destroy
+      traits.clear
+      encounters.clear
+      users.clear
+    end
+
 end

@@ -8,7 +8,7 @@ class CreateHeroes < ActiveRecord::Migration
       t.integer :speed, :null => false
       t.integer :health, :null => false
       t.integer :stamina, :null => false
-      t.string :defense, :null => false, :default => "grey"
+      t.string :defense, :null => false, :default => "{GREY}"
       t.integer :might, :null => false
       t.integer :knowledge, :null => false
       t.integer :willpower, :null => false
@@ -17,6 +17,7 @@ class CreateHeroes < ActiveRecord::Migration
       t.text :feat
       t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
       t.text :description
       t.integer :group_id
       t.timestamps
@@ -24,7 +25,9 @@ class CreateHeroes < ActiveRecord::Migration
 
     add_index :heroes, :name, :unique => true
     add_index :heroes, :slug, :unique => true
+    add_index :heroes, :archetype_id
     add_index :heroes, :user_id
     add_index :heroes, :game_id
+    add_index :heroes, :group_id
   end
 end

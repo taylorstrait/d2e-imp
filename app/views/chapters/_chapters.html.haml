@@ -1,0 +1,23 @@
+%h2 Chapters
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Quest
+      %th Winner
+      %th Gold Earned
+      %th Items Found
+      %th Heroes
+      %th Owner
+      %th Date
+  %tbody
+    - chapters.each do |chapter|
+      %tr
+        %td= link_to chapter.quest.name, chapter.quest
+        %td= chapter.winner
+        %td= chapter.gold_from_search_items
+        %td= chapter.items_found
+        %td= HEROES
+        %td= chapter.report
+        %td= link_to chapter.user.username, chapter.user
+        %td=l chapter.created_at

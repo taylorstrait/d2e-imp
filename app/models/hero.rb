@@ -8,4 +8,11 @@ class Hero < ActiveRecord::Base
   belongs_to :archetype
   has_and_belongs_to_many :users
   has_one :familiar
+
+    private
+
+    def before_destroy
+      user.clear
+    end
+
 end

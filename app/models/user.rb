@@ -4,11 +4,12 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :heroes
   has_and_belongs_to_many :monsters
   has_many :adventures
+  has_many :chapters
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :confirmable,
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
@@ -19,4 +20,11 @@ class User < ActiveRecord::Base
     self.role == "admin"
   end
 
+    private
+
+    def before_destroy
+      games.clear
+      heroes.clear
+      monsters.clear
+    end
 end

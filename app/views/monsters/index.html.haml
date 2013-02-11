@@ -95,7 +95,3 @@
         /%td= monster.knowledge
         /%td= monster.willpower
         /%td= monster.awareness
-
-- if user_signed_in? && current_user.is_admin?
-
-  = link_to t('.new', :default => t("helpers.links.new")), new_monster_path, :class => 'btn btn-primary'

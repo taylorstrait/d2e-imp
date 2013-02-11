@@ -1,7 +1,7 @@
 class SearchController < ApplicationController
 
   def index
-    [Campaign, Quest, Hero, Monster, Item, Skill, Familiar].each do |thing|
+    [Campaign, Quest, Hero, Monster, Item, Skill, Familiar, OverlordCard].each do |thing|
       found_object = thing.find_by_name(params[:name])
       if found_object
         redirect_to found_object and return

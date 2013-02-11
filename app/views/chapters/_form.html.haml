@@ -10,14 +10,18 @@
         = f.collection_select :quest_id, @available_quests, :id, :name, :prompt => "Choose a quest..."
       - elsif @available_quests.class
         = f.select :quest_id, "<option value=#{@available_quests.id}>#{@available_quests.name}</option>".html_safe
-
     #open_groups_partial
       
 
   .control-group
-    = f.label :winner, :class => 'control-label'
+    = f.label :e1_winner, "Encounter 1 Winner", :class => 'control-label'
     .controls
-      = f.select :winner, options_for_select(%w[Heroes Overlord]), :class => 'text_field', :prompt => "Choose a winner..."
+      = f.select :e1_winner, options_for_select(%w[Heroes Overlord Contested]), :class => 'text_field', :prompt => "Choose a winner..."  
+
+  .control-group
+    = f.label :e2_winner, "Encounter 2 Winner", :class => 'control-label'
+    .controls
+      = f.select :e2_winner, options_for_select(%w[Heroes Overlord]), :class => 'text_field', :prompt => "Choose a winner..."
   
   - unless @finale
     .control-group
@@ -72,7 +76,7 @@
   .control-group
     = f.label :report, :class => 'control-label'
     .controls
-      = f.text_area :report, :class => 'text_area'
+      = f.text_area :report, :class => 'text_area', :rows => 6
 
   .form-actions
     = f.submit nil, :class => 'btn btn-primary'

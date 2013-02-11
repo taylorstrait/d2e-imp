@@ -15,8 +15,10 @@ class CreateFamiliars < ActiveRecord::Migration
       t.integer :game_id
       t.integer :hero_id
       t.integer :profession_id
-      t.integer :user_id, :null => false
       t.boolean :is_official, :default => false, :null => false
+      t.boolean :is_published, :default => false, :null => false
+      t.integer :group_id
+      t.integer :user_id, :null => false
       t.timestamps
     end
 
@@ -25,5 +27,7 @@ class CreateFamiliars < ActiveRecord::Migration
     add_index :familiars, :game_id
     add_index :familiars, :hero_id
     add_index :familiars, :profession_id
+    add_index :familiars, :user_id
+    add_index :familiars, :group_id
   end
 end

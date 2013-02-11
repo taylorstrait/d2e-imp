@@ -11,7 +11,7 @@ class MonstersController < ApplicationController
         redirect_to monsters_url
       end
     else
-      @monsters = Monster.includes(:game).order(:name).all
+      @monsters = Monster.includes(:game).where(:is_offical => true).order(:name).all
       @monster_names = Monster.pluck(:name)
     end
 
