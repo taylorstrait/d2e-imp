@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :birthdate, :bgg_profile_name, :game_ids, :monster_ids, :hero_ids, :role
   # attr_accessible :title, :body
 
+validates :username, :presence => true, :uniqueness => true
+validates :password, :presence => true
+validates :password_confirmation, :presence => true
+
   def is_admin?
     self.role == "admin"
   end

@@ -11,6 +11,10 @@ class Adventure < ActiveRecord::Base
   validates :campaign_id, :presence => true
   validates :user_id, :presence => true
 
+  def complete?
+    completed_at.present?
+  end
+
   private
 
     def before_destroy

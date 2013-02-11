@@ -61,7 +61,7 @@ class ChaptersController < ApplicationController
     
     elsif @adventure.current_act == "Finale"
 
-      @finale = true # set variable to shorten form view
+      @standalone = true # set variable to shorten form view
 
       if @adventure.chapters.joins(:quest).where(:final_winner => "Heroes").where(:quests => {:act => "2"}).size >= (@adventure.campaign.act2_quests.to_f / 2).round
         @available_quests = Quest.find(@adventure.campaign.finale_heroes_id)
@@ -80,7 +80,7 @@ class ChaptersController < ApplicationController
     end
     owned_item_ids.flatten!
 
-    if (@adventure.current_act == "1") || (@adventure.current_act == "Interlude")
+    if ["Intro", "1", "Interlude"].include?(@adventure.current_act)
       @available_items = Item.where(:category => "shop_item_act_1").where("id NOT IN (?)", owned_item_ids).where("game_id IN (?)", @adventure.user.game_ids).order(:name).all
     else
       @available_items = Item.where(:category => "shop_item_act_2").where("game_id IN (?)", @adventure.user.game_ids).order(:name).all
@@ -145,7 +145,7 @@ class ChaptersController < ApplicationController
 
         ###### start with XP #####
 
-        if winner = "Heroes"
+        if winner == "Heroes"
           total_hero_xp = (quest.reward_xp_base + quest.reward_xp_hero)
           total_ol_xp = quest.reward_xp_base
         else
@@ -200,45 +200,53 @@ class ChaptersController < ApplicationController
 
         # iterate through heroes and adjust items based on found, bought, and sold
 
-        params[:adventurers].each do |k,v|
+        unless params[:standalone] == "true"
 
-          hero = Adventurer.find(k.to_i)
+          params[:adventurers].each do |k,v|
 
-          # add found item
-          unless v['found_item'].blank?
-            hero.items << Item.find(v['found_item'].to_i)
-          end
+            hero = Adventurer.find(k.to_i)
   
-          # sell items
-          unless v['sold_items'].blank?
-            v['sold_items'].each do |item_id|
-              sold_item = Item.find(item_id.to_i)
-              adventure.hero_gold += sold_item.sell_cost
-              adventure.save
-              hero.items.delete(sold_item)
+            # add found item
+            unless v['found_item'].blank?
+              hero.items << Item.find(v['found_item'].to_i)
+            end
+    
+            # sell items
+            unless v['sold_items'].blank?
+              v['sold_items'].each do |item_id|
+                sold_item = Item.find(item_id.to_i)
+                adventure.hero_gold += sold_item.sell_cost
+                adventure.save
+                hero.items.delete(sold_item)
+              end
+            end
+    
+            # add  bought items
+            
+            v['bought_items'].each do |item_id|
+              unless item_id.blank?
+                bought_item = Item.find(item_id.to_i)
+                hero.items << bought_item
+                adventure.hero_gold -= bought_item.buy_cost
+                adventure.save
+              end
+            end
+    
+            # add new skills
+            unless v['new_skills'].blank?
+              v['new_skills'].each do |skill_id|
+                new_skill = Skill.find(skill_id.to_i)
+                hero.skills << new_skill
+                hero.available_xp -= new_skill.xp_cost
+                hero.save
+              end
             end
           end
-  
-          # add  bought items
-          
-          v['bought_items'].each do |item_id|
-            unless item_id.blank?
-              bought_item = Item.find(item_id.to_i)
-              hero.items << bought_item
-              adventure.hero_gold -= bought_item.buy_cost
-              adventure.save
-            end
-          end
-  
-          # add new skills
-          unless v['new_skills'].blank?
-            v['new_skills'].each do |skill_id|
-              new_skill = Skill.find(skill_id.to_i)
-              hero.skills << new_skill
-              hero.available_xp -= new_skill.xp_cost
-              hero.save
-            end
-          end
+        end
+
+        # is it the finale?
+        if quest.act == "Finale"
+          adventure.update_attribute(:completed_at, Time.now)
         end
 
         format.html { redirect_to adventure, notice: 'Chapter was successfully created.' }

@@ -52,28 +52,35 @@
 .row-fluid
   %h2 Chapters
   
-  %table.table.table-striped
+  %table.table
     %thead
       %tr
+        %th Act
         %th Quest
         %th Winner
+        %th Item
         %th Gold Earned
-        %th Heroes
-        %th Owner
         %th Date
     %tbody
       - @adventure.chapters.each do |chapter|
-        %tr
+        %tr{:class => chapter.final_winner == "Overlord" ? "ol_win" : nil}
+          %td= chapter.quest.act
           %td= link_to chapter.quest.name, chapter.quest
-          %td= chapter.winner
+          %td= chapter.final_winner
+          %td
+            - if chapter.final_winner == "Heroes"
+              -if chapter.quest.hero_win_item_id
+                = Item.find(chapter.quest.hero_win_item_id).name
+            - else
+              -if chapter.quest.ol_win_item_id
+                = Item.find(chapter.quest.ol_win_item_id).name
           %td= chapter.total_gold_earned
-          %td HEROES
-          %td= link_to chapter.user.username, chapter.user
           %td=l chapter.created_at
 
 - if current_user.try(:is_admin?) || (current_user == @adventure.user)
 
   .form-actions
-    = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
-    = link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
-    = link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(@adventure), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
+    - unless @adventure.complete?
+      = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
+    //= link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
+    //= link_to t('.destroy', :default => t("helpers.links.destroy")), adventure_path(@adventure), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

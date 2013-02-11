@@ -2,6 +2,7 @@
 
   = f.hidden_field :adventure_id, :value => params[:adventure_id]
   = f.hidden_field :user_id, :value => current_user.id
+  = hidden_field_tag :standalone, @standalone
 
   .control-group
     = f.label :quest_id, "Quest", :class => 'control-label'
@@ -23,7 +24,7 @@
     .controls
       = f.select :e2_winner, options_for_select(%w[Heroes Overlord]), :class => 'text_field', :prompt => "Choose a winner..."
   
-  - unless @finale
+  - unless @standalone
     .control-group
       = f.label :gold_from_search_items, :class => 'control-label'
       .controls
