@@ -21,9 +21,11 @@
     - @overlord_cards.each do |name, overlord_card|
       %tr
         %td
-          = link_to name, overlord_card_path(overlord_card)
           - if overlord_card.size > 1
+            = link_to name, overlord_card_path(overlord_card.first)
             = " x #{overlord_card.size}"
+          - else
+            = link_to name, overlord_card_path(overlord_card)
         %td= overlord_card.first.subclass
         %td= overlord_card.first.category
         %td= overlord_card.first.xp_cost
