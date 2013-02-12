@@ -20,7 +20,7 @@
       - @adventures.each do |adventure|
         
         -# unless the adventure is private and not owned by user
-        - unless (adventure.is_private?) && (adventure.user != current_user) && !current_user.is_admin?
+        - unless (adventure.is_private?) && (adventure.user != current_user) && !current_user.try(:is_admin?)
 
           -# create the row
           %tr
