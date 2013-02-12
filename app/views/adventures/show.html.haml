@@ -7,13 +7,13 @@
       %th
       - for adventurer in @adventure.adventurers
         %th
-          = adventurer.hero.name
+          = link_to adventurer.hero.name, adventurer.hero
 
     %tbody
       %tr
         %td Class
         - for adventurer in @adventure.adventurers
-          %td= adventurer.profession.name
+          %td= link_to adventurer.profession.name, class_path(adventurer.profession)
   
       %tr
         %td Items
@@ -70,18 +70,21 @@
           %td
             - if chapter.final_winner == "Heroes"
               -if chapter.quest.hero_win_item_id
-                = Item.find(chapter.quest.hero_win_item_id).name
+                - item = Item.find(chapter.quest.hero_win_item_id)
+                = link_to item.name, item
             - else
               -if chapter.quest.ol_win_item_id
-                = Item.find(chapter.quest.ol_win_item_id).name
+                - item = Item.find(chapter.quest.ol_win_item_id)
+                = link_to item.name, item
           %td= chapter.total_gold_earned
-          %td=l chapter.created_at
+          %td= time_ago_in_words(chapter.created_at) + " ago"
 
 - if current_user.try(:is_admin?) || (current_user == @adventure.user)
 
   .form-actions
-    - unless @adventure.complete?
+    - unless @adventure.is_complete?
       = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
       //= link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
       .pull-right
+        = link_to "Edit Adventure", edit_adventure_path(@adventure), :class => 'btn'
         = link_to "Delete Adventure", adventure_path(@adventure), :method => "delete", :data => { :confirm => "This will irrevocably delete the adventure. Are you sure?" }, :class => 'btn btn-danger'

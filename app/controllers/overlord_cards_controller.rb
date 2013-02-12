@@ -17,7 +17,7 @@ class OverlordCardsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @heroes }
+      format.json { render json: @overlord_cards }
     end
   end
 

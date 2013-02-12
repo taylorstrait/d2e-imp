@@ -50,7 +50,8 @@
             %td
               - for item in adventurer.items
                 %label.checkbox
-                  = check_box_tag("adventurers[#{adventurer.id}][sold_items][]", item.id, nil)
+                  -unless item.category == "relic_heroes"
+                    = check_box_tag("adventurers[#{adventurer.id}][sold_items][]", item.id, nil)
                   = label_tag "adventurers[#{adventurer.id}][sold_items][#{item.id}]", "#{item.name} (#{item.sell_cost} gp)"
           
         %tr

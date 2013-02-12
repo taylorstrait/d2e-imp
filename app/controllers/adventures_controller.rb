@@ -2,7 +2,7 @@ class AdventuresController < ApplicationController
   # GET /adventures
   # GET /adventures.json
   def index
-    if params[:username]
+    if params[:username] # are we searching for a single user's adventures?
       @user = User.find_by_username(params[:username])
       @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).where(:user_id => @user.id).order("adventures.updated_at DESC").limit(20).all
     else

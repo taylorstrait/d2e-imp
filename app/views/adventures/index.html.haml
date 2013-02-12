@@ -8,27 +8,44 @@
   %table.table.table-striped.sortable-table
     %thead
       %tr
+        %th
         %th Name
         %th Campaign
         %th Last Quest
         %th Heroes
+        %th.centered Hero Win
         %th Owner
-        %th Last Update
+        %th Updated
     %tbody
       - @adventures.each do |adventure|
-        %tr
-          %td= link_to adventure.name, adventure_path(adventure)
-          %td= adventure.campaign.name
-          %td
-            - if adventure.chapters.size > 0
-              =link_to adventure.chapters.last.quest.name, adventure.chapters.last
-          %td
-            - adventure.adventurers.each do |adventurer|
-              %p
-                = link_to(adventurer.hero.name, adventurer.hero)
-                =" (#{adventurer.profession.name})"
-          %td= link_to adventure.user.username, adventure.user
-          %td=l adventure.updated_at  
+        
+        -# unless the adventure is private and not owned by user
+        - unless (adventure.is_private?) && (adventure.user != current_user)
+
+          -# create the row
+          %tr
+            %td
+              - if adventure.is_private?
+                %i.icon-eye-close
+              - if adventure.is_complete?
+                %i.icon-ok
+            %td= link_to adventure.name, adventure_path(adventure)
+            %td= adventure.campaign.name
+            %td
+              - if adventure.chapters.size > 0
+                =link_to adventure.chapters.last.quest.name, adventure.chapters.last
+            %td
+              - adventure.adventurers.each do |adventurer|
+                %p
+                  = link_to(adventurer.hero.name, adventurer.hero)
+                  =" (#{adventurer.profession.name})"
+            %td.centered= number_to_percentage(adventure.hero_win_percentage, :precision => 0)
+            %td= link_to adventure.user.username, adventure.user
+            %td
+              - if adventure.chapters.present?
+                = time_ago_in_words(adventure.chapters.last.updated_at) + " ago"
+              - else
+                = time_ago_in_words(adventure.updated_at) + " ago"
 
 - else
   %p== No adventures found. Would you like to #{link_to("start a new adventure", new_adventure_path)}?
