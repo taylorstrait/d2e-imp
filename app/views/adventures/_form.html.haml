@@ -14,29 +14,6 @@
       .controls
         = f.collection_select :campaign_id, @campaigns, :id, :name, :class => 'number_field'
 
-  /.row-fluid
-  /  %h2 Heroes
-  /
-  /  .hero
-  /    = select_tag("heroes[1][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
-  /    %p.centered as
-  /    = select_tag("heroes[1][profession_id]", {}, {:class => 'class-select input-medium'})
-  /    
-  /  .hero-box
-  /    = select_tag("heroes[2][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
-  /    %p.centered as
-  /    = select_tag("heroes[2][profession_id]", {}, {:class => 'class-select input-medium'})
-  /
-  /  .hero-box
-  /    = select_tag("heroes[3][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
-  /    %p.centered as
-  /    = select_tag("heroes[3][profession_id]", {}, {:class => 'class-select input-medium'})
-  /    
-  /  .hero-box
-  /    = select_tag("heroes[4][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
-  /    %p.centered as
-  /    = select_tag("heroes[4][profession_id]", {}, {:class => 'class-select input-medium'})
-
   .row-fluid
     %h4 Heroes
     %table.table.table-striped

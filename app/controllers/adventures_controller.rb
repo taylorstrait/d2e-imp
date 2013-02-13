@@ -4,7 +4,7 @@ class AdventuresController < ApplicationController
   def index
     if params[:username] # are we searching for a single user's adventures?
       @user = User.find_by_username(params[:username])
-      @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).where(:user_id => @user.id).order("adventures.updated_at DESC").limit(20).all
+      @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).where(:user_id => @user.id).order("chapters.updated_at DESC").limit(20).all
     else
       @adventures = Adventure.includes(:user, :campaign, :chapters => :quest, :adventurers => [:hero, :profession]).order("updated_at DESC").limit(20).all
     end

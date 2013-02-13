@@ -33,7 +33,7 @@
             %td= adventure.campaign.name
             %td
               - if adventure.chapters.size > 0
-                =link_to adventure.chapters.last.quest.name, adventure.chapters.last
+                =link_to adventure.chapters.first.quest.name, adventure.chapters.first
             %td
               - adventure.adventurers.each do |adventurer|
                 %p
