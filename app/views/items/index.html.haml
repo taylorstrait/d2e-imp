@@ -22,7 +22,8 @@
   %tbody
     - @items["shop_item_act_1"].each do |item|
       %tr
-        %td= link_to item.name, item_path(item)
+        //%td= link_to item.name, item_path(item), :class => "object-popup", "data-title" => item.name, "data-content" => "<img src= '/assets/cards/#{item.slug + ".jpg"}' />".html_safe
+        %td= popup_link(item)
         %td.hidden-phone= item.attack_type
         %td.hidden-phone
           - if item.subclass2.present?
@@ -55,7 +56,7 @@
   %tbody
     - @items["shop_item_act_2"].each do |item|
       %tr
-        %td= link_to item.name, item_path(item)
+        %td= popup_link(item, "items")
         %td.hidden-phone= item.attack_type
         %td.hidden-phone
           - if item.subclass2.present?
@@ -88,7 +89,7 @@
   %tbody
     - @items["relic_heroes"].each do |item|
       %tr
-        %td= link_to item.name, item_path(item)
+        %td= popup_link(item)
         %td.hidden-phone= item.attack_type
         %td.hidden-phone
           - if item.subclass2.present?
@@ -116,7 +117,7 @@
   %tbody
     - @items["relic_overlord"].each do |item|
       %tr
-        %td= link_to item.name, item_path(item)
+        %td= popup_link(item, "items")
         %td
           %p= fancy_output(item.trait1)
           %p= fancy_output(item.trait2)

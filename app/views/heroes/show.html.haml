@@ -40,7 +40,7 @@
     
 .row-fluid
   %h3 Card
-  = image_tag "cards/#{@hero.slug}.jpg"
+  = image_tag "cards/heroes/#{@hero.slug}.jpg"
 
 .row-fluid
   %h3 Ratings
@@ -49,8 +49,7 @@
   %h3 Discussion
 
 
--if user_signed_in? && ((current_user == @hero.user) || (current_user.is_admin?))
+-if user_signed_in? && ((current_user == @hero.user) || (current_user.try(:is_admin?)))
   .form-actions
-    = link_to t('.back', :default => t("helpers.links.back")), heroes_path, :class => 'btn'
     = link_to t('.edit', :default => t("helpers.links.edit")), edit_hero_path(@hero), :class => 'btn'
     = link_to t('.destroy', :default => t("helpers.links.destroy")), hero_path(@hero), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

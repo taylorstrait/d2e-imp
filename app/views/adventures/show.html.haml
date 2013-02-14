@@ -7,7 +7,7 @@
       %th
       - for adventurer in @adventure.adventurers
         %th
-          = link_to adventurer.hero.name, adventurer.hero
+          = popup_link(adventurer.hero)
 
     %tbody
       %tr
@@ -20,14 +20,14 @@
         - for adventurer in @adventure.adventurers
           %td
             - for item in adventurer.items
-              %p= link_to item.name, item
+              %p= popup_link(item)
 
       %tr
         %td Skills
         - for adventurer in @adventure.adventurers
           %td
             - for skill in adventurer.skills
-              %p= link_to skill.name, skill
+              %p= popup_link(skill)
 
       %tr
         %td XP
@@ -43,7 +43,7 @@
 .row-fluid
   %h5 Overlord Items
   - for item in @adventure.items
-    %p= link_to item.name, item
+    %p= popup_link(item)
 
   %h5 Overlord Cards
   /- for card in @adventure.overlord_cards
@@ -71,11 +71,11 @@
             - if chapter.final_winner == "Heroes"
               -if chapter.quest.hero_win_item_id
                 - item = Item.find(chapter.quest.hero_win_item_id)
-                = link_to item.name, item
+                = popup_link(item)
             - else
               -if chapter.quest.ol_win_item_id
                 - item = Item.find(chapter.quest.ol_win_item_id)
-                = link_to item.name, item
+                = popup_link(item)
           %td= chapter.total_gold_earned
           %td= time_ago_in_words(chapter.created_at) + " ago"
 

@@ -27,7 +27,7 @@
   %tbody
     - @heroes.each do |hero|
       %tr
-        %td= link_to hero.name, hero_path(hero)
+        %td= popup_link(hero)
         %td.hidden-phone.centered= hero.archetype.name
         %td.centered.speed= hero.speed
         %td.centered.health= hero.health

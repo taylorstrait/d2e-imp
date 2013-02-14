@@ -16,7 +16,7 @@
   %tbody
     - @skills.each do |skill|
       %tr
-        %td= link_to skill.name, skill_path(skill)
+        %td= popup_link(skill)
         %td= link_to skill.profession.name, class_url(skill.profession)
         %td.centered= skill.xp_cost
         %td
@@ -25,4 +25,4 @@
           %p= fancy_output(skill.rule3)
           %p= fancy_output(skill.rule4)
 
-= link_to t('.new', :default => t("helpers.links.new")), new_skill_path, :class => 'btn btn-primary'
+=# link_to t('.new', :default => t("helpers.links.new")), new_skill_path, :class => 'btn btn-primary'

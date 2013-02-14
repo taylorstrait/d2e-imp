@@ -46,6 +46,9 @@ module ApplicationHelper
     return output.html_safe
   end
 
+  def popup_link(object, img_dir=object.class.name.underscore.pluralize)
+    return "<a href='/#{object.class.name.underscore.pluralize}/#{object.slug}', class= 'object-popup', data-title= '#{object.name.gsub("'", "&rsquo;")}', data-content= '<img src= /assets/cards/#{img_dir}/#{object.slug}.jpg />' >#{object.name}</a>".html_safe
+  end
 
   
 end

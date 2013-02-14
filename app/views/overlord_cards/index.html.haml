@@ -22,10 +22,10 @@
       %tr
         %td
           - if overlord_card.size > 1
-            = link_to name, overlord_card_path(overlord_card.first)
+            = popup_link(overlord_card.first)
             = " x #{overlord_card.size}"
           - else
-            = link_to name, overlord_card_path(overlord_card)
+            = popup_link(overlord_card.first)
         %td= overlord_card.first.subclass
         %td= overlord_card.first.category
         %td= overlord_card.first.xp_cost

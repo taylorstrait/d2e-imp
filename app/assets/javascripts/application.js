@@ -25,3 +25,6 @@ $(document).ready(function()
         $(".sortable-table").tablesorter(); 
     } 
 ); 
+
+// bootstrap popovers
+$('.object-popup').popover({ html: true, trigger: 'hover'});
