@@ -31,11 +31,15 @@ module ApplicationHelper
     return nil
   end
 
+
+
   # wraps add_icons in simple_format to preserve newlines in output
   # USE THIS instead of add_icons
   def fancy_output(text)
       simple_format(add_icons(text))
   end
+
+
 
   def sample_rating
     output = ""
@@ -46,6 +50,9 @@ module ApplicationHelper
     return output.html_safe
   end
 
+
+  # creates a link to an object that uses bootstrap popup to display a preview image in popover window on hover
+  # requires the popover call in application.js
   def popup_link(object, img_dir=object.class.name.underscore.pluralize)
     return "<a href='/#{object.class.name.underscore.pluralize}/#{object.slug}', class= 'object-popup', data-title= '#{object.name.gsub("'", "&rsquo;")}', data-content= '<img src= /assets/cards/#{img_dir}/#{object.slug}.jpg />' >#{object.name}</a>".html_safe
   end

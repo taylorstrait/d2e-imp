@@ -73,13 +73,33 @@
         %tr
           %td XP
           - for adventurer in @adventure.adventurers
-            %td.hero-xp= adventurer.available_xp
+            %td= adventurer.available_xp
 
-  .control-group
-    = f.label :report, :class => 'control-label'
-    .controls
-      = f.text_area :report, :class => 'text_area', :rows => 6
+  %hr
 
-  .form-actions
-    = f.submit nil, :class => 'btn btn-primary'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), chapters_path, :class => 'btn'
+  %h4 Overlord
+  .row-fluid
+    .span4
+      %h5 XP
+      %p= @adventure.ol_available_xp
+  
+    .span4
+      %h5 Items
+      - for item in @adventure.items
+        %p= popup_link(item)
+
+    .span4
+      %h5 New Cards
+      = select_tag("overlord_cards[]", grouped_options_for_select(@overlord_cards, nil), { :multiple => true, :size => 10})
+
+  %hr
+
+  .row-fluid
+    .control-group
+      = f.label :report, :class => 'control-label'
+      .controls
+        = f.text_area :report, :class => 'text_area', :rows => 6
+  
+    .form-actions
+      = f.submit nil, :class => 'btn btn-primary'
+      = link_to "Cancel", @adventure, :class => 'btn'

@@ -90,6 +90,14 @@ class ChaptersController < ApplicationController
     owned_items = @adventure.adventurers.collect {|x| x.items.pluck('items.id')}.flatten
     @sellable_items = Item.where("id IN (?)", owned_items)
 
+    # create list of available overlord cards
+    @overlord_cards = {}
+    categories = OverlordCard.where("id NOT IN (?) AND game_id IN (?)", @adventure.overlord_card_ids, @adventure.user.game_ids).pluck(:category).uniq
+    categories.delete("Basic")
+    categories.each do |category|
+      @overlord_cards[category] = OverlordCard.where("id NOT IN (?) AND game_id IN (?)", @adventure.overlord_card_ids, @adventure.user.game_ids).select([:id, :name, :xp_cost]).where(:category => category).order(:xp_cost, :name).map {|card| ["#{card.name} (#{card.xp_cost})", card.id]}
+    end
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @chapter }
@@ -244,6 +252,17 @@ class ChaptersController < ApplicationController
           end
         end
 
+        # add overlords cards
+        params[:overlord_cards].each do |card_id|
+          new_card = OverlordCard.find(card_id)
+          if new_card
+            adventure.overlord_cards << new_card
+            adventure.ol_available_xp -= new_card.xp_cost
+          end
+        end
+
+        adventure.save
+        
         # is it the finale?
         if quest.act == "Finale"
           adventure.update_attribute(:completed_at, Time.now)

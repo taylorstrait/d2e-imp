@@ -90,13 +90,13 @@ function randomizeHeroFunction(i) {
             
             chosenProfessions[i] = currentProfession; // log the selected profession in the array
 
-        }, 300);
+        }, 400);
         
 
         // wait and then trigger the show items/skills partial generator
         setTimeout(function(){
             $("#heroes_" + i + "_profession_id").change();
-        }, 500);
+        }, 600);
     });
 }
 

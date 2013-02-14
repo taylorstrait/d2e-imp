@@ -1,51 +1,114 @@
+%h2= "Editing #{@adventure.name}"
 
-%h2= "Editing '#{@adventure.name}'"
-
-= form_for @adventure, {:class => "form-horizontal"} do |f|
+= form_for @adventure do |f|
   .row-fluid
     .control-group
-      = f.label :name, :class => 'control-label'
+      = f.label :name, "Name*", :class => 'control-label'
       .controls
         = f.text_field :name, :class => 'text_field'
-    .control-group
-      = f.label :description, :class => 'control-label'
-      .controls
-        = f.text_area :description, :class => 'text_area span6', :rows => 6
+    =#.control-group
+    =#  = f.label :description, :class => 'control-label'
+    =#  .controls
+    =#    = f.text_area :description, :class => 'text_area span6', :rows => 6
     .control-group
       = f.label :campaign_id, :class => 'control-label'
       .controls
         = link_to @adventure.campaign.name, @adventure.campaign
 
+  %hr
+
   .row-fluid
-    %h2 Campaign Options
+    %h4 Heroes
+    %table.table.table-striped
+      %thead
+        %th
+        - for adventurer in @adventure.adventurers
+          %th
+            = popup_link(adventurer.hero)
+  
+      %tbody
+        %tr
+          %td Class
+          - for adventurer in @adventure.adventurers
+            %td= link_to adventurer.profession.name, class_path(adventurer.profession)
+    
+        %tr
+          %td Items
+          - for adventurer in @adventure.adventurers
+            %td
+              - for item in adventurer.items
+                %p= popup_link(item)
+  
+        %tr
+          %td Skills
+          - for adventurer in @adventure.adventurers
+            %td
+              - for skill in adventurer.skills
+                %p= popup_link(skill)
 
-    .control-group
-      = f.label :hero_starting_xp, :class => 'control-label'
-      .controls
-        = f.number_field :hero_starting_xp, :class => 'number_field'
-    .control-group
-      = f.label :hero_starting_gold, :class => 'control-label'
-      .controls
-        = f.number_field :hero_starting_gold, :class => 'number_field'
-    .control-group
-      = f.label :ol_starting_xp, :class => 'control-label'
-      .controls
-        = f.number_field :ol_starting_xp, :class => 'number_field'
+        %tr
+          %td XP
+          - for adventurer in @adventure.adventurers
+            %td= number_field_tag "heroes[#{adventurer.id}][available_xp]", adventurer.available_xp, :class => 'number_field'
 
-    .control-group
-      = f.label :ol_open_group_pool_size, :class => 'control-label'
-      .controls
-        = f.select :ol_open_group_pool_size, 0..4, :class => 'number_field'
+  .row-fluid
+    %h5 Gold
+    = f.number_field :hero_gold, :class => 'number_field'
 
-    .control-group
-      = f.label :skip_intro, :class => 'control-label'
-      .controls
-        = f.check_box :skip_intro, :class => 'check_box'    
-    .control-group
-      = f.label :is_private, "Private", :class => 'control-label'
-      .controls
-        = f.check_box :is_private, :class => 'check_box'
+  %hr
+
+  %h4 Overlord
+  .row-fluid
+    .span4
+      %h5 XP
+      %p= f.number_field :ol_available_xp, :class => 'number_field'
+  
+    .span4
+      %h5 Items
+      - for item in @adventure.items
+        %p= popup_link(item)
+  
+    .span4
+      %h5 Cards
+      - @adventure.overlord_cards.group_by(&:category).each do |category, cards|
+        - unless category == "Basic"
+          %h6= category
+          - cards.each do |card|
+            %p= popup_link(card)
+
+  .row-fluid
+    %h4 Campaign Options
+
+    .row-fluid
+      .span4
+        .control-group
+          = f.label :hero_starting_xp, "Starting Heroes XP", :class => 'control-label'
+          .controls
+            = f.number_field :hero_starting_xp, :class => 'number_field'
+        .control-group
+          = f.label :hero_starting_gold, "Starting Gold", :class => 'control-label'
+          .controls
+            = f.number_field :hero_starting_gold, :class => 'number_field'
+      .span4
+        .control-group
+          = f.label :ol_starting_xp, "Starting Overlord XP", :class => 'control-label'
+          .controls
+            = f.number_field :ol_starting_xp, :class => 'number_field'
+    
+        .control-group
+          = f.label :ol_open_group_pool_size, "Random Open Group Pool", :class => 'control-label'
+          .controls
+            = f.select :ol_open_group_pool_size, [["Not Random", 0], [1,1], [2,2], [3,3], [4,4]], :class => 'number_field'
+
+      .span4.well
+        %label.checkbox
+          = f.check_box :skip_intro, :class => 'check_box' 
+          = f.label :skip_intro, "Skip Introduction", :class => 'control-label'
+             
+        %label.checkbox
+          = f.check_box :is_private, :class => 'check_box'
+          = f.label :is_private, "Private", :class => 'control-label'
 
   .form-actions
     = f.submit nil, :class => 'btn btn-primary'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), adventures_path, :class => 'btn'
+    = link_to "Cancel", @adventure, :class => 'btn'

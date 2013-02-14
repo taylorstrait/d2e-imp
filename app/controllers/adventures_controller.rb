@@ -59,6 +59,8 @@ class AdventuresController < ApplicationController
     # just in case we redirect back
 
     @adventure = Adventure.new(params[:adventure])
+    @adventure.ol_available_xp = @adventure.ol_starting_xp
+    @adventure.hero_gold = @adventure.hero_starting_gold
     @adventure.user = current_user
     
     if (@adventure.skip_intro == true) || (@adventure.campaign.quests.where(:act => "Intro").size == 0)
@@ -72,6 +74,7 @@ class AdventuresController < ApplicationController
         params[:heroes].each do |k,v|
 
           adventurer = Adventurer.new(v)
+          adventurer.available_xp = @adventure.hero_starting_xp
             if adventurer.valid?
               adventurer.save
               @adventure.adventurers << adventurer
@@ -105,6 +108,13 @@ class AdventuresController < ApplicationController
 
     respond_to do |format|
       if @adventure.update_attributes(params[:adventure])
+
+        if params[:heroes]
+          params[:heroes].each do |id,properties|
+            hero = Adventurer.find(id).update_attributes(properties)
+          end
+        end
+
         format.html { redirect_to @adventure, notice: 'Adventure was successfully updated.' }
         format.json { head :no_content }
       else

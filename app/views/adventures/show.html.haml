@@ -1,7 +1,7 @@
 %h2= @adventure.name
 
+%h4 Heroes
 .row-fluid
-  %h4 Heroes
   %table.table.table-striped
     %thead
       %th
@@ -40,51 +40,64 @@
 
 %hr 
 
+%h4 Overlord
 .row-fluid
-  %h5 Overlord Items
-  - for item in @adventure.items
-    %p= popup_link(item)
+  .span4
+    %h5 XP
+    %p= @adventure.ol_available_xp
 
-  %h5 Overlord Cards
-  /- for card in @adventure.overlord_cards
-  /  %p= link_to card.name, card
+  .span4
+    %h5 Items
+    - for item in @adventure.items
+      %p= popup_link(item)
 
-.row-fluid
-  %h2 Chapters
-  
-  %table.table
-    %thead
-      %tr
-        %th Act
-        %th Quest
-        %th Winner
-        %th Item
-        %th Gold Earned
-        %th Date
-    %tbody
-      - @adventure.chapters.each do |chapter|
-        %tr{:class => chapter.final_winner == "Overlord" ? "ol_win" : nil}
-          %td= chapter.quest.act
-          %td= link_to chapter.quest.name, chapter.quest
-          %td= chapter.final_winner
-          %td
-            - if chapter.final_winner == "Heroes"
-              -if chapter.quest.hero_win_item_id
-                - item = Item.find(chapter.quest.hero_win_item_id)
-                = popup_link(item)
-            - else
-              -if chapter.quest.ol_win_item_id
-                - item = Item.find(chapter.quest.ol_win_item_id)
-                = popup_link(item)
-          %td= chapter.total_gold_earned
-          %td= time_ago_in_words(chapter.created_at) + " ago"
+  .span4
+    %h5 Cards
+    - @adventure.overlord_cards.group_by(&:category).each do |category, cards|
+      - unless category == "Basic"
+        %h6= category
+        - cards.each do |card|
+          %p= popup_link(card)
+
+- if @adventure.chapters.present?
+  .row-fluid
+    %h2 Chapters
+    
+    %table.table
+      %thead
+        %tr
+          %th Act
+          %th Quest
+          %th Winner
+          %th Item
+          %th Gold Earned
+          %th Date
+      %tbody
+        - @adventure.chapters.each do |chapter|
+          %tr{:class => chapter.final_winner == "Overlord" ? "ol_win" : nil}
+            %td= chapter.quest.act
+            %td= link_to chapter.quest.name, chapter.quest
+            %td= chapter.final_winner
+            %td
+              - if chapter.final_winner == "Heroes"
+                -if chapter.quest.hero_win_item_id
+                  - item = Item.find(chapter.quest.hero_win_item_id)
+                  = popup_link(item)
+              - else
+                -if chapter.quest.ol_win_item_id
+                  - item = Item.find(chapter.quest.ol_win_item_id)
+                  = popup_link(item)
+            %td= chapter.total_gold_earned
+            %td= time_ago_in_words(chapter.created_at) + " ago"
 
 - if current_user.try(:is_admin?) || (current_user == @adventure.user)
 
   .form-actions
-    - unless @adventure.is_complete?
+    - if @adventure.is_complete?
+      = link_to "Edit Adventure", edit_adventure_path(@adventure), :class => 'btn'
+
+    - else
       = link_to "Add a Chapter", new_chapter_path(:adventure_id => @adventure.id), :class => 'btn'
-      //= link_to t('.edit', :default => t("helpers.links.edit")), edit_adventure_path(@adventure), :class => 'btn'
       .pull-right
         = link_to "Edit Adventure", edit_adventure_path(@adventure), :class => 'btn'
         = link_to "Delete Adventure", adventure_path(@adventure), :method => "delete", :data => { :confirm => "This will irrevocably delete the adventure. Are you sure?" }, :class => 'btn btn-danger'
