@@ -57,8 +57,6 @@ class AdventuresController < ApplicationController
   def create
     
     # just in case we redirect back
-      @campaigns = Campaign.where(:is_official => true).all
-      @heroes = Hero.order(:name).all
 
     @adventure = Adventure.new(params[:adventure])
     @adventure.user = current_user
@@ -88,6 +86,12 @@ class AdventuresController < ApplicationController
         format.html { redirect_to @adventure, notice: 'Adventure was successfully created.' }
         format.json { render json: @adventure, status: :created, location: @adventure }
       else
+
+        # get data ready for form
+        @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
+        @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).all
+        @available_professions = Profession.all
+        flash.now[:errors] = "There was a problem creating this adventure. Are all of your fields filled in?"
         format.html { render action: "new" }
         format.json { render json: @adventure.errors, status: :unprocessable_entity }
       end

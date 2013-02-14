@@ -37,7 +37,7 @@
             %td
               - adventure.adventurers.each do |adventurer|
                 %p
-                  = link_to(adventurer.hero.name, adventurer.hero)
+                  = popup_link(adventurer.hero)
                   =" (#{adventurer.profession.name})"
             %td.centered= number_to_percentage(adventure.hero_win_percentage, :precision => 0)
             %td= link_to adventure.user.username, adventure.user

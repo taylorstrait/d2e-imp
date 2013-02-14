@@ -1,7 +1,6 @@
 class Chapter < ActiveRecord::Base
-  
-  before_save :set_final_winner
 
+  before_save :set_final_winner
 
   belongs_to :adventure
   belongs_to :quest

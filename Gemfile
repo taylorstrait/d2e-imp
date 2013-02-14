@@ -9,13 +9,16 @@ gem 'heroku'
 gem 'haml'
 gem "haml-rails"
 gem 'twitter-bootstrap-rails'
+gem 'jquery-rails'
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem 'devise'
 gem 'friendly_id'
+gem 'nilify_blanks'
 
 group :development do
   gem 'sqlite3'
+  gem 'quiet_assets'
 end
 
 group :production do
@@ -34,20 +37,5 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
-# gem 'jquery-ui-rails'
-
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'debugger'

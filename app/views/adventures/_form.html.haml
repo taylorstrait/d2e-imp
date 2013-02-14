@@ -1,18 +1,22 @@
+=# load jquery early (and  unfortunately twice) to update classes/skills/items if form errors
+= javascript_include_tag "jquery"
 
 = form_for @adventure do |f|
   .row-fluid
     .control-group
-      = f.label :name, :class => 'control-label'
+      = f.label :name, "Name*", :class => 'control-label'
       .controls
         = f.text_field :name, :class => 'text_field'
-    .control-group
-      = f.label :description, :class => 'control-label'
-      .controls
-        = f.text_area :description, :class => 'text_area span6', :rows => 6
+    =#.control-group
+    =#  = f.label :description, :class => 'control-label'
+    =#  .controls
+    =#    = f.text_area :description, :class => 'text_area span6', :rows => 6
     .control-group
       = f.label :campaign_id, :class => 'control-label'
       .controls
         = f.collection_select :campaign_id, @campaigns, :id, :name, :class => 'number_field'
+
+  %hr
 
   .row-fluid
     %h4 Heroes
@@ -31,12 +35,20 @@
         %tr
           %td Hero
           - for i in 1..4
-            %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+            %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name, params[:heroes][i.to_s][:hero_id]), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
 
         %tr
           %td Class
           - for i in 1..4
-            %td= select_tag("heroes[#{i}][profession_id]", {}, {:class => 'class-select input-medium'})
+            - if params[:heroes][i.to_s][:profession_id]
+              %td= select_tag("heroes[#{i}][profession_id]", options_from_collection_for_select(@available_professions, :id, :name, params[:heroes][i.to_s][:profession_id]), {:prompt => "Choose a class", :class => 'hero-select input-medium'})
+              :javascript
+                $(document).ready(function() { 
+                    $("#heroes_" + #{i} + "_profession_id").change();
+                }); 
+                
+            - else
+              %td= select_tag("heroes[#{i}][profession_id]", {}, {:class => 'class-select input-medium'})
     
         %tr
           %td Items
@@ -49,36 +61,41 @@
           - for i in 1..4
             %td{id: "hero_#{i}_skills"}
 
+  %hr
+
   .row-fluid
-    %h2 Campaign Options
+    %h4 Campaign Options
 
-    .control-group
-      = f.label :hero_starting_xp, :class => 'control-label'
-      .controls
-        = f.number_field :hero_starting_xp, :class => 'number_field'
-    .control-group
-      = f.label :hero_starting_gold, :class => 'control-label'
-      .controls
-        = f.number_field :hero_starting_gold, :class => 'number_field'
-    .control-group
-      = f.label :ol_starting_xp, :class => 'control-label'
-      .controls
-        = f.number_field :ol_starting_xp, :class => 'number_field'
+    .row-fluid
+      .span4
+        .control-group
+          = f.label :hero_starting_xp, "Starting Heroes XP", :class => 'control-label'
+          .controls
+            = f.number_field :hero_starting_xp, :class => 'number_field'
+        .control-group
+          = f.label :hero_starting_gold, "Starting Gold", :class => 'control-label'
+          .controls
+            = f.number_field :hero_starting_gold, :class => 'number_field'
+      .span4
+        .control-group
+          = f.label :ol_starting_xp, "Starting Overlord XP", :class => 'control-label'
+          .controls
+            = f.number_field :ol_starting_xp, :class => 'number_field'
+    
+        .control-group
+          = f.label :ol_open_group_pool_size, "Random Open Group Pool", :class => 'control-label'
+          .controls
+            = f.select :ol_open_group_pool_size, 0..4, :class => 'number_field'
 
-    .control-group
-      = f.label :ol_open_group_pool_size, :class => 'control-label'
-      .controls
-        = f.select :ol_open_group_pool_size, 0..4, :class => 'number_field'
-
-    .control-group
-      = f.label :skip_intro, :class => 'control-label'
-      .controls
-        = f.check_box :skip_intro, :class => 'check_box'    
-    .control-group
-      = f.label :is_private, "Private", :class => 'control-label'
-      .controls
-        = f.check_box :is_private, :class => 'check_box'
+      .span4.well
+        %label.checkbox
+          = f.check_box :skip_intro, :class => 'check_box' 
+          = f.label :skip_intro, "Skip Introduction", :class => 'control-label'
+             
+        %label.checkbox
+          = f.check_box :is_private, :class => 'check_box'
+          = f.label :is_private, "Private", :class => 'control-label'
 
   .form-actions
-    = f.submit nil, :class => 'btn btn-primary'
+    = f.submit "Start Adventure", :class => 'btn btn-primary'
     = link_to t('.cancel', :default => t("helpers.links.cancel")), adventures_path, :class => 'btn'
