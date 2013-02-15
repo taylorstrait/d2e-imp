@@ -5,4 +5,8 @@
       %h4= "Open Group #{group_num}"
       - for monster in monster_collection do
         - if monster # there may not be enough
-          %p= link_to monster.name, monster
+          %p= monster_popover_link(monster, @encounter.quest.act)
+
+:javascript
+  // bootstrap popovers
+  $('.object-popup').popover({ html: true, trigger: 'hover'});

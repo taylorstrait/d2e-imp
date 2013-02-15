@@ -59,9 +59,14 @@
         - cards.each do |card|
           %p= popup_link(card)
 
+
+
 - if @adventure.chapters.present?
+  
+  %hr 
+
   .row-fluid
-    %h2 Chapters
+    %h4 Chapters
     
     %table.table
       %thead

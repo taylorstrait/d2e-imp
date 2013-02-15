@@ -73,21 +73,21 @@
         .control-group
           = f.label :hero_starting_xp, "Starting Heroes XP", :class => 'control-label'
           .controls
-            = f.number_field :hero_starting_xp, :class => 'number_field'
+            = f.number_field :hero_starting_xp, :class => 'number_field span3'
         .control-group
           = f.label :hero_starting_gold, "Starting Gold", :class => 'control-label'
           .controls
-            = f.number_field :hero_starting_gold, :class => 'number_field'
+            = f.number_field :hero_starting_gold, :class => 'number_field span3'
       .span4
         .control-group
           = f.label :ol_starting_xp, "Starting Overlord XP", :class => 'control-label'
           .controls
-            = f.number_field :ol_starting_xp, :class => 'number_field'
+            = f.number_field :ol_starting_xp, :class => 'number_field span3'
     
         .control-group
           = f.label :ol_open_group_pool_size, "Random Open Group Pool", :class => 'control-label'
           .controls
-            = f.select :ol_open_group_pool_size, [["Not Random", 0], [1,1], [2,2], [3,3], [4,4]], :class => 'number_field'
+            = f.select :ol_open_group_pool_size, [["Not Random", 0], [1,1], [2,2], [3,3], [4,4]], :class => 'number_field span3'
 
       .span4.well
         %label.checkbox

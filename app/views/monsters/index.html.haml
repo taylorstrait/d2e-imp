@@ -55,7 +55,7 @@
   %tbody
     - @monsters.each do |monster|
       %tr
-        %td= link_to monster.name, monster_path(monster)
+        %td= monster_popover_link(monster)
         %td= monster.role
         %td= monster.attack_type
         %td= link_to monster.game.name, monster.game

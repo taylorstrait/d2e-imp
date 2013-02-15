@@ -55,6 +55,12 @@ module ApplicationHelper
   # requires the popover call in application.js
   def popup_link(object, img_dir=object.class.name.underscore.pluralize)
     return "<a href='/#{object.class.name.underscore.pluralize}/#{object.slug}', class= 'object-popup', data-title= '#{object.name.gsub("'", "&rsquo;")}', data-content= '<img src= /assets/cards/#{img_dir}/#{object.slug}.jpg />' >#{object.name}</a>".html_safe
+  end  
+
+  # creates a link to an object that uses bootstrap popup to display a preview image in popover window on hover
+  # requires the popover call in application.js
+  def monster_popover_link(object, act=1, img_dir=object.class.name.underscore.pluralize)
+    return "<a href='/#{object.class.name.underscore.pluralize}/#{object.slug}', class= 'object-popup', data-title= '#{object.name.gsub("'", "&rsquo;")}', data-content= '<img src= /assets/cards/#{img_dir}/#{object.slug}-#{act}.jpg />' >#{object.name}</a>".html_safe
   end
 
   

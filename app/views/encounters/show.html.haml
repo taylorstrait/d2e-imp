@@ -9,7 +9,7 @@
     Monsters
   - for monster in @encounter.monsters do
     %p
-      = link_to monster.name, monster
+      = monster_popover_link(monster, @encounter.quest.act)
 
 %h4 Traits
 - for trait in @encounter.traits
