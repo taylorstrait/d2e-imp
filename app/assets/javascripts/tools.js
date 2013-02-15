@@ -11,7 +11,7 @@ $("#quest_selector").change(function() {
     $("#open_groups_results").empty();
 });
 
-$("encounter_id").change(function() {
+$("#encounter_id").change(function() {
     $("#open_groups_results").empty();
 });
 
