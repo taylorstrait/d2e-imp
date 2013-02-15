@@ -1,15 +1,15 @@
 %h2= link_to @encounter.quest.name, @encounter.quest
 
-%h3= link_to @encounter.name, @quest_encounter_url
+%h3= @encounter.name
 
 %h4 Description
 
 - if @encounter.monsters.size > 0
-  %h4 
-    Monsters
-  - for monster in @encounter.monsters do
-    %p
-      = monster_popover_link(monster, @encounter.quest.act)
+  
+  %h4 Monsters
+  = render :partial => "monsters/monster", :collection => @encounter.monsters, :locals => { :encounter => @encounter }
+
+%hr
 
 %h4 Traits
 - for trait in @encounter.traits
@@ -18,9 +18,11 @@
 
 - if @encounter.num_open_groups > 0
   
+  %hr
+
   %h4 Open Group Generator
 
-  = form_tag(generate_monster_list_path, :method => :get, :remote => true, :id => 'generate_open_groups_form') do
+  = form_tag(generate_monster_pool_path, :method => :get, :remote => true, :id => 'generate_open_groups_form') do
   
     = hidden_field_tag 'encounter_id', @encounter.id
     = hidden_field_tag 'user_id', current_user.try(:id)

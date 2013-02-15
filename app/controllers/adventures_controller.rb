@@ -135,4 +135,29 @@ class AdventuresController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  
+
+  ##### AJAX FUNCTIONS #####
+  
+  def remove_overlord_item
+    item = Item.find(params[:item_id])
+    if item
+      Adventure.find(params[:id]).items.delete(item)
+      head :ok
+    else
+      head :error
+    end
+  end
+
+    def remove_overlord_card
+    card = OverlordCard.find(params[:overlord_card_id])
+    if card && card.xp_cost > 0
+      Adventure.find(params[:id]).overlord_cards.delete(card)
+      head :ok
+    else
+      head :error
+    end
+  end
+
 end

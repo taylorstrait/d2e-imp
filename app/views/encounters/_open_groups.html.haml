@@ -3,9 +3,8 @@
   - @open_groups.each do |group_num, monster_collection|
     .span3
       %h4= "Open Group #{group_num}"
-      - for monster in monster_collection do
-        - if monster # there may not be enough
-          %p= monster_popover_link(monster, @encounter.quest.act)
+      = render :partial => "monsters/monster", :collection => monster_collection, :locals => { :encounter => @encounter }
+
 
 :javascript
   // bootstrap popovers

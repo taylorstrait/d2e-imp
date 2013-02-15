@@ -1,0 +1,6 @@
+- if encounter.quest.act == "Interlude"
+  %p= monster_popover_link(monster, 1)
+- elsif encounter.quest.act == "Finale"
+  %p= monster_popover_link(monster, 2)
+-else
+  %p= monster_popover_link(monster, encounter.quest.act)

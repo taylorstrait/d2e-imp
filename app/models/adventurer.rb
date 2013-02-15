@@ -10,7 +10,11 @@ class Adventurer < ActiveRecord::Base
   validates :profession, :presence => true
 
   def unlearned_skills
-    profession.skills.where("id NOT IN (?)", self.skill_ids).order("xp_cost DESC", :name).all
+    if skills.empty? # if someone deleted all basic skills
+      profession.skills
+    else # show other skills
+      profession.skills.where("id NOT IN (?)", self.skill_ids).order("xp_cost DESC", :name).all
+    end
   end
 
     private

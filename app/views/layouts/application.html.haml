@@ -58,8 +58,14 @@
                         %li= link_to "My Adventures", adventures_url(:username => current_user.username)
                       %li.divider
                       %li= link_to "Start a New Adventure", new_adventure_url
+
+                  %li.dropdown
+                    = link_to 'Tools', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                    %ul.dropdown-menu
+                      %li= link_to "Monster Group Generator", monster_pool_generator_url
+                      =#%li Dice Roller
               
-                  %li= link_to "Forum", "#"
+
                   %li 
                     %form.form-search{action: '/search'}
                       .input-append

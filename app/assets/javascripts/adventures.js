@@ -109,15 +109,6 @@ for (var i = 1; i < heroArray.length + 1; i++) {
   $("#randomize_hero_" + i).click = randomizeHeroFunction(i);
 }
 
-// function to properly format dropdown data into options
-function populateDropdown(select, data) {
-  select.html('');
-  select.append($('<option>Choose a class</option>'));
-  $.each(data, function(id, option) {
-    select.append($('<option></option>').val(option.id).html(option.name));
-  });       
-}
-
 // update form title as user enters name
 $('#adventure_name').keyup(function() {
 
@@ -125,3 +116,10 @@ $('#adventure_name').keyup(function() {
     
     $('#form_title').html(newTitle);
 });
+
+// for removing items
+$(document).on('ajax:success', '.remove-object', function() {
+    // .parent() is the div containing this "X" delete link
+    $(this).parent().slideUp();
+    }
+);

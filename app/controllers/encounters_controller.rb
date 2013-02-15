@@ -91,14 +91,4 @@ class EncountersController < ApplicationController
     end
   end
 
-  def generate_monster_list
-    
-    @encounter = Encounter.find(params[:encounter_id])
-    @open_groups = @encounter.generate_open_group_monsters(params[:user_id], params[:pool_size].to_i)
-
-    respond_to do |format|
-      format.html { render :partial => "open_groups" }
-      format.json { render json: @open_groups }
-    end
-  end
 end

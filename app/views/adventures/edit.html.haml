@@ -34,17 +34,25 @@
     
         %tr
           %td Items
+          - i = 0
           - for adventurer in @adventure.adventurers
+            - i = i + 1
             %td
               - for item in adventurer.items
-                %p= popup_link(item)
+                %p
+                  = popup_link(item)
+                  = link_to "<i class='icon-remove'></i>".html_safe, remove_item_adventurer_url(adventurer.id, :item_id => item.id), :remote => true, :method => :delete, :class => "btn btn-danger btn-mini remove-item"
   
         %tr
           %td Skills
           - for adventurer in @adventure.adventurers
             %td
               - for skill in adventurer.skills
-                %p= popup_link(skill)
+                %p
+                  = popup_link(skill)
+                  - if skill.xp_cost > 0
+                    = link_to "<i class='icon-remove'></i>".html_safe, remove_skill_adventurer_url(adventurer.id, :skill_id => skill.id), :remote => true, :method => :delete, :class => "btn btn-danger btn-mini remove-object"
+
 
         %tr
           %td XP
@@ -66,7 +74,10 @@
     .span4
       %h5 Items
       - for item in @adventure.items
-        %p= popup_link(item)
+        %p
+          = popup_link(item)
+          = link_to "<i class='icon-remove'></i>".html_safe, remove_overlord_item_adventure_url(@adventure.id, :item_id => item.id), :remote => true, :method => :delete, :class => "btn btn-danger btn-mini remove-object"
+
   
     .span4
       %h5 Cards
@@ -74,7 +85,10 @@
         - unless category == "Basic"
           %h6= category
           - cards.each do |card|
-            %p= popup_link(card)
+            %p
+              = popup_link(card)
+              = link_to "<i class='icon-remove'></i>".html_safe, remove_overlord_card_adventure_url(@adventure.id, :overlord_card_id => card.id), :remote => true, :method => :delete, :class => "btn btn-danger btn-mini remove-object"
+
 
   .row-fluid
     %h4 Campaign Options

@@ -80,4 +80,25 @@ class AdventurersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def remove_item
+    @adventurer = Adventurer.find(params[:id])
+    item = Item.find(params[:item_id])
+    if item
+      @adventurer.items.delete(item)
+      head :ok
+    end
+  end  
+
+  def remove_skill
+    skill = Skill.find(params[:skill_id])
+    if skill.xp_cost > 0
+      Adventurer.find(params[:id]).skills.delete(skill)
+      head :ok
+    else
+      head :error
+    end
+  end
+
+
 end

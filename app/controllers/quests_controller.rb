@@ -80,4 +80,15 @@ class QuestsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+  def encounters
+    quest = Quest.includes(:encounters).find_by_id(params[:quest_id])
+    if quest
+      render json: quest.encounters.select([:name, :id]), status: :ok
+    else
+      render json: [], status: :error
+    end
+  end
+
 end

@@ -4,13 +4,23 @@ Monsters::Application.routes.draw do
   resources :chapters
 
 
-  resources :adventurers
+  resources :adventurers do
+    member do
+      delete 'remove_item'
+      delete 'remove_skill'
+    end
+  end
 
 
   resources :overlord_cards
 
 
-  resources :adventures
+  resources :adventures do
+    member do
+      delete 'remove_overlord_item'
+      delete 'remove_overlord_card'
+    end
+  end
 
 
   resources :familiars
@@ -59,8 +69,11 @@ Monsters::Application.routes.draw do
 
   resources :monsters
 
-  match 'generate_monster_list' => "encounters#generate_monster_list", :as => :generate_monster_list, :via => :get
+  
   match 'search' => "search#index", :as => :search, :via => :get
+  
+  match 'monster_pool_generator' => "tools#monster_pool_generator", :as => :monster_pool_generator, :via => :get
+  match 'generate_monster_pool' => "tools#generate_monster_pool", :as => :generate_monster_pool, :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
