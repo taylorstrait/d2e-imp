@@ -1,7 +1,7 @@
 %h4 Open Group Generator
 
 = label_tag :quest_id, "Quest"
-= grouped_collection_select('quest_id', "", @campaigns, :quests, :name, :id, :name, {}, :id => "quest_selector", :class => "clear_output_on_change")
+= grouped_collection_select('quest_id', "", @campaigns, :quests, :name, :id, :name, {:prompt => "Select a quest..."}, :id => "quest_selector", :class => "clear_output_on_change")
 
 %br
 
