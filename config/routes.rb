@@ -75,6 +75,9 @@ Monsters::Application.routes.draw do
   match 'monster_pool_generator' => "tools#monster_pool_generator", :as => :monster_pool_generator, :via => :get
   match 'generate_monster_pool' => "tools#generate_monster_pool", :as => :generate_monster_pool, :via => :get
 
+  match 'dice_roller' => "dice#dice_roller", :as => :dice_roller, :via => :get
+  match 'roll_dice' => "dice#roll_dice", :as => :roll_dice, :via => :get
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

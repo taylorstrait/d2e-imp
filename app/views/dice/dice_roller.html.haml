@@ -1,0 +1,19 @@
+%h2.hidden-phone Dice Roller
+
+.row-fluid.centered
+
+  .span2
+    .row-fluid
+      = link_to "#{image_tag 'icons/dice-blue.png'}".html_safe, roll_dice_path(:color => 'blue'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-yellow.png'}".html_safe, roll_dice_path(:color => 'yellow'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-red.png'}".html_safe, roll_dice_path(:color => 'red'), :remote => true, :class => "roll_dice_button btn btn-large"
+
+    .row-fluid
+      = link_to "#{image_tag 'icons/dice-brown.png'}".html_safe, roll_dice_path(:color => 'brown'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-grey.png'}".html_safe, roll_dice_path(:color => 'grey'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-black.png'}".html_safe, roll_dice_path(:color => 'black'), :remote => true, :class => "roll_dice_button btn btn-large"
+
+    %hr
+
+  .span10
+    #dice-results.centered

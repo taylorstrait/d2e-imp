@@ -1,0 +1,11 @@
+.dice
+  = image_tag "dice/#{color}/#{number}.png"
+
+  :javascript
+    $(document).ready(function(){
+  
+      $('.dice').click(function () {
+        $(this).fadeOut(100)
+      });
+  
+    });
