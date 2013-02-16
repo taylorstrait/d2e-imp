@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "adventurer_id", :null => false
   end
 
+  add_index "adventurers_items", ["adventurer_id", "item_id"], :name => "index_adventurers_items_on_adventurer_id_and_item_id", :unique => true
   add_index "adventurers_items", ["adventurer_id"], :name => "index_adventurers_items_on_adventurer_id"
   add_index "adventurers_items", ["item_id"], :name => "index_adventurers_items_on_item_id"
 
@@ -45,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "adventurer_id", :null => false
   end
 
+  add_index "adventurers_skills", ["adventurer_id", "skill_id"], :name => "index_adventurers_skills_on_adventurer_id_and_skill_id", :unique => true
   add_index "adventurers_skills", ["adventurer_id"], :name => "index_adventurers_skills_on_adventurer_id"
   add_index "adventurers_skills", ["skill_id"], :name => "index_adventurers_skills_on_skill_id"
 
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "adventure_id", :null => false
   end
 
+  add_index "adventures_items", ["adventure_id", "item_id"], :name => "index_adventures_items_on_adventure_id_and_item_id", :unique => true
   add_index "adventures_items", ["adventure_id"], :name => "index_adventures_items_on_adventure_id"
   add_index "adventures_items", ["item_id"], :name => "index_adventures_items_on_item_id"
 
@@ -84,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "adventure_id",     :null => false
   end
 
+  add_index "adventures_overlord_cards", ["adventure_id", "overlord_card_id"], :name => "adventures_ol_cards_compund_unique", :unique => true
   add_index "adventures_overlord_cards", ["adventure_id"], :name => "index_adventures_overlord_cards_on_adventure_id"
   add_index "adventures_overlord_cards", ["overlord_card_id"], :name => "index_adventures_overlord_cards_on_overlord_card_id"
 
@@ -150,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.datetime "updated_at",                            :null => false
   end
 
+  add_index "chapters", ["adventure_id", "quest_id"], :name => "index_chapters_on_adventure_id_and_quest_id", :unique => true
   add_index "chapters", ["adventure_id"], :name => "index_chapters_on_adventure_id"
   add_index "chapters", ["quest_id"], :name => "index_chapters_on_quest_id"
   add_index "chapters", ["user_id"], :name => "index_chapters_on_user_id"
@@ -179,6 +184,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "monster_id",   :null => false
   end
 
+  add_index "encounters_monsters", ["encounter_id", "monster_id"], :name => "index_encounters_monsters_on_encounter_id_and_monster_id", :unique => true
   add_index "encounters_monsters", ["encounter_id"], :name => "index_encounters_monsters_on_encounter_id"
   add_index "encounters_monsters", ["monster_id"], :name => "index_encounters_monsters_on_monster_id"
 
@@ -187,6 +193,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "trait_id",     :null => false
   end
 
+  add_index "encounters_traits", ["encounter_id", "trait_id"], :name => "index_encounters_traits_on_encounter_id_and_trait_id", :unique => true
   add_index "encounters_traits", ["encounter_id"], :name => "index_encounters_traits_on_encounter_id"
   add_index "encounters_traits", ["trait_id"], :name => "index_encounters_traits_on_trait_id"
 
@@ -238,20 +245,13 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "games", ["name"], :name => "index_games_on_name", :unique => true
   add_index "games", ["slug"], :name => "index_games_on_slug", :unique => true
 
-  create_table "games_heroes", :force => true do |t|
-    t.integer "hero_id", :null => false
-    t.integer "user_id", :null => false
-  end
-
-  add_index "games_heroes", ["hero_id"], :name => "index_games_heroes_on_hero_id"
-  add_index "games_heroes", ["user_id"], :name => "index_games_heroes_on_user_id"
-
   create_table "games_users", :force => true do |t|
     t.integer "game_id", :null => false
     t.integer "user_id", :null => false
   end
 
   add_index "games_users", ["game_id"], :name => "index_games_users_on_game_id"
+  add_index "games_users", ["user_id", "game_id"], :name => "index_games_users_on_user_id_and_game_id", :unique => true
   add_index "games_users", ["user_id"], :name => "index_games_users_on_user_id"
 
   create_table "heroes", :force => true do |t|
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   end
 
   add_index "heroes_users", ["hero_id"], :name => "index_heroes_users_on_hero_id"
+  add_index "heroes_users", ["user_id", "hero_id"], :name => "index_heroes_users_on_user_id_and_hero_id", :unique => true
   add_index "heroes_users", ["user_id"], :name => "index_heroes_users_on_user_id"
 
   create_table "items", :force => true do |t|
@@ -388,6 +389,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer "trait_id",   :null => false
   end
 
+  add_index "monsters_traits", ["monster_id", "trait_id"], :name => "index_monsters_traits_on_monster_id_and_trait_id", :unique => true
   add_index "monsters_traits", ["monster_id"], :name => "index_monsters_traits_on_monster_id"
   add_index "monsters_traits", ["trait_id"], :name => "index_monsters_traits_on_trait_id"
 
@@ -397,6 +399,7 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   end
 
   add_index "monsters_users", ["monster_id"], :name => "index_monsters_users_on_monster_id"
+  add_index "monsters_users", ["user_id", "monster_id"], :name => "index_monsters_users_on_user_id_and_monster_id", :unique => true
   add_index "monsters_users", ["user_id"], :name => "index_monsters_users_on_user_id"
 
   create_table "overlord_cards", :force => true do |t|
@@ -443,20 +446,21 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "professions", ["user_id"], :name => "index_professions_on_user_id"
 
   create_table "quests", :force => true do |t|
-    t.string   "name",                                              :null => false
-    t.string   "slug",                                              :null => false
-    t.integer  "encounters_count",               :default => 0,     :null => false
+    t.string   "name",                                                :null => false
+    t.string   "slug",                                                :null => false
+    t.integer  "encounters_count",               :default => 0,       :null => false
     t.integer  "position"
     t.string   "act"
+    t.string   "category",                       :default => "Quest", :null => false
     t.integer  "campaign_id"
-    t.integer  "user_id",                                           :null => false
+    t.integer  "user_id",                                             :null => false
     t.integer  "group_id"
-    t.boolean  "is_official",                    :default => false, :null => false
-    t.boolean  "is_published",                   :default => false, :null => false
-    t.integer  "reward_xp_base",                 :default => 1,     :null => false
-    t.integer  "reward_xp_hero",                 :default => 0,     :null => false
-    t.integer  "reward_xp_ol",                   :default => 0,     :null => false
-    t.integer  "hero_win_gold",                  :default => 0,     :null => false
+    t.boolean  "is_official",                    :default => false,   :null => false
+    t.boolean  "is_published",                   :default => false,   :null => false
+    t.integer  "reward_xp_base",                 :default => 1,       :null => false
+    t.integer  "reward_xp_hero",                 :default => 0,       :null => false
+    t.integer  "reward_xp_ol",                   :default => 0,       :null => false
+    t.integer  "hero_win_gold",                  :default => 0,       :null => false
     t.integer  "hero_win_item_id"
     t.integer  "ol_win_item_id"
     t.integer  "hero_win_ol_lose_item_id"
@@ -467,11 +471,12 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer  "ol_win_unlock_quest_id"
     t.string   "hero_win_ongoing_effect"
     t.string   "ol_win_ongoing_effect"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.datetime "created_at",                                          :null => false
+    t.datetime "updated_at",                                          :null => false
   end
 
   add_index "quests", ["campaign_id"], :name => "index_quests_on_campaign_id"
+  add_index "quests", ["category"], :name => "index_quests_on_category"
   add_index "quests", ["group_id"], :name => "index_quests_on_group_id"
   add_index "quests", ["name"], :name => "index_quests_on_name", :unique => true
   add_index "quests", ["slug"], :name => "index_quests_on_slug", :unique => true
