@@ -448,7 +448,6 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer  "encounters_count",               :default => 0,     :null => false
     t.integer  "position"
     t.string   "act"
-    t.boolean  "official_release",               :default => false, :null => false
     t.integer  "campaign_id"
     t.integer  "user_id",                                           :null => false
     t.integer  "group_id"
@@ -483,10 +482,10 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.string   "name",                             :null => false
     t.string   "slug",                             :null => false
     t.integer  "xp_cost",       :default => 0,     :null => false
-    t.string   "rule1",                            :null => false
-    t.string   "rule2"
-    t.string   "rule3"
-    t.string   "rule4"
+    t.text     "rule1",                            :null => false
+    t.text     "rule2"
+    t.text     "rule3"
+    t.text     "rule4"
     t.integer  "fatigue_cost",  :default => 0,     :null => false
     t.boolean  "is_official",   :default => false, :null => false
     t.boolean  "is_published",  :default => false, :null => false

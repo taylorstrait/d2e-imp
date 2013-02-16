@@ -140,12 +140,25 @@ class ChaptersController < ApplicationController
         winner = @chapter.final_winner
 
         # update campaign status
-        if adventure.current_act == "Intro"
+        if adventure.current_act == "Intro" # if we just finished the intro
           adventure.current_act = "1"
-        elsif adventure.current_act == "1" && (completed_quests.where(:act => "1").size >= campaign.act1_quests) && (campaign.quests.where(:act => "Interlude").size > 0)
-          adventure.current_act = "Interlude"
-        elsif adventure.current_act == "Interlude"
-          adventure.current_act = "2"
+        
+        elsif adventure.current_act == "1" && (completed_quests.where(:act => "1").size >= campaign.act1_quests) # or if we are done with act 1
+          if campaign.quests.where(:act => "Interlude").size > 0 # if there is an interlude
+            adventure.current_act = "Interlude"
+          elsif campaign.quests.where(:act => "2").size > 0 # or if there are act 2 quests
+            adventure.current_act = "2"
+          else # there must just be a finale
+            adventure.current_act = "Finale"
+          end
+        
+        elsif adventure.current_act == "Interlude" # or if we are completing an interlude
+          if campaign.quests.where(:act => "2").size > 0 # if there are act 2 quests
+            adventure.current_act = "2"
+          else # there must just be a finale
+            adventure.current_act = "Finale"
+          end
+
         elsif adventure.current_act == "2" && (completed_quests.where(:act => "2").size >= campaign.act2_quests) && (campaign.quests.where(:act => "Finale").size > 0)
           adventure.current_act = "Finale"
         end
@@ -190,19 +203,26 @@ class ChaptersController < ApplicationController
 
         elsif winner == "Overlord"
 
+          # give ol item
           if quest.ol_win_item_id.present?
             adventure.items << Item.find(quest.ol_win_item_id)
           end
 
+          # take away hero items, if needed
           if quest.ol_win_heroes_lose_item_id.present?
-            lost_item = Item.find(quest.ol_win_heroes_lose_item_id)
+            lost_item = Item.find_by_id(quest.ol_win_heroes_lose_item_id)
             
             adventure.adventurers.each do |hero|
               
-              if hero.items.includes?(lost_item)
+              if hero.items.include?(lost_item)
                 hero.items.delete(lost_item)
               end
             end
+          end
+
+          # give ol card
+          if quest.ol_win_gain_overlord_card_id.present?
+            adventure.overlord_cards << OverlordCard.find(quest.ol_win_gain_overlord_card_id)
           end
         end
 
@@ -253,19 +273,20 @@ class ChaptersController < ApplicationController
         end
 
         # add overlords cards
-        params[:overlord_cards].each do |card_id|
-          new_card = OverlordCard.find(card_id)
-          if new_card
-            adventure.overlord_cards << new_card
-            adventure.ol_available_xp -= new_card.xp_cost
+        if params[:overlord_cards]
+          params[:overlord_cards].each do |card_id|
+            new_card = OverlordCard.find(card_id)
+            if new_card
+              adventure.overlord_cards << new_card
+              adventure.ol_available_xp -= new_card.xp_cost
+            end
           end
+          adventure.save
         end
-
-        adventure.save
         
-        # is it the finale?
+        # complete adventure if it is the finale
         if quest.act == "Finale"
-          adventure.update_attribute(:completed_at, Time.now)
+          adventure.update_attributes(:completed_at => Time.now, :winner => @chapter.final_winner)
         end
 
         format.html { redirect_to adventure, notice: 'Chapter was successfully created.' }

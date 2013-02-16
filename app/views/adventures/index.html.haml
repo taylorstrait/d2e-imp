@@ -28,7 +28,12 @@
               - if adventure.is_private?
                 %i.icon-eye-close
               - if adventure.is_complete?
-                %i.icon-ok
+                - if adventure.winner == "Heroes"
+                  %span.badge.badge-info
+                    %i.icon-ok.icon-white
+                -else 
+                  %span.badge.badge-important
+                    %i.icon-ok.icon-white
             %td= link_to adventure.name, adventure_path(adventure)
             %td= adventure.campaign.name
             %td

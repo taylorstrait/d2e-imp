@@ -22,6 +22,13 @@ class Adventure < ActiveRecord::Base
     end
   end
 
+  # return array of quests as associated through chapters
+  def quests
+    quests = []
+    chapters.includes(:quest).each {|c| quests << c.quest}
+    return quests
+  end
+
   private
 
     def before_destroy
