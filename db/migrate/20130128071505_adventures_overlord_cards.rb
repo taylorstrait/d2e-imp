@@ -7,7 +7,7 @@ class AdventuresOverlordCards < ActiveRecord::Migration
 
     add_index :adventures_overlord_cards, :overlord_card_id
     add_index :adventures_overlord_cards, :adventure_id
-    add_index :adventures_overlord_cards, [:adventure_id, :overlord_card_id], :unique => true
+    add_index :adventures_overlord_cards, [:adventure_id, :overlord_card_id], :unique => true, :name => 'adventures_ol_cards_compund_unique'
 
   end
 
