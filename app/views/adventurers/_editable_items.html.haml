@@ -1,0 +1,10 @@
+/ this is a list of items associated with each class, for putting in tables and whatnot
+
+- for item in @adventurer.items
+  %p
+    = popup_link(item)
+    = link_to "<i class='icon-remove'></i>".html_safe, remove_item_adventurer_url(@adventurer.id, :item_id => item.id), :remote => true, :class => "btn-danger btn-mini"
+
+// bootstrap popovers
+:javascript
+  $('.object-popup').popover({ html: true, trigger: 'hover'});
