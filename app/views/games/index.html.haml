@@ -1,5 +1,4 @@
-
-%h1 Games
+%h2 Games
 
 %table.table.table-striped
   %thead
@@ -15,11 +14,9 @@
         %td
           .column2
             - for hero in game.heroes
-              %p= link_to hero.name, hero
+              %p= popup_link(hero)
 
         %td
           .column2
-            - for monster in game.regular_monsters
-              %p= link_to monster.name, monster
-
-= link_to t('.new', :default => t("helpers.links.new")), new_game_path, :class => 'btn btn-primary'
+            - for monster in game.monsters
+              %p= monster_popover_link(monster)
