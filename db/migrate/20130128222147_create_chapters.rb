@@ -29,5 +29,6 @@ class CreateChapters < ActiveRecord::Migration
     add_index :chapters, :adventure_id
     add_index :chapters, :quest_id
     add_index :chapters, :user_id
+    add_index :chapters, [:adventure_id, :quest_id], :unique => true
   end
 end

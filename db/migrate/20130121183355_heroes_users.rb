@@ -7,5 +7,6 @@ class HeroesUsers < ActiveRecord::Migration
 
     add_index :heroes_users, :hero_id
     add_index :heroes_users, :user_id
+    add_index :heroes_users, [:user_id, :hero_id], :unique => true
   end
 end

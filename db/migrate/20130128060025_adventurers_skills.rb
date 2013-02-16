@@ -7,6 +7,7 @@ class AdventurersSkills < ActiveRecord::Migration
 
     add_index :adventurers_skills, :skill_id
     add_index :adventurers_skills, :adventurer_id
+    add_index :adventurers_skills, [:adventurer_id, :skill_id], :unique => true
   end
 
 end

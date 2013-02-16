@@ -7,5 +7,6 @@ class CreateEncountersTraits < ActiveRecord::Migration
 
     add_index :encounters_traits, :encounter_id
     add_index :encounters_traits, :trait_id
+    add_index :encounters_traits, [:encounter_id, :trait_id], :unique => true
   end
 end

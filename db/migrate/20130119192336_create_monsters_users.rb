@@ -7,5 +7,7 @@ class CreateMonstersUsers < ActiveRecord::Migration
 
     add_index :monsters_users, :monster_id
     add_index :monsters_users, :user_id
+    add_index :monsters_users, [:user_id, :monster_id], :unique => true
+
   end
 end

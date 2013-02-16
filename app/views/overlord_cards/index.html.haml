@@ -13,9 +13,9 @@
       %th= model_class.human_attribute_name(:name)
       %th Type
       %th= model_class.human_attribute_name(:category)
-      %th= model_class.human_attribute_name(:xp_cost)
-      %th Rating
-      %th Game
+      %th XP
+      %th.hidden-phone Rating
+      %th.hidden-phone Game
 
   %tbody
     - @overlord_cards.each do |name, overlord_card|
@@ -29,5 +29,5 @@
         %td= overlord_card.first.subclass
         %td= overlord_card.first.category
         %td= overlord_card.first.xp_cost
-        %td= sample_rating
-        %td= link_to overlord_card.first.game.very_short_name, overlord_card.first.game
+        %td.hidden-phone= sample_rating
+        %td.hidden-phone= link_to overlord_card.first.game.very_short_name, overlord_card.first.game

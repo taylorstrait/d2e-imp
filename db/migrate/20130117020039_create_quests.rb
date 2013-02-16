@@ -6,6 +6,7 @@ class CreateQuests < ActiveRecord::Migration
       t.integer :encounters_count, :default => 0, :null => false
       t.integer :position
       t.string :act
+      t.string :category, :null => false, :default => "Quest"
       t.integer :campaign_id
       t.integer :user_id, :null => false
       t.integer :group_id
@@ -32,6 +33,7 @@ class CreateQuests < ActiveRecord::Migration
 
     add_index :quests, :name, :unique => true
     add_index :quests, :slug, :unique => true
+    add_index :quests, :category
     add_index :quests, :campaign_id
     add_index :quests, :user_id
     add_index :quests, :group_id

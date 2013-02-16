@@ -1,17 +1,15 @@
-- model_class = Profession
-.page-header
-  %h1= @profession.name
+%h2= @profession.name
 
 %p
-  %strong= model_class.human_attribute_name(:archetype_id) + ':'
+  %strong Archetype:
   %br
   = @profession.archetype.name
 %p
-  %strong= model_class.human_attribute_name(:game_id) + ':'
+  %strong Game:
   %br
   = link_to @profession.game.name, @profession.game
 
-  %h2 Skills
+  %h4 Skills
 
   - for skill in @profession.skills
-    %p= link_to skill.name, skill
+    %p= popup_link(skill)

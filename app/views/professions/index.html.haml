@@ -1,10 +1,10 @@
-%h1 Classes
+%h2 Classes
 
 %table.table.table-striped#sortable-table
   %thead
     %tr
       %th Name
-      %th Archetype
+      %th.hidden-phone Archetype
       %th Items
       %th Skills
       //%th Game
@@ -13,7 +13,7 @@
     - @professions.each do |profession|
       %tr
         %td= link_to profession.name, class_path(profession)
-        %td= profession.archetype.name
+        %td.hidden-phone= profession.archetype.name
         %td
           - for item in profession.items
             %p= link_to item.name, item 
@@ -27,5 +27,5 @@
 
         //%td= link_to profession.game.short_name, profession.game
 
-- if user_signed_in? && current_user.is_admin?
+- if current_user.try(:is_admin?)
   = link_to t('.new', :default => t("helpers.links.new")), new_class_path, :class => 'btn btn-primary'

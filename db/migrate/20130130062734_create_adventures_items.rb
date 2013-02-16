@@ -7,6 +7,7 @@ class CreateAdventuresItems < ActiveRecord::Migration
 
     add_index :adventures_items, :item_id
     add_index :adventures_items, :adventure_id
+    add_index :adventures_items, [:adventure_id, :item_id], :unique => true
   end
 
 end

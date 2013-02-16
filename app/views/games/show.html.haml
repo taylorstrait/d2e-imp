@@ -1,4 +1,34 @@
-%h1= @game.name
+%h2= @game.name
 
 %p
   = link_to "BoardGameGeek Link", @game.bgg_url
+
+-if @game.heroes.size > 0
+  %h4 Heroes (#{@game.heroes.size})
+  .column3
+    - for hero in @game.heroes
+      %p= popup_link(hero)
+
+-if @game.monsters.size > 0
+  %h4 Monsters (#{@game.monsters.size})
+  .column3
+    - for monster in @game.monsters
+      %p= monster_popover_link(monster)
+
+-if @game.items.size > 0
+  %h4 Items (#{@game.items.size})
+  .column3
+    - for item in @game.items
+      %p= popup_link(item)
+
+-if @game.professions.size > 0
+  %h4 Classes (#{@game.professions.size})
+  .column3
+    - for profession in @game.professions
+      %p= link_to profession.name, class_path(profession)
+
+-if @game.overlord_cards.size > 0
+  %h4 Overlord Cards (#{@game.overlord_cards.size})
+  .column3
+    - for overlord_card in @game.overlord_cards
+      %p= popup_link(overlord_card)

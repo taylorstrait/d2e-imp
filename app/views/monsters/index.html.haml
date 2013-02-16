@@ -14,7 +14,7 @@
       %th= model_class.human_attribute_name(:name)
       %th= model_class.human_attribute_name(:role)
       %th= model_class.human_attribute_name(:attack_type)
-      %th= model_class.human_attribute_name(:game_id)
+      %th.hidden-phone= model_class.human_attribute_name(:game_id)
       /%th= model_class.human_attribute_name(:num_tan2)
       /%th= model_class.human_attribute_name(:num_red2)
       /%th= model_class.human_attribute_name(:num_tan3)
@@ -58,7 +58,7 @@
         %td= monster_popover_link(monster)
         %td= monster.role
         %td= monster.attack_type
-        %td= link_to monster.game.name, monster.game
+        %td.hidden-phone= link_to monster.game.name, monster.game
         /%td= monster.num_tan2
         /%td= monster.num_red2
         /%td= monster.num_tan3

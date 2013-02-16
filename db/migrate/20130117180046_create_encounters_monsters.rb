@@ -7,5 +7,6 @@ class CreateEncountersMonsters < ActiveRecord::Migration
 
     add_index :encounters_monsters, :encounter_id
     add_index :encounters_monsters, :monster_id
+    add_index :encounters_monsters, [:encounter_id, :monster_id], :unique => true
   end
 end

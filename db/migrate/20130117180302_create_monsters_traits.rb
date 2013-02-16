@@ -7,5 +7,6 @@ class CreateMonstersTraits < ActiveRecord::Migration
 
     add_index :monsters_traits, :monster_id
     add_index :monsters_traits, :trait_id
+    add_index :monsters_traits, [:monster_id, :trait_id], :unique => true
   end
 end
