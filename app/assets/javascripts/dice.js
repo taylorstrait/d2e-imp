@@ -30,10 +30,10 @@ $(document).ready(function(){
 
 });
 
-//$(document).ready(function(){
-//
-//  $('#dice-results').click(function () {
-//    $(this).children().fadeOut()
-//  });
-//
-//});
+$(document).ready(function(){
+
+  $('#clear-dice').click(function () {
+    $("#dice-results").empty()
+  });
+
+});

@@ -1,5 +1,6 @@
-.dice
-  = image_tag "dice/#{color}/#{number}.png"
+- rolls.each do |roll|
+  .dice
+    = image_tag "dice/#{roll["color"]}/#{roll["number"]}.png"
 
   :javascript
     $(document).ready(function(){

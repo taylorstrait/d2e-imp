@@ -4,16 +4,24 @@
 
   .span2
     .row-fluid
-      = link_to "#{image_tag 'icons/dice-blue.png'}".html_safe, roll_dice_path(:color => 'blue'), :remote => true, :class => "roll_dice_button btn btn-large"
-      = link_to "#{image_tag 'icons/dice-yellow.png'}".html_safe, roll_dice_path(:color => 'yellow'), :remote => true, :class => "roll_dice_button btn btn-large"
-      = link_to "#{image_tag 'icons/dice-red.png'}".html_safe, roll_dice_path(:color => 'red'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-blue.png'}".html_safe, roll_dice_path(:colors => 'blue'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-yellow.png'}".html_safe, roll_dice_path(:colors => 'yellow'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-red.png'}".html_safe, roll_dice_path(:colors => 'red'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-green.png'}".html_safe, roll_dice_path(:colors => 'green'), :remote => true, :class => "roll_dice_button btn btn-medium"
 
     .row-fluid
-      = link_to "#{image_tag 'icons/dice-brown.png'}".html_safe, roll_dice_path(:color => 'brown'), :remote => true, :class => "roll_dice_button btn btn-large"
-      = link_to "#{image_tag 'icons/dice-grey.png'}".html_safe, roll_dice_path(:color => 'grey'), :remote => true, :class => "roll_dice_button btn btn-large"
-      = link_to "#{image_tag 'icons/dice-black.png'}".html_safe, roll_dice_path(:color => 'black'), :remote => true, :class => "roll_dice_button btn btn-large"
+      = link_to "#{image_tag 'icons/dice-brown.png'}".html_safe, roll_dice_path(:colors => 'brown'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-grey.png'}".html_safe, roll_dice_path(:colors => 'grey'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-black.png'}".html_safe, roll_dice_path(:colors => 'black'), :remote => true, :class => "roll_dice_button btn btn-medium"
+      = link_to "#{image_tag 'icons/dice-black-grey.png'}".html_safe, roll_dice_path(:colors => ['black', 'grey']), :remote => true, :class => "roll_dice_button btn btn-medium"
 
     %hr
 
   .span10
-    #dice-results.centered
+    .row-fluid
+      #dice-results.centered
+
+    %hr
+
+    .row-fluid
+      #clear-dice.btn Clear All
