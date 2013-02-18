@@ -14,7 +14,7 @@
 
   %p
     = label_tag :pool_size
-    = select_tag("pool_size", options_for_select(1..6, params[:pool_size] || "3"))
+    = select_tag("pool_size", options_for_select([["All", 0], [1,1], [2,2], [3,3], [4,4]], params[:pool_size] || "3"))
   
   = submit_tag "Generate Monster Options"
 

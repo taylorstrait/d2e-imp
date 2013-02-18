@@ -1,5 +1,7 @@
 Monsters::Application.routes.draw do
 
+  get "timer/timer"
+
   match 'chapters/new_standalone' => "chapters#new_standalone", :as => :new_standalone_chapter, :via => :get
   resources :chapters
 
@@ -77,6 +79,8 @@ Monsters::Application.routes.draw do
 
   match 'dice_roller' => "dice#dice_roller", :as => :dice_roller, :via => :get
   match 'roll_dice' => "dice#roll_dice", :as => :roll_dice, :via => :get
+
+  match 'turn_timer' => "timer#turn_timer", :as => :turn_timer, :via => :get
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

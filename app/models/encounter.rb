@@ -18,19 +18,13 @@ class Encounter < ActiveRecord::Base
   # pool_size = integer to set the number of monsters to draw per open group
   def generate_open_group_monsters(user_id = nil, pool_size = 3)
 
-    # fix a few possible errors
-    if pool_size == 0 || pool_size > 6
-      pool_size = 3
-    end
-
     # define our overall monster options
-
     user = User.find_by_id(user_id.to_i)
 
-    if user && !user.monster_ids.empty?
-      monster_list = user.monster_ids
+    if user && !user.monster_ids.empty? # if there a user and he does have monsters
+      monster_list = user.monster_ids # use those monsters
     else
-      monster_list = Monster.pluck(:id)
+      monster_list = Monster.pluck(:id) # otherwise use all monsters
     end
 
     # find monsters that match encounter traits AND are an available option
@@ -57,10 +51,15 @@ class Encounter < ActiveRecord::Base
         open_group[counter] = []
         
         # for each card to draw...
-        pool_size.to_i.times do
+        if pool_size == 0 # if we are showing all options
+          open_group[counter] = monster_options.clone # add all options to the group
+
+        else # we are showing limited options
+          pool_size.to_i.times do # so for each slot in the pool size
           
-          # pop one card off the shuffled pool
-          open_group[counter] << monster_options.pop
+            # pop one card off the shuffled pool
+            open_group[counter] << monster_options.pop
+          end
 
         end
 
