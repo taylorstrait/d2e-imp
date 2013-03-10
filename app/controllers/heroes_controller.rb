@@ -92,13 +92,20 @@ class HeroesController < ApplicationController
     end
   end
 
+
+  # API STUFF
+
+  #return a list of professions available to each hero, respecting games owned by user
   def professions
-    unless params[:id] == "professions"
-      hero = Hero.includes(:archetype => :professions).find(params[:id])
-      professions = hero.archetype.professions.where("professions.game_id IN (?)", current_user.game_ids).all
-      render json: professions, status: :created
+    hero = Hero.includes(:archetype => :professions).find(params[:id])
+    if user_signed_in?
+      professions = hero.archetype.professions.where("professions.game_id IN (?)", current_user.game_ids).select([:name, :slug, :id])
     else
-      render json: [], status: :created
+      professions = hero.archetype.professions.select([:name, :slug, :id])
+    end
+    respond_to do |format|
+      format.json {render json: professions, status: :created}  
     end
   end
+
 end

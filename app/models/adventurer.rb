@@ -1,7 +1,6 @@
 class Adventurer < ActiveRecord::Base
   
-  after_create :set_starting_skills
-  #after_create :set_starting_items
+  after_create :set_starting_stuff
 
   belongs_to :user
   belongs_to :hero
@@ -25,14 +24,15 @@ class Adventurer < ActiveRecord::Base
     private
 
     # automatically add starting skills on creation
-    def set_starting_skills
+    def set_starting_stuff
       self.skills = profession.starting_skills
+      self.items = self.profession.items
     end
 
     # automatically add starting items on creation
-    #def set_starting_items
-    #  self.items = self.profession.items
-    #end
+    def set_starting_items
+      self.items = self.profession.items
+    end
 
     # cleanup all the HABTM tables on delete
     def before_destroy

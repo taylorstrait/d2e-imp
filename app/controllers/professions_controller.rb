@@ -81,10 +81,14 @@ class ProfessionsController < ApplicationController
     end
   end
 
+  
+  # API STUFF
+
   def items
     @profession = Profession.includes(:items).find(params[:id])
     respond_to do |format|
       format.js {render :partial => "profession_items"}
+      format.html {render :partial => "profession_items"}
       format.json {render json: @profession.items}
     end
   end 
@@ -92,7 +96,7 @@ class ProfessionsController < ApplicationController
   def skills
     @profession = Profession.includes(:skills).find(params[:id])
     respond_to do |format|
-      format.js {render :partial => "profession_skills"}
+      format.html {render :partial => "profession_skills"}
       format.json {render json: @profession.skills}
     end
   end
@@ -100,7 +104,7 @@ class ProfessionsController < ApplicationController
   def starting_skills
     @profession = Profession.includes(:skills).where("skills.xp_cost = 0").find(params[:id])
     respond_to do |format|
-      format.js {render :partial => "profession_skills"}
+      format.html {render :partial => "profession_skills"}
       format.json {render json: @profession.skills}
     end
   end

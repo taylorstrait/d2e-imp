@@ -15,7 +15,7 @@ function heroChangeFunction(i) {
         var heroId = $(this).prop('value');
         chosenHeroes[i] = $(this).prop('value');
 
-        $.getJSON("/heroes/" + heroId + "/professions", function(data) {
+        $.getJSON("/heroes/" + heroId + "/professions.json", function(data) {
             populateDropdown($(professionSelector), data);
             $(itemsDiv).empty();
             $(skillsDiv).empty();
@@ -36,12 +36,12 @@ function classChangeFunction(i) {
         chosenProfessions[i] = $(this).prop('value');
 
         // update starting items
-        $.get("/classes/" + professionId + "/items", function (data) {
+        $.get("/classes/" + professionId + "/items.html", function (data) {
             $(itemsDiv).html(data);
         });
     
         // update starting skills
-        $.get("/classes/" + professionId + "/starting_skills", function (data) {
+        $.get("/classes/" + professionId + "/starting_skills.html", function (data) {
              $(skillsDiv).html(data);
         });
     });

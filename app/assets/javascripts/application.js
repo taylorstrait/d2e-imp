@@ -26,13 +26,15 @@ $(document).ready(function()
     } 
 ); 
 
+
 // bootstrap popovers
 $('.object-popup').popover({ html: true, trigger: 'hover'});
+
 
 // function to properly format dropdown data into options
 function populateDropdown(select, data) {
   select.html('');
   $.each(data, function(id, option) {
-    select.append($('<option></option>').val(option.id).html(option.name));
+    select.append($('<option></option>').val(option.slug).html(option.name));
   });       
 }

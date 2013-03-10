@@ -36,9 +36,9 @@
           %td Hero
           - for i in 1..4
             - if params[:heroes].nil?
-              %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+              %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :slug, :name), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
             - else
-              %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :id, :name, params[:heroes][i.to_s][:hero_id]), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
+              %td= select_tag("heroes[#{i}][hero_id]", options_from_collection_for_select(@heroes, :slug, :name, params[:heroes][i.to_s][:hero_id]), {:prompt => "Choose a hero", :class => 'hero-select input-medium'})
 
         %tr
           %td Class
