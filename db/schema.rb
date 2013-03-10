@@ -14,23 +14,21 @@
 ActiveRecord::Schema.define(:version => 20130130062734) do
 
   create_table "adventurers", :force => true do |t|
-    t.integer "hero_id",                      :null => false
-    t.integer "profession_id",                :null => false
-    t.integer "available_xp",  :default => 0, :null => false
-    t.integer "user_id"
+    t.integer  "hero_id",                        :null => false
+    t.integer  "adventure_id"
+    t.integer  "profession_id",                  :null => false
+    t.integer  "available_xp",    :default => 0, :null => false
+    t.integer  "user_id"
+    t.integer  "current_damage",  :default => 0, :null => false
+    t.integer  "current_fatigue", :default => 0, :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
   end
 
+  add_index "adventurers", ["adventure_id"], :name => "index_adventurers_on_adventure_id"
   add_index "adventurers", ["hero_id"], :name => "index_adventurers_on_hero_id"
   add_index "adventurers", ["profession_id"], :name => "index_adventurers_on_profession_id"
   add_index "adventurers", ["user_id"], :name => "index_adventurers_on_user_id"
-
-  create_table "adventurers_adventures", :force => true do |t|
-    t.integer "adventure_id",  :null => false
-    t.integer "adventurer_id", :null => false
-  end
-
-  add_index "adventurers_adventures", ["adventure_id"], :name => "index_adventurers_adventures_on_adventure_id"
-  add_index "adventurers_adventures", ["adventurer_id"], :name => "index_adventurers_adventures_on_adventurer_id"
 
   create_table "adventurers_items", :force => true do |t|
     t.integer "item_id",       :null => false
@@ -42,8 +40,8 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
   add_index "adventurers_items", ["item_id"], :name => "index_adventurers_items_on_item_id"
 
   create_table "adventurers_skills", :force => true do |t|
-    t.integer "skill_id",      :null => false
     t.integer "adventurer_id", :null => false
+    t.integer "skill_id",      :null => false
   end
 
   add_index "adventurers_skills", ["adventurer_id", "skill_id"], :name => "index_adventurers_skills_on_adventurer_id_and_skill_id", :unique => true
@@ -244,6 +242,14 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
 
   add_index "games", ["name"], :name => "index_games_on_name", :unique => true
   add_index "games", ["slug"], :name => "index_games_on_slug", :unique => true
+
+  create_table "games_heroes", :force => true do |t|
+    t.integer "hero_id", :null => false
+    t.integer "game_id", :null => false
+  end
+
+  add_index "games_heroes", ["game_id"], :name => "index_games_heroes_on_game_id"
+  add_index "games_heroes", ["hero_id"], :name => "index_games_heroes_on_hero_id"
 
   create_table "games_users", :force => true do |t|
     t.integer "game_id", :null => false

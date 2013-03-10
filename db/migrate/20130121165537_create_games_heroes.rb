@@ -6,7 +6,6 @@ class CreateGamesHeroes < ActiveRecord::Migration
     end
 
     add_index :games_heroes, :hero_id
-    add_index :games_heroes, :user_id
-    add_index :games_heroes, [:user_id, :monster_id], :unique => true
+    add_index :games_heroes, :game_id
   end
 end

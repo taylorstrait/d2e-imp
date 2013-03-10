@@ -1,10 +1,15 @@
 class Adventurer < ActiveRecord::Base
+  
+  after_create :set_starting_skills
+  #after_create :set_starting_items
+
   belongs_to :user
   belongs_to :hero
   belongs_to :profession
-  has_and_belongs_to_many :adventures
-  has_and_belongs_to_many :items
+  belongs_to :adventure
+  
   has_and_belongs_to_many :skills
+  has_and_belongs_to_many :items
 
   validates :hero, :presence => true
   validates :profession, :presence => true
@@ -19,8 +24,18 @@ class Adventurer < ActiveRecord::Base
 
     private
 
+    # automatically add starting skills on creation
+    def set_starting_skills
+      self.skills = profession.starting_skills
+    end
+
+    # automatically add starting items on creation
+    #def set_starting_items
+    #  self.items = self.profession.items
+    #end
+
+    # cleanup all the HABTM tables on delete
     def before_destroy
-      adventures.clear
       items.clear
       skills.clear
     end

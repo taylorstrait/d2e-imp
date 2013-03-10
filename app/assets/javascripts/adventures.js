@@ -36,12 +36,12 @@ function classChangeFunction(i) {
         chosenProfessions[i] = $(this).prop('value');
 
         // update starting items
-        $.get("/classes/" + professionId + "/get_items", function (data) {
+        $.get("/classes/" + professionId + "/items", function (data) {
             $(itemsDiv).html(data);
         });
     
         // update starting skills
-        $.get("/classes/" + professionId + "/get_skills", function (data) {
+        $.get("/classes/" + professionId + "/starting_skills", function (data) {
              $(skillsDiv).html(data);
         });
     });

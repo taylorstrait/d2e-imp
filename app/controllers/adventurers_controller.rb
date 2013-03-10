@@ -2,7 +2,7 @@ class AdventurersController < ApplicationController
   # GET /adventurers
   # GET /adventurers.json
   def index
-    @adventurers = Adventurer.all
+    @adventurers = current_user.adventurers
 
     respond_to do |format|
       format.html # index.html.erb
@@ -81,6 +81,29 @@ class AdventurersController < ApplicationController
     end
   end
 
+
+  def play
+
+    # load adventurer if param
+    if params[:adventurer_id]
+      @adventurer = Adventurer.find(params[:adventurer_id])
+
+    # else create a new adventurer
+    elsif params[:hero_id] && params[:profession_id] && user_signed_in?
+      @adventurer = Adventurer.create(:hero_id => params[:hero_id], :profession_id => params[:profession_id], :user_id => current_user.id)
+    else
+      flash[:errors] = "There was an error. You broke something! Are you  signed in?"
+      redirect_to :root
+    end
+  end
+
+  def update_damage
+  end
+
+  def update_fatigue
+  end
+
+  ##### AJAX METHODS #####
   def remove_item
     @adventurer = Adventurer.find(params[:id])
     item = Item.find(params[:item_id])

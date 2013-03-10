@@ -10,8 +10,11 @@ Monsters::Application.routes.draw do
     member do
       delete 'remove_item'
       delete 'remove_skill'
+      put 'update_damage'
+      put 'update_fatigue'
     end
   end
+  match 'play' => "adventurers#play", :as => :play, :via => :get
 
 
   resources :overlord_cards
@@ -36,8 +39,9 @@ Monsters::Application.routes.draw do
 
   resources :classes, :controller => :professions do
     member do
-      get 'get_items'
-      get 'get_skills'
+      get 'items'
+      get 'skills'
+      get 'starting_skills'
     end
   end
 
