@@ -27,7 +27,7 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new
 
     # create lists of available quests
-    @adventure = Adventure.includes(:campaign, :chapters => :quest).find_by_id(params[:adventure_id])
+    @adventure = Adventure.includes(:campaign, :chapters => :quest).find(params[:adventure_id])
     completed_quests = @adventure.chapters.pluck(:quest_id)
 
     if @adventure.current_act == "Intro"
@@ -127,9 +127,9 @@ class ChaptersController < ApplicationController
     @chapter = Chapter.new(params[:chapter])
 
     respond_to do |format|
-      if @chapter.save
+      if @chapter.valid?
 
-        # update all the players
+        # set variables to work with
         adventure = @chapter.adventure
         heroes = adventure.adventurers
         quest = @chapter.quest
@@ -184,10 +184,19 @@ class ChaptersController < ApplicationController
         adventure.update_attribute(:ol_available_xp, adventure.ol_available_xp + total_ol_xp)
 
 
-        ##### Search gold ####
-        if winner == "Heroes" then adventure.hero_gold += (quest.hero_win_gold * adventure.adventurers.size) end
-        #adventure.hero_gold += @chapter.gold_from_search_items
+        ##### Gold ####
+        # Quest gold
+        if winner == "Heroes"
+          gold_to_be_added = (quest.hero_win_gold * adventure.adventurers.size)
+        end
+
+        # search item gold
+        gold_to_be_added += @chapter.gold_from_search_items
+
+        # save gold
+        adventure.hero_gold += gold_to_be_added
         adventure.save
+
 
 
         #####add the reward items, if applicable #####
@@ -244,9 +253,9 @@ class ChaptersController < ApplicationController
               v['sold_items'].each do |item_id|
                 sold_item = Item.find(item_id.to_i)
                 adventure.hero_gold += sold_item.sell_cost
-                adventure.save
                 hero.items.delete(sold_item)
               end
+              adventure.save
             end
     
             # add  bought items
@@ -256,8 +265,8 @@ class ChaptersController < ApplicationController
                 bought_item = Item.find(item_id.to_i)
                 hero.items << bought_item
                 adventure.hero_gold -= bought_item.buy_cost
-                adventure.save
               end
+              adventure.save
             end
     
             # add new skills
@@ -289,10 +298,14 @@ class ChaptersController < ApplicationController
           adventure.update_attributes(:completed_at => Time.now, :winner => @chapter.final_winner)
         end
 
+        # finally save the chapter
+        @chapter.save
+
         format.html { redirect_to adventure, notice: 'Chapter was successfully created.' }
         format.json { render json: @chapter, status: :created, location: @chapter }
       else
-        format.html { render action: "new" }
+
+        format.html { redirect_to new_adventure_url(:adventure_id => adventure.id) }
         format.json { render json: @chapter.errors, status: :unprocessable_entity }
       end
     end

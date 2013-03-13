@@ -2,7 +2,7 @@ class AdventurersController < ApplicationController
   # GET /adventurers
   # GET /adventurers.json
   def index
-    @adventurers = current_user.adventurers
+    @adventurers = current_user.adventurers.includes(:hero, :items, :skills, :adventure).order("updated_at DESC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -91,6 +91,8 @@ class AdventurersController < ApplicationController
     # else create a new adventurer
     elsif params[:hero_id] && params[:profession_id] && user_signed_in?
       @adventurer = Adventurer.create(:hero_id => params[:hero_id], :profession_id => params[:profession_id], :user_id => current_user.id)
+      @adventurer.skills = @adventurer.profession.starting_skills
+      @adventurer.items = @adventurer.profession.items
     else
       flash[:errors] = "There was an error. You broke something! Are you  signed in?"
       redirect_to :root

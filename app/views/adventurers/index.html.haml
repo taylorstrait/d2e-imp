@@ -2,6 +2,7 @@
 
 %table
   %tr
+    %th
     %th Hero
     %th Health
     %th Fatigue
@@ -14,16 +15,17 @@
 
   - @adventurers.each do |adventurer|
     %tr
+      %td= link_to "Play", play_path(:adventurer_id => adventurer), :class => "btn btn-small btn-primary"
       %td= popup_link(adventurer.hero)
       %td= adventurer.hero.health - adventurer.current_damage
       %td= adventurer.current_fatigue
-      %td= adventurer.items
-      %td= adventurer.skills
-      %td= link_to adventurer.adventure.name, adventurer.adventure
+      %td= render :partial => "items/item", :collection => adventurer.items
+      %td= render :partial => "skills/skill", :collection => adventurer.skills
+      %td
+        - if adventurer.adventure
+          = link_to adventurer.adventure.name, adventurer.adventure
       %td= link_to 'Show', adventurer
       %td= link_to 'Edit', edit_adventurer_path(adventurer)
-      %td= link_to 'Destroy', adventurer, method: :delete, data: { confirm: 'Are you sure?' }
-
-%br
-
-= link_to 'New Adventurer', new_adventurer_path
+      %td
+        -unless adventurer.adventure
+          = link_to 'Destroy', adventurer, method: :delete, data: { confirm: 'Are you sure?' }

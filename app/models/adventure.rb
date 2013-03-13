@@ -1,7 +1,7 @@
 class Adventure < ActiveRecord::Base
   belongs_to :user
   belongs_to :campaign
-  has_many :adventurers
+  has_many :adventurers, :dependent => :destroy
   has_and_belongs_to_many :overlord_cards
   has_and_belongs_to_many :items
   has_many :chapters, :dependent => :destroy, :order => "created_at DESC"
@@ -33,6 +33,7 @@ class Adventure < ActiveRecord::Base
 
     def before_destroy
       adventurers.clear
+      chapters.clear
       items.clear
       overlord_cards.clear
     end

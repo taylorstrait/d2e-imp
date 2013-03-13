@@ -37,7 +37,7 @@ class AdventuresController < ApplicationController
 
       else # start a new adventure
         @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
-        @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).select([:name, :slug])
+        @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).select([:name, :slug, :id])
         @adventure = Adventure.new
       end
 
@@ -77,6 +77,8 @@ class AdventuresController < ApplicationController
           adventurer.available_xp = @adventure.hero_starting_xp
             if adventurer.valid?
               adventurer.save
+              adventurer.skills = adventurer.profession.starting_skills
+              adventurer.items = adventurer.profession.items
               @adventure.adventurers << adventurer
             end       
           end

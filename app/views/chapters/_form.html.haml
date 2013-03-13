@@ -28,7 +28,7 @@
     .control-group
       = f.label :gold_from_search_items, :class => 'control-label'
       .controls
-        = f.number_field :gold_from_search_items, :class => 'number_field'
+        = f.number_field :gold_from_search_items, :class => 'number_field', :in => 0..400, :step => 25
   
     %table.table.table-striped
       %thead
