@@ -87,12 +87,14 @@ class AdventurersController < ApplicationController
     # load adventurer if param
     if params[:adventurer_id]
       @adventurer = Adventurer.find(params[:adventurer_id])
+      @hide_nav = true
 
     # else create a new adventurer
     elsif params[:hero_id] && params[:profession_id] && user_signed_in?
       @adventurer = Adventurer.create(:hero_id => params[:hero_id], :profession_id => params[:profession_id], :user_id => current_user.id)
       @adventurer.skills = @adventurer.profession.starting_skills
       @adventurer.items = @adventurer.profession.items
+      @hide_nav = true
     else
       flash[:errors] = "There was an error. You broke something! Are you  signed in?"
       redirect_to :root

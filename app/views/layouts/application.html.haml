@@ -26,75 +26,76 @@
     / Size should be 32 x 32 pixels
     - favicon_link_tag '/assets/favicon.ico', :rel => 'shortcut icon'
   %body
-    .navbar.navbar-fluid-top
-      .navbar-inner
-        .container-fluid
-          .row-fluid
-            .span10.offset1
-              =#%a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
-              =#  %span.icon-bar
-              =#  %span.icon-bar
-              =#  %span.icon-bar
-              %a.hidden-tablet.hidden-phone.brand{:href => root_url} The Overlord's Apprentice
-              .container-fluid
-                %ul.nav
-
-                  %li.dropdown
-                    = link_to 'Info', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
-                    %ul.dropdown-menu
-                      %li= link_to "Campaigns", campaigns_url
-                      %li= link_to "Quests", quests_url
-                      %li= link_to "Heroes", heroes_url
-                      %li= link_to "Classes", classes_url
-                      %li= link_to "Skills", skills_url
-                      %li= link_to "Items", items_url
-                      %li= link_to "Monsters", monsters_url
-                      %li= link_to "Overlord Cards", overlord_cards_url
-                      %li= link_to "Games", games_url
-                  %li.dropdown
-                    = link_to 'Adventures', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
-                    %ul.dropdown-menu
-                      %li= link_to "Recent Adventures", adventures_url
-                      - if user_signed_in?
-                        %li= link_to "My Adventures", adventures_url(:username => current_user.username)
-                      %li.divider
-                      %li= link_to "Start a New Adventure", new_adventure_url
-
-                  %li.dropdown
-                    = link_to 'Tools', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
-                    %ul.dropdown-menu
-                      %li= link_to "Dice Roller", dice_roller_url
-                      %li= link_to "Monster Group Generator", monster_pool_generator_url
-                      %li= link_to "Turn Timer", turn_timer_url
-                      =#%li Dice Roller
-              
-
-                  %li.hidden-phone
-                    %form.form-search{action: '/search'}
-                      .input-append
-                        %input.span8.search-query{name: 'name', 'data-provide' => "typeahead", "data-items" => 6, "data-source" => ALL_OBJECT_NAMES, autocomplete: "off"}
-                        %button.btn
-                          %i.icon-search
-
-                %ul.nav.pull-right
-                  - if user_signed_in?
-                    %li.dropdown.hidden-tablet.hidden-desktop
-                      = link_to "<i class='icon-user'></i>".html_safe, '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+    - unless @hide_nav == true
+      .navbar.navbar-fluid-top
+        .navbar-inner
+          .container-fluid
+            .row-fluid
+              .span10.offset1
+                =#%a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+                =#  %span.icon-bar
+                =#  %span.icon-bar
+                =#  %span.icon-bar
+                %a.hidden-tablet.hidden-phone.brand{:href => root_url} The Overlord's Apprentice
+                .container-fluid
+                  %ul.nav
+  
+                    %li.dropdown
+                      = link_to 'Info', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
                       %ul.dropdown-menu
-                        %li= link_to "My Profile", edit_registration_url(current_user)
-                        %li= link_to "My Heroes", adventurers_url
-                        %li= link_to "Sign Out", destroy_user_session_url, :method => :delete
-                    %li.dropdown.hidden-phone
-                      = link_to "<i class='icon-user'></i> ".html_safe + current_user.username, '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                        %li= link_to "Campaigns", campaigns_url
+                        %li= link_to "Quests", quests_url
+                        %li= link_to "Heroes", heroes_url
+                        %li= link_to "Classes", classes_url
+                        %li= link_to "Skills", skills_url
+                        %li= link_to "Items", items_url
+                        %li= link_to "Monsters", monsters_url
+                        %li= link_to "Overlord Cards", overlord_cards_url
+                        %li= link_to "Games", games_url
+                    %li.dropdown
+                      = link_to 'Adventures', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
                       %ul.dropdown-menu
-                        %li= link_to "My Profile", edit_registration_url(current_user)
-                        %li= link_to "My Heroes", adventurers_url
-                        %li= link_to "Sign Out", destroy_user_session_url, :method => :delete
-    
-                  - else
-                    %li.hidden-phone= link_to "Register", new_user_registration_url
-                    %li.hidden-phone= link_to "Sign In", new_user_session_url
-                    %li.hidden-tablet.hidden-desktop= link_to "<i class='icon-user'></i>".html_safe, new_user_session_url
+                        %li= link_to "Recent Adventures", adventures_url
+                        - if user_signed_in?
+                          %li= link_to "My Adventures", adventures_url(:username => current_user.username)
+                        %li.divider
+                        %li= link_to "Start a New Adventure", new_adventure_url
+  
+                    %li.dropdown
+                      = link_to 'Tools', '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                      %ul.dropdown-menu
+                        %li= link_to "Dice Roller", dice_roller_url
+                        %li= link_to "Monster Group Generator", monster_pool_generator_url
+                        %li= link_to "Turn Timer", turn_timer_url
+                        =#%li Dice Roller
+                
+  
+                    %li.hidden-phone
+                      %form.form-search{action: '/search'}
+                        .input-append
+                          %input.span8.search-query{name: 'name', 'data-provide' => "typeahead", "data-items" => 6, "data-source" => ALL_OBJECT_NAMES, autocomplete: "off"}
+                          %button.btn
+                            %i.icon-search
+  
+                  %ul.nav.pull-right
+                    - if user_signed_in?
+                      %li.dropdown.hidden-tablet.hidden-desktop
+                        = link_to "<i class='icon-user'></i>".html_safe, '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                        %ul.dropdown-menu
+                          %li= link_to "My Profile", edit_registration_url(current_user)
+                          %li= link_to "My Heroes", adventurers_url
+                          %li= link_to "Sign Out", destroy_user_session_url, :method => :delete
+                      %li.dropdown.hidden-phone
+                        = link_to "<i class='icon-user'></i> ".html_safe + current_user.username, '#', {:class => 'dropdown-toggle', 'data-target' => "#", href: "/"}
+                        %ul.dropdown-menu
+                          %li= link_to "My Profile", edit_registration_url(current_user)
+                          %li= link_to "My Heroes", adventurers_url
+                          %li= link_to "Sign Out", destroy_user_session_url, :method => :delete
+      
+                    - else
+                      %li.hidden-phone= link_to "Register", new_user_registration_url
+                      %li.hidden-phone= link_to "Sign In", new_user_session_url
+                      %li.hidden-tablet.hidden-desktop= link_to "<i class='icon-user'></i>".html_safe, new_user_session_url
 
           / /.nav-collapse
     .container-fluid

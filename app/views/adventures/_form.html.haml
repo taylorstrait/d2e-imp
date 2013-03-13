@@ -77,7 +77,7 @@
         .control-group
           = f.label :hero_starting_gold, "Starting Gold", :class => 'control-label'
           .controls
-            = f.number_field :hero_starting_gold, :class => 'number_field span3'
+            = f.number_field :hero_starting_gold, :class => 'number_field span3', :in => 0..400, :step => 25
       .span4
         .control-group
           = f.label :ol_starting_xp, "Starting Overlord XP", :class => 'control-label'

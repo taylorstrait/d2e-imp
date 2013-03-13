@@ -8,8 +8,8 @@ class Adventurer < ActiveRecord::Base
   has_and_belongs_to_many :skills
   has_and_belongs_to_many :items
 
-  validates :hero, :presence => true
-  validates :profession, :presence => true
+  validates :hero_id, :presence => true
+  validates :profession_id, :presence => true
 
   def unlearned_skills
     if skills.empty? # if someone deleted all basic skills

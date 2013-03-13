@@ -61,8 +61,6 @@ class ChaptersController < ApplicationController
     
     elsif @adventure.current_act == "Finale"
 
-      @standalone = true # set variable to shorten form view
-
       if @adventure.chapters.joins(:quest).where(:final_winner => "Heroes").where(:quests => {:act => "2"}).size >= (@adventure.campaign.act2_quests.to_f / 2).round
         @available_quests = Quest.find(@adventure.campaign.finale_heroes_id)
       else
@@ -126,188 +124,170 @@ class ChaptersController < ApplicationController
   def create
     @chapter = Chapter.new(params[:chapter])
 
-    respond_to do |format|
-      if @chapter.valid?
-
-        # set variables to work with
-        adventure = @chapter.adventure
-        heroes = adventure.adventurers
-        quest = @chapter.quest
-        campaign = adventure.campaign
-        completed_quests = adventure.quests
-
-        # set the winner based on number of encounters
-        winner = @chapter.final_winner
-
-        # update campaign status
-        if adventure.current_act == "Intro" # if we just finished the intro
-          adventure.current_act = "1"
-        
-        elsif adventure.current_act == "1" && (completed_quests.where(:act => "1").size >= campaign.act1_quests) # or if we are done with act 1
-          if campaign.quests.where(:act => "Interlude").size > 0 # if there is an interlude
-            adventure.current_act = "Interlude"
-          elsif campaign.quests.where(:act => "2").size > 0 # or if there are act 2 quests
-            adventure.current_act = "2"
-          else # there must just be a finale
-            adventure.current_act = "Finale"
-          end
-        
-        elsif adventure.current_act == "Interlude" # or if we are completing an interlude
-          if campaign.quests.where(:act => "2").size > 0 # if there are act 2 quests
-            adventure.current_act = "2"
-          else # there must just be a finale
-            adventure.current_act = "Finale"
-          end
-
-        elsif adventure.current_act == "2" && (completed_quests.where(:act => "2").size >= campaign.act2_quests) && (campaign.quests.where(:act => "Finale").size > 0)
-          adventure.current_act = "Finale"
-        end
-        adventure.save
-
-        ###### start with XP #####
-
-        if winner == "Heroes"
-          total_hero_xp = (quest.reward_xp_base + quest.reward_xp_hero)
-          total_ol_xp = quest.reward_xp_base
-        else
-          total_hero_xp = quest.reward_xp_base
-          total_ol_xp = (quest.reward_xp_base + quest.reward_xp_ol)
-        end
-
-        # heroes
-        heroes.each do |hero|
-          hero.update_attribute(:available_xp, (hero.available_xp + total_hero_xp))
-          hero.save
-        end
-
-        #ol
-        adventure.update_attribute(:ol_available_xp, adventure.ol_available_xp + total_ol_xp)
+    if @chapter.valid?
+      # set variables to work with
+      adventure = @chapter.adventure
+      heroes = adventure.adventurers
+      quest = @chapter.quest
+      campaign = adventure.campaign
 
 
-        ##### Gold ####
-        # Quest gold
-        if winner == "Heroes"
-          gold_to_be_added = (quest.hero_win_gold * adventure.adventurers.size)
-        end
-
-        # search item gold
-        gold_to_be_added += @chapter.gold_from_search_items
-
-        # save gold
-        adventure.hero_gold += gold_to_be_added
-        adventure.save
-
-
-
-        #####add the reward items, if applicable #####
-        if winner == "Heroes"
-
-          if quest.hero_win_item_id.present?
-            adventure.adventurers.first.items << Item.find(quest.hero_win_item_id)
-          end
-
-          if quest.hero_win_ol_lose_item_id.present?
-            adventure.items.delete(Item.find(quest.hero_win_ol_lose_item_id))
-          end
-
-        elsif winner == "Overlord"
-
-          # give ol item
-          if quest.ol_win_item_id.present?
-            adventure.items << Item.find(quest.ol_win_item_id)
-          end
-
-          # take away hero items, if needed
-          if quest.ol_win_heroes_lose_item_id.present?
-            lost_item = Item.find_by_id(quest.ol_win_heroes_lose_item_id)
-            
-            adventure.adventurers.each do |hero|
-              
-              if hero.items.include?(lost_item)
-                hero.items.delete(lost_item)
-              end
-            end
-          end
-
-          # give ol card
-          if quest.ol_win_gain_overlord_card_id.present?
-            adventure.overlord_cards << OverlordCard.find(quest.ol_win_gain_overlord_card_id)
-          end
-        end
-
-        # iterate through heroes and adjust items based on found, bought, and sold
-
-        unless params[:standalone] == "true"
-
-          params[:adventurers].each do |k,v|
-
-            hero = Adventurer.find(k.to_i)
-  
-            # add found item
-            unless v['found_item'].blank?
-              hero.items << Item.find(v['found_item'].to_i)
-            end
-    
-            # sell items
-            unless v['sold_items'].blank?
-              v['sold_items'].each do |item_id|
-                sold_item = Item.find(item_id.to_i)
-                adventure.hero_gold += sold_item.sell_cost
-                hero.items.delete(sold_item)
-              end
-              adventure.save
-            end
-    
-            # add  bought items
-            
-            v['bought_items'].each do |item_id|
-              unless item_id.blank?
-                bought_item = Item.find(item_id.to_i)
-                hero.items << bought_item
-                adventure.hero_gold -= bought_item.buy_cost
-              end
-              adventure.save
-            end
-    
-            # add new skills
-            unless v['new_skills'].blank?
-              v['new_skills'].each do |skill_id|
-                new_skill = Skill.find(skill_id.to_i)
-                hero.skills << new_skill
-                hero.available_xp -= new_skill.xp_cost
-                hero.save
-              end
-            end
-          end
-        end
-
-        # add overlords cards
-        if params[:overlord_cards]
-          params[:overlord_cards].each do |card_id|
-            new_card = OverlordCard.find(card_id)
-            if new_card
-              adventure.overlord_cards << new_card
-              adventure.ol_available_xp -= new_card.xp_cost
-            end
-          end
-          adventure.save
-        end
-        
-        # complete adventure if it is the finale
-        if quest.act == "Finale"
-          adventure.update_attributes(:completed_at => Time.now, :winner => @chapter.final_winner)
-        end
-
-        # finally save the chapter
-        @chapter.save
-
-        format.html { redirect_to adventure, notice: 'Chapter was successfully created.' }
-        format.json { render json: @chapter, status: :created, location: @chapter }
+      ###### AWARD XP ###############
+      # define XP awards
+      if @chapter.final_winner == "Heroes"
+        total_hero_xp = (quest.reward_xp_base + quest.reward_xp_hero)
+        total_ol_xp = quest.reward_xp_base
       else
-
-        format.html { redirect_to new_adventure_url(:adventure_id => adventure.id) }
-        format.json { render json: @chapter.errors, status: :unprocessable_entity }
+        total_hero_xp = quest.reward_xp_base
+        total_ol_xp = (quest.reward_xp_base + quest.reward_xp_ol)
       end
+
+      # award XP to heroes
+      heroes.each do |hero|
+        hero.update_attribute(:available_xp, (hero.available_xp + total_hero_xp))
+        hero.save
+      end
+
+      # award XP to ol
+      adventure.ol_available_xp += total_ol_xp
+      
+
+      ##### AWARD GOLD ###############
+      gold_to_be_added = 0
+
+      # Quest gold
+      if @chapter.final_winner == "Heroes"
+        gold_to_be_added = (quest.hero_win_gold * adventure.adventurers.size)
+      end
+
+      # search item gold
+      gold_to_be_added += @chapter.gold_from_search_items
+      # save gold
+      adventure.hero_gold += gold_to_be_added
+
+
+      ##### AWARD QUEST REWARDS ###############
+      if @chapter.final_winner == "Heroes"
+        if quest.hero_win_item_id.present?
+          adventure.adventurers.first.items << Item.find(quest.hero_win_item_id)
+        end
+        if quest.hero_win_ol_lose_item_id.present? # if item is lost
+          adventure.items.delete(Item.find(quest.hero_win_ol_lose_item_id))
+        end
+      elsif @chapter.final_winner == "Overlord"
+        if quest.ol_win_item_id.present?
+          adventure.items << Item.find(quest.ol_win_item_id)
+        end
+        if quest.ol_win_heroes_lose_item_id.present? # if item is lost
+          lost_item = Item.find_by_id(quest.ol_win_heroes_lose_item_id)
+          
+          adventure.adventurers.each do |hero|
+            
+            if hero.items.include?(lost_item)
+              hero.items.delete(lost_item)
+            end
+          end
+        end
+        # give ol card if appliciable
+        if quest.ol_win_gain_overlord_card_id.present?
+          adventure.overlord_cards << OverlordCard.find(quest.ol_win_gain_overlord_card_id)
+        end
+      end
+
+
+      ##### BUY / SELL ITEMS ###############
+      # iterate through heroes and adjust items based on found, bought, and sold
+
+      # trackers to save in chapter model
+      items_found = {}
+      items_sold = {}
+      items_bought = {}
+      skills_bought = {}
+
+      # setup tracking for adverturer recording
+      count = 1
+
+      params[:adventurers].each do |id,options|
+        hero = Adventurer.find(id.to_i)
+
+        # record hero and profession
+        @chapter.send("hero#{count}_id=", hero.hero_id)
+        @chapter.send("hero#{count}_profession_id=", hero.profession_id)
+        count += 1
+
+        items_found["#{id}"] = []
+        items_sold["#{id}"] = []
+        items_bought["#{id}"] = []
+        skills_bought["#{id}"] = []
+        
+
+        # add found item
+        unless options['found_item'].blank?
+          found_item = Item.find(options['found_item'].to_i)
+          hero.items << found_item
+          items_found["#{id}"] << found_item.id
+        end
+  
+        # sell items
+        unless options['sold_items'].blank?
+          options['sold_items'].each do |item_id|
+            sold_item = Item.find(item_id.to_i)
+            adventure.hero_gold += sold_item.sell_cost
+            hero.items.delete(sold_item)
+            items_sold["#{id}"] << sold_item.id
+          end
+        end
+  
+        # add bought items
+        options['bought_items'].each do |item_id|
+          unless item_id.blank?
+            bought_item = Item.find(item_id.to_i)
+            hero.items << bought_item
+            adventure.hero_gold -= bought_item.buy_cost
+            items_bought["#{id}"] << bought_item.id
+          end
+        end
+  
+        # add new skills
+        unless options['new_skills'].blank?
+          options['new_skills'].each do |skill_id|
+            new_skill = Skill.find(skill_id.to_i)
+            hero.skills << new_skill
+            skills_bought["#{id}"] << new_skill.id
+            hero.available_xp -= new_skill.xp_cost
+            hero.save
+          end
+        end
+      end
+
+
+      # record transactions for posterity
+      @chapter.items_found = items_found
+      @chapter.items_sold = items_sold
+      @chapter.items_bought = items_bought
+      @chapter.skills_bought = skills_bought
+
+
+      ##### BUY OVERLORD CARDS ###############
+      if params[:overlord_cards]
+        params[:overlord_cards].each do |card_id|
+          new_card = OverlordCard.find(card_id)
+          if new_card
+            adventure.overlord_cards << new_card
+            adventure.ol_available_xp -= new_card.xp_cost
+          end
+        end
+      end
+
+
+      ##### SAVE AND CLEANUP ###############
+      adventure.save
+      @chapter.save
+      adventure.increment_act(@chapter.final_winner)
+      redirect_to adventure, notice: 'Chapter was successfully created.'
+      
+    else # chapter is not valid
+      redirect_to new_adventure_url(:adventure_id => adventure.id)
     end
   end
 

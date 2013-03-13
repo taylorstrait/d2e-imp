@@ -22,11 +22,35 @@ class Adventure < ActiveRecord::Base
     end
   end
 
-  # return array of quests as associated through chapters
-  def quests
-    quests = []
-    chapters.includes(:quest).each {|c| quests << c.quest}
-    return quests
+  # update campaign status
+  def increment_act(winner)
+        
+    if self.current_act == "Intro" # if we just finished the intro
+      self.current_act = "1"
+    
+    elsif self.current_act == "1" && (quests.where(:act => "1").size >= campaign.act1_quests) # or if we are done with act 1
+      if campaign.quests.where(:act => "Interlude").size > 0 # if there is an interlude
+        self.current_act = "Interlude"
+      elsif campaign.quests.where(:act => "2").size > 0 # or if there are act 2 quests
+        self.current_act = "2"
+      else # there must just be a finale
+        self.current_act = "Finale"
+      end
+    
+    elsif self.current_act == "Interlude" # or if we are completing an interlude
+      if campaign.quests.where(:act => "2").size > 0 # if there are act 2 quests
+        self.current_act = "2"
+      else # there must just be a finale
+        self.current_act = "Finale"
+      end
+
+    elsif self.current_act == "2" && (quests.where(:act => "2").size >= campaign.act2_quests) && (campaign.quests.where(:act => "Finale").size > 0)
+      self.current_act = "Finale"
+
+    elsif self.current_act == "Finale"
+      self.update_attributes(:completed_at => Time.now, :winner => winner)
+    end
+    self.save
   end
 
   private

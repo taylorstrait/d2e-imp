@@ -11,6 +11,11 @@ class Chapter < ActiveRecord::Base
   validates :quest, :presence => true
   validates :final_winner, :presence => true
 
+  serialize :items_found
+  serialize :items_sold
+  serialize :items_bought 
+  serialize :skills_bought
+
   def total_gold_earned
     if final_winner == "Heroes"
       return (self.gold_from_search_items + (quest.hero_win_gold * adventure.adventurers.count))
