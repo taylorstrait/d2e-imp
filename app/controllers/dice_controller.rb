@@ -3,18 +3,19 @@ class DiceController < ApplicationController
   def dice_roller
   end
 
+  # params[:colors] come in the format '{COLOR} {COLOR} {COLOR}'
   def roll_dice
-    results = []
-    if params[:colors].class == Array
-      colors = params[:colors]
-    else
-      colors = [params[:colors]]
-    end
 
-      for color in colors do
+    # convert params into array of lowercase words like [color, color, color]
+    # we use lowercase to render the output dice image 'color.png'
+    colors = params[:colors].gsub(/[ {]/, "").downcase.split("}")
+
+    results = []
+
+    for color in colors do
       current_roll = {} # create a new hash
       current_roll['number'] = (1 + rand(6)) # create a random number
-      current_roll['color'] = color # add the color
+      current_roll['color'] = color.downcase # add the color
       results << current_roll
     end
     render :partial => "dice", :locals => {:rolls => results}

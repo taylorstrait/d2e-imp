@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130130062734) do
+ActiveRecord::Schema.define(:version => 20130314120602) do
 
   create_table "adventurers", :force => true do |t|
     t.integer  "hero_id",                        :null => false
@@ -19,10 +19,10 @@ ActiveRecord::Schema.define(:version => 20130130062734) do
     t.integer  "profession_id",                  :null => false
     t.integer  "available_xp",    :default => 0, :null => false
     t.integer  "user_id"
-    t.integer  "current_damage",  :default => 0, :null => false
-    t.integer  "current_fatigue", :default => 0, :null => false
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+    t.integer  "current_health",  :default => 0, :null => false
+    t.integer  "current_stamina", :default => 0, :null => false
   end
 
   add_index "adventurers", ["adventure_id"], :name => "index_adventurers_on_adventure_id"

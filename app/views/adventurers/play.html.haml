@@ -1,33 +1,42 @@
 %h4= @adventurer.hero.name
 
 %ul.nav.nav-tabs
-  <li><a href="#home" data-toggle="tab">Home</a></li>
+  <li><a href="#stats" data-toggle="tab">Stats</a></li>
   <li><a href="#items" data-toggle="tab">Items</a></li>
   <li><a href="#skills" data-toggle="tab">Skills</a></li>
   <li><a href="#surges" data-toggle="tab">Surges</a></li>
+  <li><a href="#dice" data-toggle="tab">Dice</a></li>
 
 .tab-content  
-  .tab-pane.active#home
+  .tab-pane.active#stats
     .row-fluid
       .span7
         .row-fluid
           %table.table.adventurer.hero
-            %tr
-              %th.centered.speed   <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
-              %th.centered.health  <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
-              %th.centered.stamina <img src='/assets/icons/stamina-icon.png' alt='Willpower' title='Willpower' />
-              %th.centered.defense <img src='/assets/icons/defense-icon.png' alt='Awareness' title='Awareness' />
-            %tr
-              %td.centered.speed= @adventurer.hero.speed
-              %td.centered.health
-                %span#current_health= @adventurer.current_damage 
-                = " / " + @adventurer.hero.health.to_s
-    
-              %td.centered.stamina
-                %span#current_fatigue= @adventurer.current_fatigue
-                = " / " + @adventurer.hero.stamina.to_s
-    
-              %td.centered.defense= add_icons(@adventurer.hero.defense)  
+            %thead
+              %tr
+                %th.centered.speed   <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
+                %th.centered.health#reset-health  <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
+                %th.centered.stamina#reset-stamina <img src='/assets/icons/stamina-icon.png' alt='Willpower' title='Willpower' />
+                %th.centered.defense <img src='/assets/icons/defense-icon.png' alt='Awareness' title='Awareness' />
+            %tbody
+              %tr
+                %td.centered.speed= @adventurer.hero.speed
+                %td.centered.health
+                  .chevron.up
+                    = link_to "<i class='icon-chevron-up'></i>".html_safe, update_health_adventurer_url(@adventurer, :amount => "+1"), :remote => true, :method => :put, :class => "update-health"
+                  %span#current-health.health= @adventurer.current_health 
+                  .chevron.down
+                    = link_to "<i class='icon-chevron-down'></i>".html_safe, update_health_adventurer_url(@adventurer, :amount => "-1"), :remote => true, :method => :put, :class => "update-health"
+  
+                %td.centered.stamina
+                  .chevron.up
+                    = link_to "<i class='icon-chevron-up'></i>".html_safe, update_stamina_adventurer_url(@adventurer, :amount => "+1"), :remote => true, :method => :put, :class => "update-stamina"
+                  %span#current-stamina= @adventurer.current_stamina
+                  .chevron.down
+                    = link_to "<i class='icon-chevron-down'></i>".html_safe, update_stamina_adventurer_url(@adventurer, :amount => "-1"), :remote => true, :method => :put, :class => "update-stamina"
+  
+                %td.centered.defense= add_icons(@adventurer.hero.defense)  
     
         .row-fluid
           %table.table.adventurer.hero
@@ -53,9 +62,11 @@
   .tab-pane#surges
     .row-fluid
 
+  .tab-pane#dice
+    .row-fluid
+      = render :template => "dice/dice_roller"
+
 :javascript
-  <script>
-    $(function () {
-      $('#myTab a:last').tab('show');
-    })
-  </script>
+  $(function () {
+    $('#myTab a:last').tab('show');
+  })

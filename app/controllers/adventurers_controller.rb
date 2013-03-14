@@ -94,6 +94,7 @@ class AdventurersController < ApplicationController
       @adventurer = Adventurer.create(:hero_id => params[:hero_id], :profession_id => params[:profession_id], :user_id => current_user.id)
       @adventurer.skills = @adventurer.profession.starting_skills
       @adventurer.items = @adventurer.profession.items
+      flash.now[:info] = "This hero instance has been saved and can be accessed via My Profile -> My Heroes."
       @hide_nav = true
     else
       flash[:errors] = "There was an error. You broke something! Are you  signed in?"
@@ -101,10 +102,20 @@ class AdventurersController < ApplicationController
     end
   end
 
-  def update_damage
+  def update_health
+    adventurer = Adventurer.find(params[:id])
+    unless adventurer.current_health + params[:amount].to_i < 0
+      adventurer.update_attribute(:current_health, adventurer.current_health + params[:amount].to_i)
+    end
+    render :text => adventurer.current_health
   end
 
-  def update_fatigue
+  def update_stamina
+    adventurer = Adventurer.find(params[:id])
+    unless adventurer.current_stamina + params[:amount].to_i < 0
+      adventurer.update_attribute(:current_stamina, adventurer.current_stamina + params[:amount].to_i)
+    end
+    render :text => adventurer.current_stamina
   end
 
   ##### AJAX METHODS #####

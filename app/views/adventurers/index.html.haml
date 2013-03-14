@@ -1,31 +1,29 @@
-%h1 Listing adventurers
+%h2 My Heroes
 
-%table
-  %tr
-    %th
-    %th Hero
-    %th Health
-    %th Fatigue
-    %th Items
-    %th Skills
-    %th Adventure
-    %th
-    %th
-    %th
-
-  - @adventurers.each do |adventurer|
-    %tr
-      %td= link_to "Play", play_path(:adventurer_id => adventurer), :class => "btn btn-small btn-primary"
-      %td= popup_link(adventurer.hero)
-      %td= adventurer.hero.health - adventurer.current_damage
-      %td= adventurer.current_fatigue
-      %td= render :partial => "items/item", :collection => adventurer.items
-      %td= render :partial => "skills/skill", :collection => adventurer.skills
-      %td
-        - if adventurer.adventure
-          = link_to adventurer.adventure.name, adventurer.adventure
-      %td= link_to 'Show', adventurer
-      %td= link_to 'Edit', edit_adventurer_path(adventurer)
-      %td
-        -unless adventurer.adventure
-          = link_to 'Destroy', adventurer, method: :delete, data: { confirm: 'Are you sure?' }
+.row-fluid
+  %table.table.table-striped.sortable-table
+    %thead
+      %tr
+        %th
+        %th Hero
+        %th Class
+        %th Items
+        %th Skills
+        %th Adventure
+        %th
+    
+    %tbody
+    - @adventurers.each do |adventurer|
+      %tr
+        %td= link_to "Play", play_path(:adventurer_id => adventurer), :class => "btn btn-mini btn-primary"
+        %td= popup_link(adventurer.hero)
+        %td= adventurer.profession.name
+        %td= render :partial => "items/item", :collection => adventurer.items
+        %td= render :partial => "skills/skill", :collection => adventurer.skills
+        %td
+          - if adventurer.adventure
+            = link_to adventurer.adventure.name, adventurer.adventure
+        
+        %td
+          -unless adventurer.adventure
+            = link_to 'Delete', adventurer, method: :delete, data: { confirm: 'Are you sure?' } 

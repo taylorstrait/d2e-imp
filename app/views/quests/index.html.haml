@@ -10,7 +10,6 @@
         %th Encounters
         /%th Monsters
         %th Rating
-        %th Author
   
     %tbody
       - quests.each do |quest|
@@ -25,5 +24,4 @@
           /    - for monster in quest.monsters
           /      %li= link_to monster.name, monster
           %td= sample_rating
-          %td= quest.user ? (link_to quest.user.username, quest.user) : nil
   

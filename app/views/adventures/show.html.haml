@@ -11,6 +11,16 @@
 
     %tbody
       %tr
+        %td Player
+        - for adventurer in @adventure.adventurers
+          %td
+            - if adventurer.user
+              - if adventurer.user == current_user
+                = link_to "Play", play_path(:adventurer_id => adventurer), :class => "btn btn-mini btn-primary"
+              - else
+                = link_to adventurer.user.username, adventurer.user
+
+      %tr
         %td Class
         - for adventurer in @adventure.adventurers
           %td= link_to adventurer.profession.name, class_path(adventurer.profession)
@@ -40,7 +50,7 @@
 
 %hr 
 
-%h4 Overlord
+%h4 Overlord (#{link_to @adventure.user.username, @adventure.user})
 .row-fluid
   .span4
     %h5 XP

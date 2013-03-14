@@ -30,6 +30,16 @@
   
   / COLUMN 2
   .span5
+
+    -if user_signed_in? 
+      .alert.alert-info
+        - for profession in @hero.archetype.professions
+          %p= link_to "Play as #{profession.name}", play_path(:hero_id => @hero.id, :profession_id => profession.id), :class => "btn btn-primary"
+    - else
+      .alert.alert-info #{ link_to 'Sign in', new_user_session_url} to enable real-time playing as this hero.
+      
+
+
     %h4 Hero Ability
     = fancy_output(@hero.ability)
     
@@ -44,11 +54,7 @@
 
 .row-fluid
   %h3 Ratings
-
-.row-fluid
-  %h3 Play
-  - for profession in @hero.archetype.professions
-    %p= link_to "Play as #{profession.name}", play_path(:hero_id => @hero.id, :profession_id => profession.id)
+  
 
 -if user_signed_in? && ((current_user == @hero.user) || (current_user.try(:is_admin?)))
   .form-actions

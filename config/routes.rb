@@ -10,8 +10,8 @@ Monsters::Application.routes.draw do
     member do
       delete 'remove_item'
       delete 'remove_skill'
-      put 'update_damage'
-      put 'update_fatigue'
+      put 'update_health'
+      put 'update_stamina'
     end
   end
   match 'play' => "adventurers#play", :as => :play, :via => :get

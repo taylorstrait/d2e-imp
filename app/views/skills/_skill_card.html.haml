@@ -1,2 +1,16 @@
 %div{:id => skill.slug, :class => "skill card"}
   = image_tag "cards/skills/#{skill.slug}.jpg"
+
+:javascript
+
+  $("##{skill.slug}").click(function () {
+
+    $("##{skill.slug}").flippy({
+      content: '#{image_tag 'cards/skills/defend.jpg'}',
+      color_target: 'red',
+      direction:"TOP",
+      duration:"750",
+    });
+
+    console.log("hey!");
+  });

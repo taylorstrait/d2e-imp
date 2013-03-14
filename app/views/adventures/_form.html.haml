@@ -33,6 +33,16 @@
       %tbody
 
         %tr
+          %td Player
+          - for i in 1..4
+            - if params[:heroes].nil?
+              %td
+                %input.span12{name: "heroes[#{i}][username]", 'data-provide' => "typeahead", "data-items" => 6, "data-source" => @users, autocomplete: "off"}
+            - else
+              %td
+                %input.span12{name: "heroes[#{i}][username]", 'data-provide' => "typeahead", "data-items" => 6, "data-source" => @users, autocomplete: "off", :value => params[:heroes][i.to_s][:username]}
+
+        %tr
           %td Hero
           - for i in 1..4
             - if params[:heroes].nil?

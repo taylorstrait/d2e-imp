@@ -4,19 +4,15 @@
     %tr
 
       %th Name
-      %th Created By
       %th Rating
       %th Game
-      %th Created
 
   %tbody
     - @campaigns[true].each do |campaign| # is_official = true
       %tr
         %td= link_to campaign.name, campaign_path(campaign)
-        %td= link_to campaign.user.username, campaign.user
         %td= sample_rating
-        %td= if campaign.game then link_to(campaign.game.short_name, campaign.game) end
-        %td= l campaign.created_at                                                                      
+        %td= if campaign.game then link_to(campaign.game.short_name, campaign.game) end                                                                    
 
 
 - if @campaigns[false] # is_official = false

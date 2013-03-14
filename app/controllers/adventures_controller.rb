@@ -36,6 +36,7 @@ class AdventuresController < ApplicationController
         redirect_to :edit_user_registration
 
       else # start a new adventure
+        @users = User.eligible_usernames
         @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
         @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).select([:name, :slug, :id])
         @adventure = Adventure.new
@@ -50,54 +51,52 @@ class AdventuresController < ApplicationController
   # GET /adventures/1/edit
   def edit
     @adventure = Adventure.find(params[:id])
+    @users = User.eligible_usernames
   end
 
   # POST /adventures
   # POST /adventures.json
   def create
     
-    # just in case we redirect back
-
+    #### SET ADVENTURE VARIABLES ############
     @adventure = Adventure.new(params[:adventure])
     @adventure.ol_available_xp = @adventure.ol_starting_xp
     @adventure.hero_gold = @adventure.hero_starting_gold
     @adventure.user = current_user
     
+    #### SET CAMPAIGN ACT ############
     if (@adventure.skip_intro == true) || (@adventure.campaign.quests.where(:act => "Intro").size == 0)
       @adventure.current_act = "1"
     end
 
-    respond_to do |format|
-      if @adventure.save
-        
-        # create the heroes
-        params[:heroes].each do |k,v|
+    if @adventure.save
+      
+      #### CREATE HEROES ############
+      params[:heroes].each do |k,v|
 
-          adventurer = Adventurer.new(v)
-          adventurer.available_xp = @adventure.hero_starting_xp
-            if adventurer.valid?
-              adventurer.save
-              adventurer.skills = adventurer.profession.starting_skills
-              adventurer.items = adventurer.profession.items
-              @adventure.adventurers << adventurer
-            end       
-          end
+        adventurer = Adventurer.new(hero_id: v["hero_id"], profession_id: v["profession_id"])
+        adventurer.user = User.find_by_username(v["username"])
+        adventurer.available_xp = @adventure.hero_starting_xp
+          if adventurer.valid?
+            adventurer.save
+            adventurer.skills = adventurer.profession.starting_skills
+            adventurer.items = adventurer.profession.items
+            @adventure.adventurers << adventurer
+          end       
+        end
 
-        # assign overlord cards
-        @adventure.overlord_cards = OverlordCard.where(:category => "Basic").all
+      # assign overlord cards
+      @adventure.overlord_cards = OverlordCard.where(:category => "Basic").all
 
-        format.html { redirect_to @adventure, notice: 'Adventure was successfully created.' }
-        format.json { render json: @adventure, status: :created, location: @adventure }
-      else
+      redirect_to @adventure, notice: 'Adventure was successfully created.'
+    else
 
-        # get data ready for form
-        @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
-        @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).all
-        @available_professions = Profession.all
-        flash.now[:errors] = "There was a problem creating this adventure. Are all of your fields filled in?"
-        format.html { render action: "new" }
-        format.json { render json: @adventure.errors, status: :unprocessable_entity }
-      end
+      # we are redirecting so get data ready for form again
+      @campaigns = Campaign.where("is_official = ? AND game_id IN (?)", true, current_user.game_ids).all
+      @heroes = Hero.order(:name).where("id IN (?)", current_user.hero_ids).all
+      @available_professions = Profession.all
+      flash.now[:errors] = "There was a problem creating this adventure. Are all of your fields filled in?"
+      render action: "new"
     end
   end
 

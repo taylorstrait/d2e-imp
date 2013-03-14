@@ -23,6 +23,12 @@ validates :username, :presence => true, :uniqueness => true
     self.role == "admin"
   end
 
+  def self.eligible_usernames
+    u = User.pluck(:username)
+    u.delete("Administrator")
+    return u
+  end
+  
     private
 
     def before_destroy

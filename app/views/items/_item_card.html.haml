@@ -1,2 +1,5 @@
 %div{:id => item.slug, :class => "item card"}
-  = image_tag "cards/items/#{item.slug}.jpg"
+  - if !item.dice.blank?
+    = link_to "#{image_tag "cards/items/#{item.slug}.jpg"}".html_safe, roll_dice_path(:colors => item.dice), :remote => true, :class => "roll_dice_button"
+  - else
+    = image_tag "cards/items/#{item.slug}.jpg"
