@@ -1,0 +1,61 @@
+%h4= @adventurer.hero.name
+
+%ul.nav.nav-tabs
+  <li><a href="#home" data-toggle="tab">Home</a></li>
+  <li><a href="#items" data-toggle="tab">Items</a></li>
+  <li><a href="#skills" data-toggle="tab">Skills</a></li>
+  <li><a href="#surges" data-toggle="tab">Surges</a></li>
+
+.tab-content  
+  .tab-pane.active#home
+    .row-fluid
+      .span7
+        .row-fluid
+          %table.table.adventurer.hero
+            %tr
+              %th.centered.speed   <img src='/assets/icons/speed-icon.png' alt='Might' title='Might' />
+              %th.centered.health  <img src='/assets/icons/health-icon.png' alt='Knowledge' title='Knowledge' />
+              %th.centered.stamina <img src='/assets/icons/stamina-icon.png' alt='Willpower' title='Willpower' />
+              %th.centered.defense <img src='/assets/icons/defense-icon.png' alt='Awareness' title='Awareness' />
+            %tr
+              %td.centered.speed= @adventurer.hero.speed
+              %td.centered.health
+                %span#current_health= @adventurer.current_damage 
+                = " / " + @adventurer.hero.health.to_s
+    
+              %td.centered.stamina
+                %span#current_fatigue= @adventurer.current_fatigue
+                = " / " + @adventurer.hero.stamina.to_s
+    
+              %td.centered.defense= add_icons(@adventurer.hero.defense)  
+    
+        .row-fluid
+          %table.table.adventurer.hero
+            %tr
+              %th.centered <img src='/assets/icons/Might.png' alt='Might' title='Might' />
+              %th.centered <img src='/assets/icons/Knowledge.png' alt='Knowledge' title='Knowledge' />
+              %th.centered <img src='/assets/icons/Willpower.png' alt='Willpower' title='Willpower' />
+              %th.centered <img src='/assets/icons/Awareness.png' alt='Awareness' title='Awareness' />
+            %tr
+              %td.centered= @adventurer.hero.might
+              %td.centered= @adventurer.hero.knowledge
+              %td.centered= @adventurer.hero.willpower
+              %td.centered= @adventurer.hero.awareness
+  
+  .tab-pane#items  
+    .row-fluid
+      = render :partial => "items/item_card", :collection => @adventurer.items, :as => :item
+  
+  .tab-pane#skills
+    .row-fluid
+      = render :partial => "skills/skill_card", :collection => @adventurer.skills, :as => :skill    
+
+  .tab-pane#surges
+    .row-fluid
+
+:javascript
+  <script>
+    $(function () {
+      $('#myTab a:last').tab('show');
+    })
+  </script>
